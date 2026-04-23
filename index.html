@@ -1,0 +1,2423 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>冯漪轩 Mario — An AI-Native Portfolio · Issue 01 / 2026</title>
+  <meta name="description" content="AI 产品经理 · 新媒体运营 · AI 创意策划 · 字节抖音 · 蔚来 · RW 数字游民社区 · 博洛尼亚大学" />
+
+  <!-- 字体预连接 + 按需加载,避免首屏白屏 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!--
+    字体组合说明:
+    - Fraunces: 英文衬线(可变字重,编辑杂志 logo 式)
+    - Noto Serif SC: 中文衬线(思源宋体),用于大标题
+    - Noto Sans SC: 中文无衬线兜底(HarmonyOS Sans 无法通过 Google Fonts 加载,系统会自动 fallback 到 PingFang SC / HarmonyOS Sans)
+    - JetBrains Mono: 数据/日期/技术标签专用
+    - Caveat: Mario 手写签名
+  -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@300;400;500;700;900&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    /* ============================================================
+       DESIGN TOKENS — 编辑设计杂志审美
+       参考: Kinfolk / Casa Brutus / Cereal Magazine
+       ============================================================ */
+    :root {
+      /* 浅色画布系 — 白 / 黑 / 蓝 / 黄 */
+      --paper:       #F5F7FB;
+      --paper-deep:  #FFFFFF;
+      --paper-soft:  #F8FBFF;
+      --paper-warm:  #FFF9E8;
+
+      /* 文字与描边 */
+      --ink:         #111827;
+      --ink-muted:   #5B6475;
+      --ink-soft:    #96A0B5;
+      --rule:        #D9E1EE;
+      --rule-strong: #BAC6DA;
+
+      /* Accent */
+      --accent:      #336CFF;
+      --accent-deep: #1C4FE0;
+      --accent-soft: #E8EEFF;
+      --accent-warm: #FFD84D;
+      --accent-warm-soft: #FFF4C2;
+
+      /* 签名色 */
+      --ink-violet:  #2E57C5;
+
+      /* Typography stack */
+      --font-serif-cn: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'STSong', serif;
+      --font-sans-cn:  -apple-system, BlinkMacSystemFont, 'HarmonyOS Sans SC', 'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
+      --font-serif-en: 'Fraunces', 'Playfair Display', Georgia, serif;
+      --font-mono:     'JetBrains Mono', 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+      --font-script:   'Caveat', cursive;
+
+      /* Layout */
+      --pad-h: clamp(1.5rem, 4vw, 4rem);
+      --max-w: 1280px;
+    }
+
+    /* ============================================================
+       RESET & BASE
+       ============================================================ */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.94) 0%, rgba(245,247,251,0.98) 42%, rgba(255,249,232,0.88) 100%);
+      color: var(--ink);
+      font-family: var(--font-sans-cn);
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* 纸张纹理 — 非常轻的 SVG 噪声覆盖层,增加"印刷感"而非"平面感" */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 0;
+      opacity: 0.35;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.1 0 0 0 0 0.1 0 0 0 0.06 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        linear-gradient(120deg, rgba(51,108,255,0.08) 0%, transparent 30%, transparent 68%, rgba(255,216,77,0.1) 100%);
+      opacity: 0.8;
+      animation: sheenShift 18s ease-in-out infinite alternate;
+    }
+    @keyframes sheenShift {
+      from { transform: translate3d(-1.5%, 0, 0); }
+      to { transform: translate3d(1.5%, -1%, 0); }
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ============================================================
+       TYPOGRAPHY UTILITIES
+       ============================================================ */
+    .mono {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    .mono--lg {
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      letter-spacing: 0.1em;
+      font-weight: 500;
+    }
+
+    .serif-cn {
+      font-family: var(--font-serif-cn);
+      font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+
+    /* Blinking cursor — 只在关键入场位置使用 */
+    .cursor {
+      display: inline-block;
+      width: 0.5em; height: 1em;
+      background: var(--accent);
+      vertical-align: text-bottom;
+      margin-left: 0.15em;
+      animation: blink 1.1s steps(2, start) infinite;
+    }
+    @keyframes blink {
+      0%, 50%   { opacity: 1; }
+      50.1%, 100% { opacity: 0; }
+    }
+
+    /* ============================================================
+       PERSISTENT HEADER — 仅在滚出 boot 后可见
+       ============================================================ */
+    .topbar {
+      position: fixed; top: 0; left: 0; right: 0;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0.9rem var(--pad-h);
+      background: rgba(255, 255, 255, 0.76);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(186, 198, 218, 0.55);
+      box-shadow: 0 12px 36px rgba(28, 38, 71, 0.06);
+      z-index: 50;
+      transform: translateY(-100%);
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .topbar.visible { transform: translateY(0); }
+
+    .topbar__left {
+      display: flex; align-items: baseline; gap: 0.7rem;
+    }
+    .topbar__name {
+      font-family: var(--font-serif-cn);
+      font-weight: 500;
+      font-size: 1rem;
+    }
+    .topbar__sig {
+      font-family: var(--font-script);
+      font-size: 1.3rem;
+      color: var(--accent);
+      transform: rotate(-3deg);
+      display: inline-block;
+    }
+
+    .topbar__nav {
+      display: flex; gap: 2rem;
+    }
+    .topbar__nav a {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      transition: color 0.25s ease;
+      position: relative;
+    }
+    .topbar__nav a::after {
+      content: '';
+      position: absolute; left: 0; bottom: -4px;
+      width: 0; height: 1px;
+      background: var(--accent);
+      transition: width 0.3s ease;
+    }
+    .topbar__nav a:hover { color: var(--ink); }
+    .topbar__nav a:hover::after { width: 100%; }
+
+    @media (max-width: 720px) {
+      .topbar__nav { display: none; }
+    }
+
+    /* ============================================================
+       BOOT — 入场封面
+       左边是名字 + 签名 + 副标题 + CTA,右边是杂志目录
+       ============================================================ */
+    .boot {
+      position: relative;
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 4rem;
+      padding: 1.8rem var(--pad-h) 2rem;
+      z-index: 1;
+    }
+
+    .boot__meta {
+      grid-column: 1 / -1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 1.2rem;
+      border-bottom: 1px solid var(--rule);
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+    }
+
+    /* 左侧主栏:逐次揭示 */
+    .boot__main {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 2rem 0;
+      max-width: 860px;
+    }
+
+    .kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8em;
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.3s ease-out forwards;
+    }
+    .kicker__rule {
+      display: inline-block;
+      width: 56px; height: 1px;
+      background: var(--accent);
+    }
+    .kicker__label {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    /* 中文大名字:每个字符单独入场 */
+    .boot__name {
+      font-family: var(--font-serif-cn);
+      font-weight: 500;
+      font-size: clamp(5.5rem, 14vw, 12rem);
+      line-height: 0.92;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin-bottom: 0.8rem;
+    }
+    .boot__name .ch {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(40px);
+      animation: revealChar 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .boot__name .ch:nth-child(1) { animation-delay: 0.7s; }
+    .boot__name .ch:nth-child(2) { animation-delay: 0.88s; }
+    .boot__name .ch:nth-child(3) { animation-delay: 1.06s; }
+    @keyframes revealChar {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 手写签名 */
+    .boot__sig {
+      display: inline-block;
+      font-family: var(--font-script);
+      font-size: clamp(3rem, 7.5vw, 6.5rem);
+      color: var(--ink-violet);
+      line-height: 1;
+      margin-bottom: 2.5rem;
+      transform: rotate(-4deg) translateX(-4px);
+      opacity: 0;
+      animation: fadeUp 0.9s 1.5s ease-out forwards;
+    }
+
+    /* 杂志式副标题 — 带下划线装饰的引子 */
+    .boot__lede {
+      max-width: 560px;
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp 0.9s 1.8s ease-out forwards;
+    }
+    .boot__lede__role {
+      font-family: var(--font-serif-cn);
+      font-weight: 500;
+      font-size: clamp(1.15rem, 2vw, 1.4rem);
+      color: var(--ink);
+      margin-bottom: 0.8rem;
+      line-height: 1.4;
+    }
+    .boot__lede__role em {
+      font-style: normal;
+      color: var(--accent);
+      border-bottom: 1px solid var(--accent);
+      padding-bottom: 2px;
+    }
+    .boot__lede__desc {
+      font-size: 1.02rem;
+      color: var(--ink-muted);
+      line-height: 1.85;
+    }
+
+    /* CTA 按钮组 */
+    .boot__cta {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      align-items: center;
+      opacity: 0;
+      animation: fadeUp 0.9s 2.1s ease-out forwards;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6em;
+      padding: 0.95rem 1.8rem;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .btn--primary {
+      background: linear-gradient(135deg, var(--ink) 0%, #24324E 100%);
+      color: var(--paper-deep);
+      box-shadow: 0 14px 28px rgba(17, 24, 39, 0.12);
+    }
+    .btn--primary:hover {
+      background: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 18px 32px rgba(51, 108, 255, 0.22);
+    }
+    .btn--ghost {
+      background: transparent;
+      color: var(--ink);
+      border: 1px solid var(--rule);
+    }
+    .btn--ghost:hover {
+      border-color: var(--ink);
+      background: var(--paper-soft);
+    }
+    .btn__arrow {
+      display: inline-block;
+      transition: transform 0.25s ease;
+    }
+    .btn:hover .btn__arrow { transform: translateX(3px); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 右侧:目录 (Table of Contents),磁化的杂志索引 */
+    .boot__toc {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 2rem 0;
+      opacity: 0;
+      animation: fadeUp 1.1s 2.4s ease-out forwards;
+    }
+
+    .toc-wrap {
+      border-top: 1px solid var(--ink);
+      padding-top: 1.2rem;
+    }
+    .toc-wrap__title {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      margin-bottom: 1.2rem;
+      display: flex;
+      justify-content: space-between;
+    }
+    .toc-item {
+      display: grid;
+      grid-template-columns: 34px 1fr auto;
+      align-items: baseline;
+      gap: 1rem;
+      padding: 1rem 0;
+      border-bottom: 1px dotted var(--rule);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: var(--ink);
+    }
+    .toc-item:last-child { border-bottom: none; }
+    .toc-item:hover {
+      padding-left: 0.4rem;
+      color: var(--accent);
+    }
+    .toc-item[data-status="soon"] {
+      opacity: 0.55;
+    }
+    .toc-item[data-status="soon"]:hover { color: var(--ink-muted); }
+
+    .toc-item__num {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--ink-muted);
+      font-weight: 500;
+    }
+    .toc-item__title {
+      font-family: var(--font-serif-cn);
+      font-weight: 500;
+      font-size: 1.05rem;
+      line-height: 1.3;
+    }
+    .toc-item__title small {
+      display: block;
+      font-family: var(--font-sans-cn);
+      font-weight: 400;
+      font-size: 0.75rem;
+      color: var(--ink-muted);
+      margin-top: 2px;
+    }
+    .toc-item__badge {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      padding: 3px 8px;
+      border: 1px solid var(--rule);
+      white-space: nowrap;
+    }
+    .toc-item[data-status="live"] .toc-item__badge {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    /* 响应式:小屏时右侧目录放到主内容下方 */
+    @media (max-width: 900px) {
+      .boot { grid-template-columns: 1fr; gap: 2rem; padding-top: 1.2rem; }
+      .boot__toc { padding: 0 0 2rem; }
+    }
+
+    /* ============================================================
+       CONVERSATION HUB — 你想先读哪一章?
+       ============================================================ */
+    .hub {
+      padding: 8rem var(--pad-h) 6rem;
+      max-width: var(--max-w);
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hub__head {
+      max-width: 780px;
+      margin-bottom: 4rem;
+    }
+    .hub__head .kicker { margin-bottom: 1.5rem; opacity: 1; animation: none; }
+    .hub__title {
+      font-family: var(--font-serif-cn);
+      font-weight: 500;
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.2rem;
+    }
+    .hub__title em {
+      font-style: normal;
+      color: var(--accent);
+      font-family: var(--font-serif-en);
+      font-weight: 400;
+      font-style: italic;
+    }
+    .hub__sub {
+      font-size: 1.05rem;
+      color: var(--ink-muted);
+      line-height: 1.7;
+    }
+
+    .hub__grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem;
+      border-top: none;
+    }
+
+    .hub-card {
+      padding: 2rem 1.8rem 2.2rem;
+      border: 1px solid rgba(186, 198, 218, 0.72);
+      border-radius: 26px;
+      cursor: pointer;
+      background: rgba(255, 255, 255, 0.78);
+      box-shadow: 0 16px 38px rgba(20, 31, 58, 0.06);
+      backdrop-filter: blur(14px);
+      text-align: left;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      color: var(--ink);
+      overflow: hidden;
+    }
+    .hub-card::before {
+      content: '';
+      position: absolute;
+      inset: auto 0 0 0;
+      height: 64px;
+      background: linear-gradient(90deg, rgba(51,108,255,0.08), rgba(255,216,77,0.12));
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+    .hub-card:hover {
+      background: rgba(255, 255, 255, 0.92);
+      transform: translateY(-4px);
+      box-shadow: 0 22px 48px rgba(20, 31, 58, 0.12);
+    }
+    .hub-card:hover::before { opacity: 1; }
+    .hub-card:last-child { border-right: 1px solid rgba(186, 198, 218, 0.72); }
+    @media (max-width: 640px) {
+      .hub-card { border-right: none; }
+    }
+
+    .hub-card__num {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      color: var(--ink-muted);
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .hub-card__num .status {
+      padding: 2px 7px;
+      border: 1px solid var(--rule);
+      font-size: 0.6rem;
+    }
+    .hub-card[data-status="live"] .hub-card__num .status {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .hub-card__title {
+      font-family: var(--font-serif-cn);
+      font-weight: 500;
+      font-size: 1.5rem;
+      line-height: 1.25;
+      margin-bottom: 0.8rem;
+      transition: color 0.3s ease;
+    }
+    .hub-card:hover .hub-card__title {
+      color: var(--accent);
+    }
+    .hub-card__desc {
+      font-size: 0.92rem;
+      color: var(--ink-muted);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+    .hub-card__arrow {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5em;
+      transition: gap 0.3s ease;
+    }
+    .hub-card:hover .hub-card__arrow { gap: 0.9em; color: var(--accent); }
+    .hub-card[data-status="soon"] { opacity: 0.6; cursor: not-allowed; }
+    .hub-card[data-status="soon"]:hover { background: transparent; }
+
+    /* ============================================================
+       SECTION — 通用章节容器
+       ============================================================ */
+    .section {
+      padding: 6rem var(--pad-h);
+      max-width: var(--max-w);
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+    .section__head {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      margin-bottom: 5rem;
+      max-width: 780px;
+    }
+    .section__title {
+      font-family: var(--font-serif-cn);
+      font-weight: 500;
+      font-size: clamp(2.25rem, 4.8vw, 4rem);
+      line-height: 1.18;
+      letter-spacing: -0.02em;
+      max-width: 12ch;
+      text-wrap: balance;
+    }
+    .section__lede {
+      font-family: var(--font-sans-cn);
+      font-weight: 400;
+      font-size: clamp(1.02rem, 1.45vw, 1.16rem);
+      color: var(--ink-muted);
+      line-height: 1.9;
+      max-width: 720px;
+      margin-top: 1rem;
+      text-wrap: pretty;
+    }
+    .section__lede em {
+      font-style: normal;
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    /* ============================================================
+       EXPERIENCE — 工作经历专题 (§ 01)
+       ============================================================ */
+    .experience {
+      background:
+        linear-gradient(var(--rule) 1px, transparent 1px) 0 0 / 100% 100% no-repeat,
+        linear-gradient(var(--rule) 1px, transparent 1px) 0 100% / 100% 1px no-repeat;
+    }
+
+    .entry {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 3rem;
+      padding: 4.5rem 0;
+      border-bottom: 1px solid var(--rule);
+      position: relative;
+    }
+    .entry:last-child { border-bottom: none; }
+
+    @media (max-width: 720px) {
+      .entry { grid-template-columns: 1fr; gap: 1.5rem; }
+    }
+
+    /* 左侧年份装饰 — 大号衬线数字,报纸感 */
+    .entry__year {
+      font-family: var(--font-serif-en);
+      font-weight: 300;
+      font-size: clamp(4rem, 7vw, 6rem);
+      line-height: 0.9;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+      position: sticky;
+      top: 120px;
+      align-self: start;
+    }
+    .entry__year__suffix {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      color: var(--ink-muted);
+      margin-top: 0.6rem;
+      text-transform: uppercase;
+    }
+
+    /* 右侧主内容 */
+    .entry__body {
+      max-width: 720px;
+      padding: 1.8rem 1.85rem 1.9rem;
+      border-radius: 30px;
+      border: 1px solid rgba(186, 198, 218, 0.72);
+      background: rgba(255, 255, 255, 0.8);
+      box-shadow: 0 20px 48px rgba(20, 31, 58, 0.06);
+      backdrop-filter: blur(14px);
+      transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+    }
+    .entry__body:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 28px 60px rgba(20, 31, 58, 0.1);
+      border-color: rgba(51, 108, 255, 0.28);
+    }
+
+    .entry__tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5em;
+      margin-bottom: 1rem;
+      padding: 4px 10px;
+      background: linear-gradient(135deg, var(--accent-soft) 0%, rgba(255,255,255,0.92) 100%);
+      color: var(--accent-deep);
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+    .entry__tag--current {
+      background: linear-gradient(135deg, var(--accent) 0%, #5A8CFF 100%);
+      color: var(--paper-deep);
+    }
+
+    .entry__role {
+      font-family: var(--font-serif-cn);
+      font-weight: 500;
+      font-size: clamp(1.6rem, 2.8vw, 2.1rem);
+      line-height: 1.25;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.01em;
+    }
+    .entry__company {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .entry__company::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--rule);
+    }
+
+    .entry__lede {
+      font-family: var(--font-sans-cn);
+      font-weight: 400;
+      font-size: 1.08rem;
+      line-height: 1.82;
+      color: var(--ink);
+      margin-bottom: 2rem;
+      max-width: 40em;
+      text-wrap: pretty;
+    }
+    .entry__lede em {
+      font-style: normal;
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    /* Pullquote — 杂志式大号数据引用 */
+    .pullquote {
+      margin: 2rem 0;
+      padding: 1.2rem 1.3rem;
+      border: 1px solid rgba(186, 198, 218, 0.72);
+      border-radius: 22px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.82) 0%, rgba(248,251,255,0.96) 70%, rgba(255,249,232,0.86) 100%);
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 1.5rem;
+    }
+    .pullquote__item {
+      position: relative;
+    }
+    .pullquote__item + .pullquote__item::before {
+      content: '';
+      position: absolute;
+      left: -0.75rem; top: 10%;
+      width: 1px; height: 80%;
+      background: var(--rule);
+    }
+    .pullquote__value {
+      font-family: var(--font-serif-en);
+      font-weight: 500;
+      font-size: clamp(2rem, 3.5vw, 2.8rem);
+      line-height: 1;
+      color: var(--accent);
+      letter-spacing: -0.02em;
+      margin-bottom: 0.4rem;
+    }
+    .pullquote__label {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      line-height: 1.4;
+    }
+
+    /* 亮点列表 — 新闻特稿式的序号+文字 */
+    .bullets {
+      list-style: none;
+      margin-top: 1rem;
+    }
+    .bullets li {
+      display: grid;
+      grid-template-columns: 30px 1fr;
+      gap: 0.8rem;
+      padding: 0.7rem 0;
+      border-bottom: 1px dotted var(--rule);
+      font-size: 0.95rem;
+      line-height: 1.65;
+      color: var(--ink);
+    }
+    .bullets li:last-child { border-bottom: none; }
+    .bullets li::before {
+      counter-increment: bullet;
+      content: counter(bullet, decimal-leading-zero);
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--ink-soft);
+      letter-spacing: 0.08em;
+      padding-top: 4px;
+    }
+    .bullets {
+      counter-reset: bullet;
+    }
+
+    /* Tool chips */
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 1.5rem;
+    }
+    .chip {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      padding: 4px 10px;
+      border: 1px solid rgba(186, 198, 218, 0.72);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.78);
+      color: var(--ink-muted);
+      letter-spacing: 0.05em;
+    }
+
+    /* Education Footnote — 章节末尾的教育经历小块 */
+    .footnote {
+      margin-top: 5rem;
+      padding-top: 2rem;
+      border-top: 2px solid var(--ink);
+    }
+    .footnote__title {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      margin-bottom: 2rem;
+    }
+    .footnote__grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+    .footnote__item h4 {
+      font-family: var(--font-serif-cn);
+      font-weight: 500;
+      font-size: 1.3rem;
+      margin-bottom: 0.3rem;
+    }
+    .footnote__item .meta {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      color: var(--ink-muted);
+      margin-bottom: 0.8rem;
+      text-transform: uppercase;
+    }
+    .footnote__item p {
+      font-size: 0.92rem;
+      color: var(--ink-muted);
+      line-height: 1.7;
+    }
+    .footnote__item {
+      padding: 1.5rem;
+      border-radius: 24px;
+      border: 1px solid rgba(186, 198, 218, 0.72);
+      background: rgba(255,255,255,0.76);
+      box-shadow: 0 14px 36px rgba(20, 31, 58, 0.05);
+    }
+
+    /* ============================================================
+       PLACEHOLDER — 占位章节 (§ 02 / § 03)
+       不是一句 "coming soon",而是有预告感的设计
+       ============================================================ */
+    .placeholder {
+      border: 1px solid rgba(186, 198, 218, 0.72);
+      padding: 5rem 2.5rem 3rem;
+      position: relative;
+      overflow: visible;
+      border-radius: 34px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.84) 0%, rgba(248,251,255,0.95) 58%, rgba(255,249,232,0.78) 100%);
+      box-shadow: 0 24px 56px rgba(20, 31, 58, 0.08);
+    }
+    /* 角标 */
+    .placeholder::before {
+      content: attr(data-label);
+      position: absolute;
+      top: 1.35rem; left: 2rem;
+      background: transparent;
+      padding: 0;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 500;
+    }
+    .placeholder::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      background:
+        linear-gradient(90deg, rgba(51,108,255,0.08), transparent 24%, transparent 76%, rgba(255,216,77,0.08)),
+        linear-gradient(rgba(217,225,238,0.5) 1px, transparent 1px) 0 0 / 100% 100%;
+      opacity: 0.45;
+      mask: linear-gradient(#000, transparent 86%);
+    }
+
+    .placeholder__head {
+      max-width: 580px;
+      margin-bottom: 3rem;
+    }
+    .placeholder__head h3 {
+      font-family: var(--font-serif-cn);
+      font-weight: 500;
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      line-height: 1.25;
+      margin-bottom: 1rem;
+    }
+    .placeholder__head p {
+      color: var(--ink-muted);
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+
+    /* 预览栅格 — 列出即将收录的内容,以 ghost box 展示 */
+    .preview-grid {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      grid-auto-rows: minmax(104px, auto);
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+      position: relative;
+    }
+    .preview-grid::before {
+      content: '';
+      position: absolute;
+      left: 8%;
+      right: 8%;
+      top: 34%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(51,108,255,0.24), rgba(255,216,77,0.28), transparent);
+      pointer-events: none;
+    }
+    .preview-box {
+      border: 1px solid rgba(186, 198, 218, 0.78);
+      background: rgba(255, 255, 255, 0.92);
+      padding: 1.2rem;
+      min-height: 128px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+      border-radius: 24px;
+      box-shadow: 0 12px 30px rgba(20, 31, 58, 0.06);
+      overflow: hidden;
+      transform: translate(var(--shift-x, 0px), var(--shift-y, 0px));
+      animation: nodeFloat 8s ease-in-out infinite;
+    }
+    .preview-box::after {
+      content: '';
+      position: absolute;
+      right: -14%;
+      bottom: -32%;
+      width: 120px;
+      height: 120px;
+      background: radial-gradient(circle, rgba(51,108,255,0.16) 0%, rgba(255,216,77,0.14) 42%, transparent 70%);
+      pointer-events: none;
+    }
+    .preview-box:hover {
+      border-color: var(--accent);
+      transform: translate(var(--shift-x, 0px), calc(var(--shift-y, 0px) - 6px));
+      box-shadow: 0 22px 42px rgba(20, 31, 58, 0.12);
+    }
+    .preview-box__label {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+    }
+    .preview-box__title {
+      font-family: var(--font-serif-cn);
+      font-weight: 500;
+      font-size: 1.05rem;
+      color: var(--ink);
+      line-height: 1.3;
+    }
+    .preview-box__desc {
+      font-size: 0.78rem;
+      color: var(--ink-muted);
+      line-height: 1.5;
+      margin-top: 0.4rem;
+    }
+    .preview-box:nth-child(1) { grid-column: 1 / span 3; grid-row: 1; --shift-y: 14px; }
+    .preview-box:nth-child(2) { grid-column: 4 / span 3; grid-row: 1; --shift-y: 0px; }
+    .preview-box:nth-child(3) { grid-column: 7 / span 3; grid-row: 1; --shift-y: 18px; }
+    .preview-box:nth-child(4) { grid-column: 10 / span 3; grid-row: 1; --shift-y: 6px; }
+    .preview-box:nth-child(5) { grid-column: 9 / span 3; grid-row: 2; --shift-y: 8px; }
+    .preview-box:nth-child(6) { grid-column: 2 / span 3; grid-row: 2; --shift-y: -4px; }
+    .preview-box:nth-child(odd) { animation-delay: -1.6s; }
+    .preview-box:nth-child(3n) { animation-delay: -3.2s; }
+    @keyframes nodeFloat {
+      0%, 100% {
+        transform: translate(var(--shift-x, 0px), var(--shift-y, 0px));
+      }
+      50% {
+        transform: translate(var(--shift-x, 0px), calc(var(--shift-y, 0px) - 7px));
+      }
+    }
+
+    .placeholder__meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--rule);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      color: var(--ink-muted);
+    }
+    .placeholder__meta strong {
+      color: var(--accent);
+      font-weight: 500;
+    }
+    .placeholder__meta a {
+      color: inherit;
+    }
+
+    /* ============================================================
+       PORTFOLIO — 分板块内容展示
+       ============================================================ */
+    .portfolio-shell {
+      display: grid;
+      gap: 1.25rem;
+      padding: 4rem 2.25rem 2.4rem;
+      border: 1px solid rgba(186, 198, 218, 0.72);
+      border-radius: 34px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.86) 0%, rgba(248,251,255,0.94) 58%, rgba(255,249,232,0.74) 100%);
+      box-shadow: 0 24px 56px rgba(20, 31, 58, 0.08);
+      position: relative;
+      overflow: hidden;
+    }
+    .portfolio-shell::before {
+      content: '§ 02 / Creative Portfolio';
+      position: absolute;
+      top: 1.35rem;
+      left: 2rem;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .portfolio-shell__head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .portfolio-shell__head h3 {
+      font-family: var(--font-serif-cn);
+      font-size: clamp(1.9rem, 3.2vw, 2.8rem);
+      line-height: 1.18;
+      font-weight: 500;
+    }
+    .portfolio-shell__lede {
+      max-width: 760px;
+      color: var(--ink-muted);
+      font-size: 1rem;
+      line-height: 1.82;
+    }
+    .portfolio-shell__canva-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 0 1.2rem;
+      border-radius: 999px;
+      border: 1px solid rgba(17, 24, 39, 0.08);
+      background: linear-gradient(135deg, var(--ink) 0%, #24324E 100%);
+      color: var(--paper-deep);
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      box-shadow: 0 14px 28px rgba(17, 24, 39, 0.12);
+      transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .portfolio-shell__canva-link:hover {
+      transform: translateY(-2px);
+      background: linear-gradient(135deg, var(--accent) 0%, #5A8CFF 100%);
+      box-shadow: 0 18px 32px rgba(51, 108, 255, 0.22);
+    }
+
+    .pf-category { margin-top: 2rem; }
+    .pf-category + .pf-category { margin-top: 3rem; }
+    .pf-category__label {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.2rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid var(--rule);
+    }
+    .pf-boards { display: grid; gap: 1.8rem; }
+
+    .pf-board {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.8rem;
+      padding: 1.8rem;
+      border: 1px solid rgba(186, 198, 218, 0.6);
+      border-radius: 28px;
+      background: rgba(255,255,255,0.92);
+      box-shadow: 0 12px 32px rgba(20, 31, 58, 0.05);
+      transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+      align-items: center;
+    }
+    .pf-board:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 20px 48px rgba(20, 31, 58, 0.09);
+      border-color: rgba(51, 108, 255, 0.22);
+    }
+    .pf-board--reverse .pf-board__content { order: -1; }
+
+    .pf-board__gallery { display: grid; gap: 0.6rem; align-content: start; }
+    .pf-board__gallery img {
+      width: 100%;
+      border-radius: 16px;
+      border: 1px solid rgba(186, 198, 218, 0.38);
+      transition: transform 0.25s ease;
+      cursor: pointer;
+    }
+    .pf-board__gallery img:hover { transform: scale(1.012); }
+    .pf-board__gallery--trio { grid-template-columns: 1fr 1fr; }
+    .pf-board__gallery--trio img:first-child { grid-column: 1 / -1; }
+
+    .pf-board__content {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      padding: 0.2rem 0;
+    }
+    .pf-board__eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .pf-board__title {
+      font-family: var(--font-serif-cn);
+      font-size: clamp(1.35rem, 2.2vw, 1.72rem);
+      font-weight: 500;
+      line-height: 1.22;
+      color: var(--ink);
+    }
+    .pf-board__desc {
+      color: var(--ink-muted);
+      font-size: 0.9rem;
+      line-height: 1.72;
+    }
+    .pf-board__metrics {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .pf-board__metric {
+      flex: 1 1 100px;
+      padding: 0.5rem 0.65rem;
+      border: 1px solid rgba(186, 198, 218, 0.4);
+      border-radius: 12px;
+      background: rgba(248, 251, 255, 0.7);
+    }
+    .pf-board__metric-value {
+      font-family: var(--font-serif-en);
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--accent);
+      line-height: 1.2;
+    }
+    .pf-board__metric-label {
+      font-size: 0.68rem;
+      color: var(--ink-muted);
+      margin-top: 0.08rem;
+    }
+    .pf-board__section-label {
+      font-family: var(--font-mono);
+      font-size: 0.56rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      margin-top: 0.15rem;
+    }
+    .pf-board__tools { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+    .pf-board__tool {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.22rem 0.55rem;
+      border-radius: 999px;
+      background: rgba(51, 108, 255, 0.08);
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.05em;
+      color: var(--accent-deep);
+    }
+    .pf-board__highlights { list-style: none; display: grid; gap: 0.35rem; }
+    .pf-board__highlights li {
+      position: relative;
+      padding-left: 0.9rem;
+      color: var(--ink);
+      line-height: 1.55;
+      font-size: 0.84rem;
+    }
+    .pf-board__highlights li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.62em;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: rgba(51,108,255,0.42);
+    }
+
+    .pf-lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background: rgba(17, 24, 39, 0.85);
+      backdrop-filter: blur(12px);
+      cursor: zoom-out;
+    }
+    .pf-lightbox.is-open { display: flex; }
+    .pf-lightbox img {
+      max-width: 92vw;
+      max-height: 92vh;
+      object-fit: contain;
+      border-radius: 16px;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+    }
+
+    @media (max-width: 860px) {
+      .pf-board {
+        grid-template-columns: 1fr;
+      }
+      .pf-board--reverse .pf-board__content { order: 0; }
+      .pf-board__gallery--trio {
+        grid-template-columns: 1fr;
+      }
+      .pf-board__gallery--trio img:first-child { grid-column: auto; }
+    }
+
+        /* ============================================================
+       CONTACT / FOOTER — § 04
+       ============================================================ */
+    .footer {
+      padding: 6rem var(--pad-h) 3rem;
+      max-width: var(--max-w);
+      margin: 0 auto;
+      border-top: 1px solid var(--ink);
+      position: relative;
+      z-index: 1;
+    }
+    .footer__top {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 4rem;
+    }
+    @media (max-width: 720px) {
+      .footer__top { grid-template-columns: 1fr; gap: 2rem; }
+
+      .placeholder {
+        padding: 4.5rem 1.3rem 2rem;
+      }
+
+      .preview-grid {
+        grid-template-columns: 1fr;
+        grid-auto-rows: auto;
+      }
+
+      .preview-grid::before {
+        display: none;
+      }
+
+      .preview-box,
+      .preview-box:hover {
+        grid-column: auto !important;
+        grid-row: auto !important;
+        --shift-y: 0px;
+        transform: none;
+        animation: none;
+      }
+
+      .portfolio-shell {
+        padding: 4.5rem 1.3rem 2rem;
+      }
+
+      .portfolio-shell::before {
+        left: 1.3rem;
+      }
+
+      .portfolio-shell__head {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+
+
+      .contact-row {
+        grid-template-columns: 1fr;
+        gap: 0.4rem;
+      }
+    }
+
+    .footer__quote {
+      font-family: var(--font-serif-cn);
+      font-weight: 300;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      line-height: 1.3;
+      letter-spacing: -0.01em;
+      max-width: 520px;
+    }
+    .footer__quote em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .footer__contacts {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+    .contact-row {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      align-items: baseline;
+      gap: 1rem;
+      padding: 1rem 1.1rem;
+      border: 1px solid rgba(186, 198, 218, 0.72);
+      border-radius: 22px;
+      background: rgba(255,255,255,0.78);
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .contact-row:hover {
+      border-color: rgba(51,108,255,0.28);
+      transform: translateY(-2px);
+      box-shadow: 0 14px 34px rgba(20, 31, 58, 0.08);
+    }
+    .contact-row__label {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+    }
+    .contact-row__value {
+      font-family: var(--font-mono);
+      font-size: 0.92rem;
+      color: var(--ink);
+      word-break: break-word;
+    }
+    .contact-row a.contact-row__value:hover {
+      color: var(--accent);
+    }
+
+    .footer__bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 2rem;
+      border-top: 1px solid var(--rule);
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .footer__bottom em {
+      color: var(--accent);
+      font-style: normal;
+    }
+
+    /* ============================================================
+       SCROLL REVEAL — 章节进入视窗时淡入
+       ============================================================ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.9s ease-out, transform 0.9s ease-out;
+    }
+    .reveal.in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ============================================================
+       REDUCED MOTION — 尊重系统设置
+       ============================================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      body::after {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ============================================================
+       固定顶栏 — 滚出 boot 后显现
+       ============================================================ -->
+  <header class="topbar" id="topbar">
+    <div class="topbar__left">
+      <span class="topbar__name">冯漪轩</span>
+      <span class="topbar__sig">Mario</span>
+    </div>
+    <nav class="topbar__nav">
+      <a href="#experience">§ 01 Experience</a>
+      <a href="#portfolio">§ 02 Portfolio</a>
+      <a href="#ailab">§ 03 AI Lab</a>
+      <a href="#contact">§ 04 Contact</a>
+    </nav>
+  </header>
+
+  <!-- ============================================================
+       BOOT — 杂志封面 + 目录
+       ============================================================ -->
+  <section class="boot">
+    <!-- 顶部 meta 行:杂志刊号 + 版本 + 日期 -->
+    <div class="boot__meta">
+      <span>Mario.Portfolio — Issue 01 / Winter 2026<span class="cursor"></span></span>
+      <span>成都 · Chengdu</span>
+    </div>
+
+    <!-- 左侧主栏 -->
+    <div class="boot__main">
+      <div class="kicker">
+        <span class="kicker__rule"></span>
+        <span class="kicker__label">An AI-Native Portfolio</span>
+      </div>
+
+      <!-- 名字:每个汉字独立入场 -->
+      <h1 class="boot__name">
+        <span class="ch">冯</span><span class="ch">漪</span><span class="ch">轩</span>
+      </h1>
+      <span class="boot__sig">Mario</span>
+
+      <!-- 引子:定位 + 一句话 -->
+      <div class="boot__lede">
+        <p class="boot__lede__role">
+          <em>AI 产品经理</em> · <em>新媒体运营</em> · <em>AI 创意策划</em>
+        </p>
+        <p class="boot__lede__desc">
+          你可以喊我 Mario～我喜欢摄影、网球，也喜欢把内容策划、产品思维和 AIGC 工作流放在一张画布里做事。多数时候，我既是项目里的策划者，也是跨团队协作里把想法往前推的人
+        </p>
+      </div>
+
+      <!-- CTA -->
+      <div class="boot__cta">
+        <a href="#hub" class="btn btn--primary">
+          开始阅读 <span class="btn__arrow">↓</span>
+        </a>
+        <a href="#experience" class="btn btn--ghost">
+          直接看工作经历
+        </a>
+      </div>
+    </div>
+
+    <!-- 右侧目录(杂志 TOC 式) -->
+    <aside class="boot__toc">
+      <div class="toc-wrap">
+        <div class="toc-wrap__title">
+          <span>Table of Contents</span>
+          <span>pp. 01 — 04</span>
+        </div>
+
+        <a href="#experience" class="toc-item" data-status="live">
+          <span class="toc-item__num">§ 01</span>
+          <span class="toc-item__title">
+            工作经历
+            <small>Experience — 字节 / 蔚来 / RW</small>
+          </span>
+          <span class="toc-item__badge">Live</span>
+        </a>
+
+        <a href="#portfolio" class="toc-item" data-status="live">
+          <span class="toc-item__num">§ 02</span>
+          <span class="toc-item__title">
+            作品集
+            <small>Portfolio — Node Canvas Preview</small>
+          </span>
+          <span class="toc-item__badge">Preview</span>
+        </a>
+
+        <a href="#ailab" class="toc-item" data-status="live">
+          <span class="toc-item__num">§ 03</span>
+          <span class="toc-item__title">
+            AI Lab
+            <small>Skills & Workflows — Preview</small>
+          </span>
+          <span class="toc-item__badge">Preview</span>
+        </a>
+
+        <a href="#contact" class="toc-item" data-status="live">
+          <span class="toc-item__num">§ 04</span>
+          <span class="toc-item__title">
+            联系
+            <small>Contact — Mail / Tel / Social</small>
+          </span>
+          <span class="toc-item__badge">Live</span>
+        </a>
+      </div>
+    </aside>
+  </section>
+
+  <!-- ============================================================
+       HUB — 对话式入口 "你想先读哪一章?"
+       ============================================================ -->
+  <section class="hub" id="hub">
+    <div class="hub__head reveal">
+      <div class="kicker">
+        <span class="kicker__rule"></span>
+        <span class="kicker__label">Conversation Starter</span>
+      </div>
+      <h2 class="hub__title">
+        你想先读<br/>
+        <em>哪一章</em>?
+      </h2>
+      <p class="hub__sub">
+        这里不是一页按时间往下滚的简历，而是一张可以快速判断我怎么思考、怎么做内容、怎么和 AI 协同的个人画布。你可以从最关心的那一章开始看
+      </p>
+    </div>
+
+    <div class="hub__grid reveal">
+      <a href="#experience" class="hub-card" data-status="live">
+        <div class="hub-card__num">
+          <span>§ 01</span>
+          <span class="status">Live</span>
+        </div>
+        <h3 class="hub-card__title">工作经历</h3>
+        <p class="hub-card__desc">
+          字节抖音品牌增长（GMV +65%）、蔚来 C 端体验、RW 社区 0-1 起号，五段经历的连续叙事
+        </p>
+        <span class="hub-card__arrow">Read → </span>
+      </a>
+
+      <a href="#portfolio" class="hub-card" data-status="live">
+        <div class="hub-card__num">
+          <span>§ 02</span>
+          <span class="status">Preview</span>
+        </div>
+        <h3 class="hub-card__title">作品集</h3>
+        <p class="hub-card__desc">
+          AIGC 视觉、商业摄影、品牌短片、音频作品会以节点方式铺开，每个节点都能往下接 Prompt、过程和成片
+        </p>
+        <span class="hub-card__arrow">Preview → </span>
+      </a>
+
+      <a href="#ailab" class="hub-card" data-status="live">
+        <div class="hub-card__num">
+          <span>§ 03</span>
+          <span class="status">Preview</span>
+        </div>
+        <h3 class="hub-card__title">AI Lab</h3>
+        <p class="hub-card__desc">
+          我在搭的 skills、prompts 和 workflows 会放在这里，重点不是工具名，而是它们怎么真正接进我的工作方式
+        </p>
+        <span class="hub-card__arrow">Preview → </span>
+      </a>
+
+      <a href="#contact" class="hub-card" data-status="live">
+        <div class="hub-card__num">
+          <span>§ 04</span>
+          <span class="status">Live</span>
+        </div>
+        <h3 class="hub-card__title">联系</h3>
+        <p class="hub-card__desc">
+          邮箱、电话、GitHub、小红书、抖音——所有能找到 Mario 的地方
+        </p>
+        <span class="hub-card__arrow">Contact → </span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       § 01 EXPERIENCE — 工作经历专题
+       ============================================================ -->
+  <section class="section" id="experience">
+    <div class="section__head reveal">
+      <div class="kicker">
+        <span class="kicker__rule"></span>
+        <span class="kicker__label">§ 01 / Experience</span>
+      </div>
+      <h2 class="section__title">这几年，<br/>我一直在把内容做成体验</h2>
+      <p class="section__lede">
+        从<em>四川广播电视台</em>的活动传播，到<em>字节抖音</em>的品牌增长、<em>蔚来</em>的用户体验，再到<em>RW 数字游民社区</em>的多平台内容矩阵，我做的看起来是不同岗位，本质上其实是同一件事：理解用户、组织内容、拉通协作，然后把结果做出来
+      </p>
+    </div>
+
+    <!-- ============ 2025 · 字节跳动 (最新,高亮) ============ -->
+    <article class="entry reveal">
+      <div class="entry__year">
+        2025
+        <span class="entry__year__suffix">Mar — Jun</span>
+      </div>
+      <div class="entry__body">
+        <span class="entry__tag entry__tag--current">Most Recent · 核心经历</span>
+        <h3 class="entry__role">品牌商家增长运营</h3>
+        <div class="entry__company">
+          字节跳动 · 抖音
+        </div>
+
+        <p class="entry__lede">
+          核心负责品牌商家<em>内容运营</em>、<em>活动增长</em>、<em>品牌声量提升</em>的全链路，搭建品牌化运营体系，驱动品牌 GMV 与用户心智渗透
+        </p>
+
+        <!-- Pullquote 数据 -->
+        <div class="pullquote">
+          <div class="pullquote__item">
+            <div class="pullquote__value">+65%</div>
+            <div class="pullquote__label">GMV 环比增长</div>
+          </div>
+          <div class="pullquote__item">
+            <div class="pullquote__value">+40%</div>
+            <div class="pullquote__label">头腰部复投率</div>
+          </div>
+          <div class="pullquote__item">
+            <div class="pullquote__value">+70%</div>
+            <div class="pullquote__label">门店品牌搜索量</div>
+          </div>
+          <div class="pullquote__item">
+            <div class="pullquote__value">+28%</div>
+            <div class="pullquote__label">货盘商品转化率</div>
+          </div>
+        </div>
+
+        <ol class="bullets">
+          <li>围绕平台商家生命周期设计品牌化激励玩法(任务打卡 / 流量补贴 / 转化提成),按头/腰/尾部量级制定差异化激励政策</li>
+          <li>独立操盘商家大促品牌专场、直播品牌化落地全流程——从内容策划、脚本撰写到场景搭建、流程控场,推动头部商户直播 GMV 从 2k-5k 到均值 8w(峰值 20w+)</li>
+          <li>基于数据搭建品牌标签体系,通过 A/B 测试优化品牌内容与投放策略,产出《周末逛吃会》等高转化品牌短视频</li>
+          <li>使用 AI 工具快速产出高点击率视觉素材,辅助 UGC/PGC 视频内容,推进达人 / 商家端的营销策略落地</li>
+        </ol>
+
+        <div class="chips">
+          <span class="chip">抖音电商</span>
+          <span class="chip">品牌分层</span>
+          <span class="chip">直播操盘</span>
+          <span class="chip">A/B Testing</span>
+          <span class="chip">AIGC 素材</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============ 2025 · RW 数字游民社区 ============ -->
+    <article class="entry reveal">
+      <div class="entry__year">
+        2025
+        <span class="entry__year__suffix">Sep — Now</span>
+      </div>
+      <div class="entry__body">
+        <span class="entry__tag">Current · 并行中</span>
+        <h3 class="entry__role">新媒体运营 · 产品方向</h3>
+        <div class="entry__company">
+          RW 数字游民社区
+        </div>
+
+        <p class="entry__lede">
+          负责社区小红书矩阵从 <em>0 到 1 搭建</em>、KOS/KOC 生态运营、内容全链路策划与商业化落地，搭建「内容筛选 → 内容共创 → 投放优化 → 转化提效」的全流程运营体系
+        </p>
+
+        <div class="pullquote">
+          <div class="pullquote__item">
+            <div class="pullquote__value">3.4w→5w</div>
+            <div class="pullquote__label">粉丝量增长</div>
+          </div>
+          <div class="pullquote__item">
+            <div class="pullquote__value">0→1</div>
+            <div class="pullquote__label">完整经营闭环</div>
+          </div>
+          <div class="pullquote__item">
+            <div class="pullquote__value">∞</div>
+            <div class="pullquote__label">多语言 GEO 脚本</div>
+          </div>
+        </div>
+
+        <ol class="bullets">
+          <li>负责 RW 实验室小红书 / 公众号 / 官网的整体内容策划与日常运营,联动线下活动 BD(赣州数字游民大会、巴厘岛心跳社圣诞夜、鹿鸣社区快闪共居)</li>
+          <li>协同 UI / 前端 / 后端搭建「社媒 → 落地页 → 活动」完整体验路径,拓展海外旅居博主合作(如 Rachel Off Duty)</li>
+          <li>通过 Google Trends、Exploding Topics 结合 AI 批量生成 GEO 多语言脚本,提升网站内容在 AI 工具内的被检索次数</li>
+          <li>通过 A/B 测试优化内容结构、信息层级与用户路径,沉淀适配数字游民生态的完整经营闭环</li>
+        </ol>
+
+        <div class="chips">
+          <span class="chip">小红书矩阵</span>
+          <span class="chip">公众号</span>
+          <span class="chip">KOS/KOC</span>
+          <span class="chip">GEO 内容</span>
+          <span class="chip">海外合作</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============ 2024 · 蔚来汽车 ============ -->
+    <article class="entry reveal">
+      <div class="entry__year">
+        2024
+        <span class="entry__year__suffix">Jun — Sep · 实习</span>
+      </div>
+      <div class="entry__body">
+        <span class="entry__tag">C 端用户体验</span>
+        <h3 class="entry__role">品牌用户体验运营</h3>
+        <div class="entry__company">
+          蔚来汽车 · 用户体验与服务
+        </div>
+
+        <p class="entry__lede">
+          负责区域品牌<em>线下活动</em>、<em>用户体验优化</em>、<em>品牌运营标准化</em>，提升品牌线下触点体验与用户忠诚度，完成数据看板与活动复盘闭环
+        </p>
+
+        <div class="pullquote">
+          <div class="pullquote__item">
+            <div class="pullquote__value">30+</div>
+            <div class="pullquote__label">协同门店</div>
+          </div>
+          <div class="pullquote__item">
+            <div class="pullquote__value">90%+</div>
+            <div class="pullquote__label">常规问题解决率</div>
+          </div>
+          <div class="pullquote__item">
+            <div class="pullquote__value">100+</div>
+            <div class="pullquote__label">可视化内容产出</div>
+          </div>
+        </div>
+
+        <ol class="bullets">
+          <li>作为区域中台协同 30+ 门店推进日常运营,制定门店 SOP 流程,解决超过 90% 的常规问题</li>
+          <li>参与门店与大型活动用户体验优化,设计门店标准知识卡片、品控红黑榜,建立 UC/MEET/NPE 区域数据看板</li>
+          <li>参与蔚来川藏线用户大会,策划品牌社群打卡点,优化用户参与路径,实现激励效果量化追踪</li>
+        </ol>
+
+        <div class="chips">
+          <span class="chip">SOP 标准化</span>
+          <span class="chip">数据看板</span>
+          <span class="chip">线下活动</span>
+          <span class="chip">跨团队协作</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============ 2024 · 腾讯创造营 ============ -->
+    <article class="entry reveal">
+      <div class="entry__year">
+        2024
+        <span class="entry__year__suffix">Jun — Jul · 项目</span>
+      </div>
+      <div class="entry__body">
+        <span class="entry__tag">产品能力养成</span>
+        <h3 class="entry__role">创造营项目成员</h3>
+        <div class="entry__company">
+          腾讯 · 未来产品经理创造营
+        </div>
+
+        <p class="entry__lede">
+          参与腾讯未来产品经理创造营，学习<em>产品方法论</em>、<em>原型设计</em>与 <em>AI 工作流搭建</em>，完成从 0-1 的产品方案交付并获得腾讯初级产品经理证书
+        </p>
+
+        <ol class="bullets">
+          <li>系统学习产品策划、原型设计、功能架构,掌握 Figma、Axure 等产品设计软件</li>
+          <li>搭建 ComfyUI 电商场景工作流,使用 Suno、扣子、即梦等 AI 工具完成端到端产品原型</li>
+          <li>使用 AI 高效生成风格化视觉物料,沉淀可复用的 Prompt 模板与工作流</li>
+        </ol>
+
+        <div class="chips">
+          <span class="chip">Figma</span>
+          <span class="chip">Axure</span>
+          <span class="chip">ComfyUI</span>
+          <span class="chip">扣子</span>
+          <span class="chip">产品原型</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============ 2019 · 四川广播电视台 ============ -->
+    <article class="entry reveal">
+      <div class="entry__year">
+        2019
+        <span class="entry__year__suffix">Mar — Apr · 实习</span>
+      </div>
+      <div class="entry__body">
+        <span class="entry__tag">起点 · 内容生产底子</span>
+        <h3 class="entry__role">媒体运营助理</h3>
+        <div class="entry__company">
+          四川广播电视台
+        </div>
+
+        <p class="entry__lede">
+          参与城市级大型活动“绿满蓉城·天府绿道国际踏青大会”的创作者激励与新媒体传播，优化内容选题与分发策略
+        </p>
+
+        <div class="pullquote">
+          <div class="pullquote__item">
+            <div class="pullquote__value">10w+</div>
+            <div class="pullquote__label">多平台分发曝光</div>
+          </div>
+          <div class="pullquote__item">
+            <div class="pullquote__value">+15%</div>
+            <div class="pullquote__label">用户互动率</div>
+          </div>
+        </div>
+
+        <ol class="bullets">
+          <li>结合活动热点优化选题,设计活动推文 + 短视频脚本,多平台分发累计曝光 10w+</li>
+          <li>根据热点响应快速跟进活动传播动态,调整传播方向,提升内容传播效率</li>
+        </ol>
+      </div>
+    </article>
+
+    <!-- Education Footnote -->
+    <div class="footnote reveal">
+      <div class="footnote__title">§ 01.a / Education — 底色</div>
+      <div class="footnote__grid">
+        <div class="footnote__item">
+          <h4>博洛尼亚大学</h4>
+          <div class="meta">2023.09 — 2025.01 · 表演科学与多媒体(研修)</div>
+          <p>
+            参与国际项目 "lo sono Cultura 224",聚焦「数字媒体与内容创新」,研究 AIGC 在文化品牌传播中的应用,输出《内容国际化宣推策略草案》。意大利语 CILS-B1
+          </p>
+        </div>
+        <div class="footnote__item">
+          <h4>四川大学</h4>
+          <div class="meta">2018.09 — 2022.06 · 音乐(本科) · GPA 3.5/4.0 · 年级前 5%</div>
+          <p>
+            策划"川大新年音乐会"、"凤鸣川大"等校园活动,单场参与 5000+ 人。连续两年川大奖学金、优秀学生干部,2022 国民音乐教育大会"万叶杯"论文三等奖
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       § 02 PORTFOLIO — 创意作品集
+       ============================================================ -->
+  <section class="section" id="portfolio">
+    <div class="portfolio-shell reveal">
+      <div class="portfolio-shell__head">
+        <div>
+          <h3>创意作品集</h3>
+        </div>
+        <a class="portfolio-shell__canva-link" href="https://canva.link/x22snc2sbb5vpwj" target="_blank" rel="noreferrer">
+          查看 Canva 原版
+        </a>
+      </div>
+      <p class="portfolio-shell__lede">
+        作品集涵盖抖音、小红书、公众号三大平台运营实操，产品原型设计，以及 ComfyUI / Lovart / 即梦 / 可灵四大 AIGC 工具落地成果。每个板块都包含真实数据、工具方法和产出物
+      </p>
+
+      <!-- ─── Category 01: 平台运营经验 ─── -->
+      <div class="pf-category">
+        <div class="pf-category__label">01 / Platform Experience · 平台运营经验</div>
+        <div class="pf-boards">
+
+          <!-- 抖音来客 -->
+          <div class="pf-board">
+            <div class="pf-board__gallery">
+              <img src="/portfolio-pages/page-04.jpg" alt="抖音来客商家活动策划" loading="lazy" />
+            </div>
+            <div class="pf-board__content">
+              <span class="pf-board__eyebrow">字节跳动 · 抖音来客</span>
+              <h4 class="pf-board__title">商家活动策划与 GMV 增长</h4>
+              <p class="pf-board__desc">
+                结合平台行运策略推出商家活动，策划搭建宣传视频，把控主题内容与视觉效果，赋能商家视频发文与直播搭建，推动商家 GMV 增长和用户留存
+              </p>
+              <div class="pf-board__metrics">
+                <div class="pf-board__metric">
+                  <div class="pf-board__metric-value">+65%</div>
+                  <div class="pf-board__metric-label">GMV 增长</div>
+                </div>
+                <div class="pf-board__metric">
+                  <div class="pf-board__metric-value">+40%</div>
+                  <div class="pf-board__metric-label">用户留存提升</div>
+                </div>
+              </div>
+              <span class="pf-board__section-label">Tools</span>
+              <div class="pf-board__tools">
+                <span class="pf-board__tool">抖音来客</span>
+                <span class="pf-board__tool">剪映</span>
+                <span class="pf-board__tool">直播搭建</span>
+              </div>
+              <span class="pf-board__section-label">Highlights</span>
+              <ul class="pf-board__highlights">
+                <li>结合平台行运策略，策划商家活动与宣传视频</li>
+                <li>主题内容与视觉效果把控，赋能商家视频发文</li>
+                <li>联动品牌内容与平台玩法，搭建直播间</li>
+                <li>推动商家 GMV 增长 65%，用户留存提升 40%</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 小红书 -->
+          <div class="pf-board pf-board--reverse">
+            <div class="pf-board__gallery pf-board__gallery--trio">
+              <img src="/portfolio-pages/page-05.jpg" alt="小红书账号运营与内容矩阵" loading="lazy" />
+              <img src="/portfolio-pages/page-06.jpg" alt="小红书数据看板与流量分析" loading="lazy" />
+              <img src="/portfolio-pages/page-07.jpg" alt="小红书 LiFE 系列内容设计" loading="lazy" />
+            </div>
+            <div class="pf-board__content">
+              <span class="pf-board__eyebrow">RW 数字游民社区 · 小红书</span>
+              <h4 class="pf-board__title">小红书内容矩阵与数据运营</h4>
+              <p class="pf-board__desc">
+                小红书账号运营（自然流）：搭建账号内容体系与视觉风格，根据产品特征设计视觉内容，提升账号话题丰富度，搭建账号矩阵。根据账号后台流量分布与爆款内容做选题优化，搭建数据看板复盘互动率、涨粉转化率等
+              </p>
+              <div class="pf-board__metrics">
+                <div class="pf-board__metric">
+                  <div class="pf-board__metric-value">3.4-5w</div>
+                  <div class="pf-board__metric-label">账号涨粉</div>
+                </div>
+                <div class="pf-board__metric">
+                  <div class="pf-board__metric-value">+42%</div>
+                  <div class="pf-board__metric-label">笔记私信数</div>
+                </div>
+              </div>
+              <span class="pf-board__section-label">Tools</span>
+              <div class="pf-board__tools">
+                <span class="pf-board__tool">小红书</span>
+                <span class="pf-board__tool">Canva</span>
+                <span class="pf-board__tool">千瓜数据</span>
+              </div>
+              <span class="pf-board__section-label">Highlights</span>
+              <ul class="pf-board__highlights">
+                <li>自然流运营，搭建账号内容体系与视觉风格，提升话题丰富度</li>
+                <li>根据账号后台流量分布与爆款内容做选题优化</li>
+                <li>搭建数据看板，复盘互动率、涨粉转化率、活跃热力图</li>
+                <li>运营 LiFE 系列内容，搭建账号矩阵，涨粉 3.4-5w</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 公众号 -->
+          <div class="pf-board">
+            <div class="pf-board__gallery">
+              <img src="/portfolio-pages/page-08.jpg" alt="公众号内容体系与活动传播" loading="lazy" />
+              <img src="/portfolio-pages/page-09.jpg" alt="公众号共创文档与社区协作" loading="lazy" />
+            </div>
+            <div class="pf-board__content">
+              <span class="pf-board__eyebrow">RW 实验室 · 微信公众号</span>
+              <h4 class="pf-board__title">公众号内容体系与媒介传播</h4>
+              <p class="pf-board__desc">
+                搭建账号内容体系，账号定位与风格拓展。内容策划×视觉设计一体化，优化账号内容，与线下活动结合，同步宣发扩大媒介传播声量。编辑共创文档，搭建社区信息收集与协作流程
+              </p>
+              <div class="pf-board__metrics">
+                <div class="pf-board__metric">
+                  <div class="pf-board__metric-value">+70%</div>
+                  <div class="pf-board__metric-label">传播声量</div>
+                </div>
+                <div class="pf-board__metric">
+                  <div class="pf-board__metric-value">+28%</div>
+                  <div class="pf-board__metric-label">阅读转化</div>
+                </div>
+              </div>
+              <span class="pf-board__section-label">Tools</span>
+              <div class="pf-board__tools">
+                <span class="pf-board__tool">公众号</span>
+                <span class="pf-board__tool">共创文档</span>
+                <span class="pf-board__tool">飞书</span>
+              </div>
+              <span class="pf-board__section-label">Highlights</span>
+              <ul class="pf-board__highlights">
+                <li>搭建账号内容体系，账号定位与风格拓展</li>
+                <li>内容策划×视觉设计一体化，优化账号内容</li>
+                <li>与线下活动结合，同步宣发扩大媒介传播声量</li>
+                <li>编辑共创文档，搭建社区信息收集与协作流程</li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ─── Category 02: 产品原型设计 ─── -->
+      <div class="pf-category">
+        <div class="pf-category__label">02 / Product Design · 产品原型设计</div>
+        <div class="pf-boards">
+
+          <!-- 产品原型 -->
+          <div class="pf-board pf-board--reverse">
+            <div class="pf-board__gallery">
+              <img src="/portfolio-pages/page-10.jpg" alt="AI 语音搜索产品原型与思维导图" loading="lazy" />
+              <img src="/portfolio-pages/page-11.jpg" alt="产品 UI 界面设计与信息架构" loading="lazy" />
+            </div>
+            <div class="pf-board__content">
+              <span class="pf-board__eyebrow">腾讯产品经理创造营</span>
+              <h4 class="pf-board__title">从 0→1 产品方案与功能原型</h4>
+              <p class="pf-board__desc">
+                腾讯产品经理创造营结课作业：从 0 到 1 完成产品方案设计与功能原型搭建。使用产品思维导图梳理信息架构与用户路径，实现 AI 语音搜索功能原型，完成交互流程与界面设计
+              </p>
+              <div class="pf-board__metrics">
+                <div class="pf-board__metric">
+                  <div class="pf-board__metric-value">0→1</div>
+                  <div class="pf-board__metric-label">产品方案</div>
+                </div>
+                <div class="pf-board__metric">
+                  <div class="pf-board__metric-value">2</div>
+                  <div class="pf-board__metric-label">完整原型页</div>
+                </div>
+              </div>
+              <span class="pf-board__section-label">Tools</span>
+              <div class="pf-board__tools">
+                <span class="pf-board__tool">Figma</span>
+                <span class="pf-board__tool">墨刀</span>
+                <span class="pf-board__tool">黑刀</span>
+                <span class="pf-board__tool">XMind</span>
+              </div>
+              <span class="pf-board__section-label">Highlights</span>
+              <ul class="pf-board__highlights">
+                <li>从 0 到 1 完成产品方案设计与功能原型搭建</li>
+                <li>使用产品思维导图梳理信息架构与用户路径</li>
+                <li>输出相关内容与视觉，形成功能演示与效果呈现</li>
+                <li>优化功能细节与界面布局，确保产品体验闭环</li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ─── Category 03: AIGC 工具经验 ─── -->
+      <div class="pf-category">
+        <div class="pf-category__label">03 / AIGC Tools · AI 创意工具经验</div>
+        <div class="pf-boards">
+
+          <!-- ComfyUI -->
+          <div class="pf-board">
+            <div class="pf-board__gallery">
+              <img src="/portfolio-pages/page-12.jpg" alt="ComfyUI 产品视觉生成作品" loading="lazy" />
+              <img src="/portfolio-pages/page-13.jpg" alt="ComfyUI Prompt 结构解析" loading="lazy" />
+            </div>
+            <div class="pf-board__content">
+              <span class="pf-board__eyebrow">AIGC · ComfyUI</span>
+              <h4 class="pf-board__title">产品视觉生成与 Prompt 工程</h4>
+              <p class="pf-board__desc">
+                使用 ComfyUI 构建 AI 视觉闭环：探索提示词结构，构图策略与色彩调性控制。构建 Prompt 数据库，实现批量生成到精修的完整流程，形成从创意到落地的 AI 视觉闭环能力
+              </p>
+              <div class="pf-board__metrics">
+                <div class="pf-board__metric">
+                  <div class="pf-board__metric-value">11维</div>
+                  <div class="pf-board__metric-label">Prompt 结构</div>
+                </div>
+                <div class="pf-board__metric">
+                  <div class="pf-board__metric-value">4+</div>
+                  <div class="pf-board__metric-label">品牌视觉系列</div>
+                </div>
+              </div>
+              <span class="pf-board__section-label">Tools</span>
+              <div class="pf-board__tools">
+                <span class="pf-board__tool">ComfyUI</span>
+                <span class="pf-board__tool">Stable Diffusion</span>
+                <span class="pf-board__tool">Photoshop</span>
+              </div>
+              <span class="pf-board__section-label">Highlights</span>
+              <ul class="pf-board__highlights">
+                <li>产品视觉生成：宣传海报、视频素材、商业产品图（星巴克 / ZARA 等）</li>
+                <li>探索提示词结构，构图策略与色彩调性控制</li>
+                <li>构建 Prompt 数据库，批量生成到精修流程</li>
+                <li>MARIO 品牌系列：含完整 Prompt 结构解析表（11 个维度）</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Lovart -->
+          <div class="pf-board pf-board--reverse">
+            <div class="pf-board__gallery">
+              <img src="/portfolio-pages/page-14.jpg" alt="Lovart 饮品系列广告设计" loading="lazy" />
+              <img src="/portfolio-pages/page-15.jpg" alt="Lovart 分镜头广告视频制作" loading="lazy" />
+            </div>
+            <div class="pf-board__content">
+              <span class="pf-board__eyebrow">AIGC · Lovart</span>
+              <h4 class="pf-board__title">饮品系列广告设计与分镜视频</h4>
+              <p class="pf-board__desc">
+                使用 Lovart 完成 9 款饮品系列广告设计，从文本拆解与节奏/情绪设计到分镜头塑造与场景氛围控制，多模型搭配高效产出广告视频，画面节奏对齐分镜与产品图
+              </p>
+              <div class="pf-board__metrics">
+                <div class="pf-board__metric">
+                  <div class="pf-board__metric-value">9</div>
+                  <div class="pf-board__metric-label">款口味广告</div>
+                </div>
+                <div class="pf-board__metric">
+                  <div class="pf-board__metric-value">8K HDR</div>
+                  <div class="pf-board__metric-label">画质标准</div>
+                </div>
+              </div>
+              <span class="pf-board__section-label">Tools</span>
+              <div class="pf-board__tools">
+                <span class="pf-board__tool">Lovart</span>
+                <span class="pf-board__tool">Storyboard</span>
+                <span class="pf-board__tool">Premiere</span>
+              </div>
+              <span class="pf-board__section-label">Highlights</span>
+              <ul class="pf-board__highlights">
+                <li>完成 9 款饮品广告（Green Grape / Coconut Sea Salt / Peach Haze 等）</li>
+                <li>文本拆解与节奏、情绪设计，分镜头塑造与场景氛围控制</li>
+                <li>多模型搭配，高效产出广告视频</li>
+                <li>8K HDR 画质，画面节奏对齐分镜与产品图</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 即梦 AI -->
+          <div class="pf-board">
+            <div class="pf-board__gallery">
+              <img src="/portfolio-pages/page-16.jpg" alt="即梦 AI 服装模特生图" loading="lazy" />
+            </div>
+            <div class="pf-board__content">
+              <span class="pf-board__eyebrow">AIGC · 即梦 AI</span>
+              <h4 class="pf-board__title">服装换装与模特生图</h4>
+              <p class="pf-board__desc">
+                上传服装图以及模特素材并进行 AI 生图，通过提示词控制生成正面、侧面、正侧面、背面四个角度的全身照，保证生图质量和产品还原精准度
+              </p>
+              <div class="pf-board__metrics">
+                <div class="pf-board__metric">
+                  <div class="pf-board__metric-value">4</div>
+                  <div class="pf-board__metric-label">角度输出</div>
+                </div>
+                <div class="pf-board__metric">
+                  <div class="pf-board__metric-value">高精度</div>
+                  <div class="pf-board__metric-label">产品还原</div>
+                </div>
+              </div>
+              <span class="pf-board__section-label">Tools</span>
+              <div class="pf-board__tools">
+                <span class="pf-board__tool">即梦 AI</span>
+                <span class="pf-board__tool">Photoshop</span>
+              </div>
+              <span class="pf-board__section-label">Highlights</span>
+              <ul class="pf-board__highlights">
+                <li>上传服装图以及模特素材并进行 AI 生图</li>
+                <li>生成正面、侧面、正侧面、背面四个角度全身照</li>
+                <li>通过提示词保证生图质量和产品还原精准度</li>
+                <li>适用于品牌视觉、电商种草和虚拟拍摄场景</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 可灵 AI -->
+          <div class="pf-board pf-board--reverse">
+            <div class="pf-board__gallery">
+              <img src="/portfolio-pages/page-17.jpg" alt="可灵 AI 电影感视频画面生成" loading="lazy" />
+            </div>
+            <div class="pf-board__content">
+              <span class="pf-board__eyebrow">AIGC · 可灵 AI</span>
+              <h4 class="pf-board__title">电影感视频画面生成</h4>
+              <p class="pf-board__desc">
+                使用可灵 AI 生成 4K 电影画质视频画面，通过详细的镜头语言和文字描述控制叙事调性和画面审美。草原清晨场景：电影级广角构图，细节极致丰富，色彩自然而富有层次
+              </p>
+              <div class="pf-board__metrics">
+                <div class="pf-board__metric">
+                  <div class="pf-board__metric-value">4K</div>
+                  <div class="pf-board__metric-label">电影画质</div>
+                </div>
+                <div class="pf-board__metric">
+                  <div class="pf-board__metric-value">广角</div>
+                  <div class="pf-board__metric-label">构图类型</div>
+                </div>
+              </div>
+              <span class="pf-board__section-label">Tools</span>
+              <div class="pf-board__tools">
+                <span class="pf-board__tool">可灵 AI</span>
+                <span class="pf-board__tool">Runway</span>
+                <span class="pf-board__tool">剪映</span>
+              </div>
+              <span class="pf-board__section-label">Highlights</span>
+              <ul class="pf-board__highlights">
+                <li>电影级广角构图，光影对比戏剧化但不刺眼</li>
+                <li>细节极致丰富：画面带有细腻的电影胶片颗粒质感</li>
+                <li>色彩自然而富有层次，整体气氛宏大、静谧</li>
+                <li>完整 Prompt 示例展示镜头语言到画面审美的控制能力</li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="placeholder__meta">
+        <span>Structure: <strong>3 Categories · 8 Projects</strong></span>
+        <span>Assets: <strong>Portfolio images · Canva source</strong></span>
+        <span><a href="https://canva.link/x22snc2sbb5vpwj" target="_blank" rel="noreferrer">Canva source ↗</a></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Image lightbox -->
+  <div class="pf-lightbox" id="pfLightbox">
+    <img id="pfLightboxImg" src="" alt="放大预览" />
+  </div>
+
+    <!-- ============================================================
+       § 03 AI LAB — 占位章节
+       ============================================================ -->
+  <section class="section" id="ailab">
+    <div class="placeholder reveal" data-label="§ 03 / Workflow Preview">
+      <div class="placeholder__head">
+        <h3>AI Lab · 可复用的 Skills & Workflows</h3>
+        <p>
+          这里会放我正在搭的 AI <em>skills</em>、<em>prompts</em> 和 <em>workflows</em>。我更想让面试官看到的不是“我会哪些工具”，而是“我怎么把它们组织成一套真的能工作的流程”
+        </p>
+      </div>
+
+      <div class="preview-grid">
+        <div class="preview-box">
+          <span class="preview-box__label">Skill · 01</span>
+          <div>
+            <div class="preview-box__title">品牌小红书爆款生成器</div>
+            <div class="preview-box__desc">从 brief 到封面 + 文案 + tag 的完整 agent</div>
+          </div>
+        </div>
+        <div class="preview-box">
+          <span class="preview-box__label">Skill · 02</span>
+          <div>
+            <div class="preview-box__title">ComfyUI 产品图工作流</div>
+            <div class="preview-box__desc">电商场景 Prompt 模板库 + .json 源文件</div>
+          </div>
+        </div>
+        <div class="preview-box">
+          <span class="preview-box__label">Skill · 03</span>
+          <div>
+            <div class="preview-box__title">直播话术 PRD 生成</div>
+            <div class="preview-box__desc">基于字节实战的品牌直播策划自动化</div>
+          </div>
+        </div>
+        <div class="preview-box">
+          <span class="preview-box__label">Skill · 04</span>
+          <div>
+            <div class="preview-box__title">GEO 多语言脚本</div>
+            <div class="preview-box__desc">RW 社区实战沉淀的海外内容生产链</div>
+          </div>
+        </div>
+        <a class="preview-box" href="https://github.com/Mario-8888" target="_blank" rel="noreferrer">
+          <span class="preview-box__label">GitHub · Live</span>
+          <div>
+            <div class="preview-box__title">Mario-8888 / Repository Base</div>
+            <div class="preview-box__desc">先把公开仓库和结构立起来，后面会持续放进自建 skill、workflow demo 与 source files</div>
+          </div>
+        </a>
+        <div class="preview-box" style="border-style: dashed; opacity: 0.7;">
+          <span class="preview-box__label">···</span>
+          <div>
+            <div class="preview-box__title">更多持续建设</div>
+            <div class="preview-box__desc">每周迭代、每月新增</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="placeholder__meta">
+        <span>Structure: <strong>Skill · Prompt · Workflow</strong></span>
+        <span>Output: <strong>README · Demo · Source files</strong></span>
+        <span>Status: <strong>Ongoing build</strong></span>
+        <span><a href="https://github.com/Mario-8888" target="_blank" rel="noreferrer">GitHub profile ↗</a></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       § 04 CONTACT / FOOTER
+       ============================================================ -->
+  <footer class="footer" id="contact">
+    <div class="footer__top reveal">
+      <div class="footer__quote">
+        如果你在找一个既能做<em>内容</em>，<br/>
+        又能拉通产品和 AI 工作流的人，<br/>
+        欢迎来找我聊聊
+      </div>
+
+      <div class="footer__contacts">
+        <a class="contact-row" href="mailto:fengyixuan2022a@163.com">
+          <span class="contact-row__label">Mail</span>
+          <span class="contact-row__value">fengyixuan2022a@163.com</span>
+        </a>
+        <a class="contact-row" href="tel:15009479687">
+          <span class="contact-row__label">Tel · WeChat</span>
+          <span class="contact-row__value">+86 150 0947 9687</span>
+        </a>
+        <div class="contact-row">
+          <span class="contact-row__label">小红书</span>
+          <span class="contact-row__value">FFFXuan8888</span>
+        </div>
+        <div class="contact-row">
+          <span class="contact-row__label">抖音</span>
+          <span class="contact-row__value">Mario_1888</span>
+        </div>
+        <a class="contact-row" href="https://github.com/Mario-8888" target="_blank" rel="noreferrer">
+          <span class="contact-row__label">GitHub</span>
+          <span class="contact-row__value">github.com/Mario-8888</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <span>© 2026 冯漪轩 · Mario · All rights reserved</span>
+      <span>Issue 01 · Winter 2026 · <em>Made with vibe</em></span>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       JAVASCRIPT
+       1) 滚出 boot 后显示 topbar
+       2) IntersectionObserver 驱动 reveal 动画
+       3) 作品集弹窗的无限画布交互
+       ============================================================ -->
+  <script>
+    (function () {
+      // 1. Topbar 显隐 —— 滚过 boot 区域(约 80vh)后显现
+      const topbar = document.getElementById('topbar');
+      const bootHeight = () => window.innerHeight * 0.8;
+
+      const updateTopbar = () => {
+        if (window.scrollY > bootHeight()) {
+          topbar.classList.add('visible');
+        } else {
+          topbar.classList.remove('visible');
+        }
+      };
+      window.addEventListener('scroll', updateTopbar, { passive: true });
+      updateTopbar();
+
+      // 2. Reveal 动画 —— 元素进入视窗时淡入
+      // 用 IntersectionObserver 比滚动事件监听性能更好
+      const reveals = document.querySelectorAll('.reveal');
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('in');
+              observer.unobserve(entry.target); // 一次触发,之后不再观察
+            }
+          });
+        },
+        {
+          threshold: 0.12,      // 元素露出 12% 就触发
+          rootMargin: '0px 0px -50px 0px' // 提前 50px 触发,避免边缘闪烁
+        }
+      );
+      reveals.forEach((el) => observer.observe(el));
+
+      // 3. Portfolio image lightbox
+      var pfLightbox = document.getElementById('pfLightbox');
+      if (pfLightbox) {
+        var pfLightboxImg = document.getElementById('pfLightboxImg');
+        document.querySelectorAll('.pf-board__gallery img').forEach(function(img) {
+          img.addEventListener('click', function() {
+            pfLightboxImg.src = img.src;
+            pfLightboxImg.alt = img.alt;
+            pfLightbox.classList.add('is-open');
+            document.body.style.overflow = 'hidden';
+          });
+        });
+        pfLightbox.addEventListener('click', function() {
+          pfLightbox.classList.remove('is-open');
+          document.body.style.overflow = '';
+        });
+        window.addEventListener('keydown', function(event) {
+          if (event.key === 'Escape' && pfLightbox.classList.contains('is-open')) {
+            pfLightbox.classList.remove('is-open');
+            document.body.style.overflow = '';
+          }
+        });
+      }
+        })();
+  </script>
+
+</body>
+</html>
