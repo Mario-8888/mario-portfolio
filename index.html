@@ -1057,7 +1057,7 @@
     }
 
     /* ============================================================
-       PORTFOLIO — 分板块内容展示
+       PORTFOLIO — 无限画布节点浏览
        ============================================================ */
     .portfolio-shell {
       display: grid;
@@ -1065,232 +1065,285 @@
       padding: 4rem 2.25rem 2.4rem;
       border: 1px solid rgba(186, 198, 218, 0.72);
       border-radius: 34px;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.86) 0%, rgba(248,251,255,0.94) 58%, rgba(255,249,232,0.74) 100%);
+      background: linear-gradient(180deg, rgba(255,255,255,0.86) 0%, rgba(248,251,255,0.94) 58%, rgba(255,249,232,0.74) 100%);
       box-shadow: 0 24px 56px rgba(20, 31, 58, 0.08);
       position: relative;
       overflow: hidden;
     }
     .portfolio-shell::before {
-      content: '§ 02 / Creative Portfolio';
-      position: absolute;
-      top: 1.35rem;
-      left: 2rem;
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--accent);
+      content: '§ 02 / Infinite Portfolio Canvas';
+      position: absolute; top: 1.35rem; left: 2rem;
+      font-family: var(--font-mono); font-size: 0.7rem;
+      letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent);
     }
     .portfolio-shell__head {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      gap: 1rem;
-      margin-top: 1rem;
+      display: flex; justify-content: space-between; align-items: flex-end;
+      gap: 1rem; margin-top: 1rem;
     }
     .portfolio-shell__head h3 {
       font-family: var(--font-serif-cn);
       font-size: clamp(1.9rem, 3.2vw, 2.8rem);
-      line-height: 1.18;
-      font-weight: 500;
+      line-height: 1.18; font-weight: 500;
     }
     .portfolio-shell__lede {
-      max-width: 760px;
-      color: var(--ink-muted);
-      font-size: 1rem;
-      line-height: 1.82;
+      max-width: 760px; color: var(--ink-muted);
+      font-size: 1rem; line-height: 1.82;
     }
-    .portfolio-shell__canva-link {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 46px;
-      padding: 0 1.2rem;
-      border-radius: 999px;
-      border: 1px solid rgba(17, 24, 39, 0.08);
+    .portfolio-launch {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-height: 46px; padding: 0 1.2rem; border-radius: 999px;
+      border: 1px solid rgba(17,24,39,0.08);
       background: linear-gradient(135deg, var(--ink) 0%, #24324E 100%);
-      color: var(--paper-deep);
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      text-decoration: none;
-      cursor: pointer;
-      box-shadow: 0 14px 28px rgba(17, 24, 39, 0.12);
+      color: var(--paper-deep); font-family: var(--font-mono);
+      font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase;
+      cursor: pointer; box-shadow: 0 14px 28px rgba(17,24,39,0.12);
       transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
-      white-space: nowrap;
-      flex-shrink: 0;
     }
-    .portfolio-shell__canva-link:hover {
+    .portfolio-launch:hover {
       transform: translateY(-2px);
       background: linear-gradient(135deg, var(--accent) 0%, #5A8CFF 100%);
-      box-shadow: 0 18px 32px rgba(51, 108, 255, 0.22);
+      box-shadow: 0 18px 32px rgba(51,108,255,0.22);
     }
+    .portfolio-window {
+      border: 1px solid rgba(186,198,218,0.8); border-radius: 30px;
+      overflow: hidden; background: rgba(255,255,255,0.74);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 24px 48px rgba(20,31,58,0.06);
+    }
+    .window-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; padding: 0.95rem 1.15rem;
+      border-bottom: 1px solid rgba(186,198,218,0.72); background: rgba(255,255,255,0.78);
+    }
+    .window-bar__dots { display: inline-flex; gap: 0.42rem; }
+    .window-bar__dots span { width: 10px; height: 10px; border-radius: 50%; background: rgba(17,24,39,0.18); }
+    .window-bar__dots span:nth-child(1) { background: #FF5F57; }
+    .window-bar__dots span:nth-child(2) { background: #FEBC2E; }
+    .window-bar__dots span:nth-child(3) { background: #28C840; }
+    .window-bar__title {
+      font-family: var(--font-mono); font-size: 0.7rem;
+      letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-muted);
+    }
+    .portfolio-preview-canvas {
+      position: relative; min-height: 470px; padding: 2rem;
+      background:
+        radial-gradient(circle at top left, rgba(51,108,255,0.08), transparent 32%),
+        radial-gradient(circle at bottom right, rgba(255,216,77,0.14), transparent 36%),
+        linear-gradient(180deg, rgba(255,255,255,0.88) 0%, rgba(247,250,255,0.92) 100%);
+    }
+    .portfolio-preview-canvas::before {
+      content: ''; position: absolute; inset: 0;
+      background-image: radial-gradient(circle at 1px 1px, rgba(132,145,175,0.24) 1px, transparent 0);
+      background-size: 28px 28px; opacity: 0.45; pointer-events: none;
+    }
+    .portfolio-preview-edges {
+      position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none;
+    }
+    .portfolio-preview-node {
+      position: absolute; display: grid; gap: 0.8rem; width: 224px;
+      padding: 0.95rem; border: 1px solid rgba(186,198,218,0.78);
+      border-radius: 24px; background: rgba(255,255,255,0.94);
+      box-shadow: 0 16px 36px rgba(20,31,58,0.08); cursor: pointer; text-align: left;
+      transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease; z-index: 1;
+    }
+    .portfolio-preview-node:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 22px 42px rgba(20,31,58,0.14);
+      border-color: rgba(51,108,255,0.34);
+    }
+    .portfolio-preview-node img {
+      width: 100%; aspect-ratio: 1.3/1; object-fit: cover;
+      border-radius: 18px; border: 1px solid rgba(186,198,218,0.45);
+    }
+    .portfolio-preview-node strong,
+    .portfolio-preview-node span,
+    .portfolio-preview-node em { display: block; }
+    .portfolio-preview-node span {
+      font-family: var(--font-mono); font-size: 0.62rem;
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent);
+    }
+    .portfolio-preview-node strong {
+      font-family: var(--font-serif-cn); font-size: 1.02rem;
+      font-weight: 500; line-height: 1.3; color: var(--ink);
+    }
+    .portfolio-preview-node em {
+      font-style: normal; color: var(--ink-muted); line-height: 1.55; font-size: 0.82rem;
+    }
+    .portfolio-preview-node--atlas { width: 280px; left: 3%; top: 8%; }
+    .portfolio-preview-node--atlas img { aspect-ratio: 1.45/1; }
+    .portfolio-preview-node--douyin { left: 30%; top: 6%; }
+    .portfolio-preview-node--xiaohongshu { left: 56%; top: 10%; }
+    .portfolio-preview-node--comfyui { left: 12%; top: 54%; }
+    .portfolio-preview-node--lovart { left: 40%; top: 52%; }
+    .portfolio-preview-node--keling { left: 68%; top: 50%; }
 
-    .pf-category { margin-top: 2rem; }
-    .pf-category + .pf-category { margin-top: 3rem; }
-    .pf-category__label {
-      font-family: var(--font-mono);
-      font-size: 0.68rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 1.2rem;
-      padding-bottom: 0.6rem;
-      border-bottom: 1px solid var(--rule);
+    /* Modal */
+    .portfolio-modal { position: fixed; inset: 0; z-index: 90; display: none; }
+    .portfolio-modal.is-open { display: block; }
+    .portfolio-modal__scrim {
+      position: absolute; inset: 0;
+      background: rgba(17,24,39,0.3); backdrop-filter: blur(10px);
     }
-    .pf-boards { display: grid; gap: 1.8rem; }
+    .portfolio-modal__window {
+      position: absolute; inset: 24px; display: grid; grid-template-rows: auto 1fr;
+      border-radius: 34px; overflow: hidden;
+      background: rgba(255,255,255,0.88); box-shadow: 0 34px 90px rgba(10,18,40,0.22);
+    }
+    .portfolio-modal__bar {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; padding: 1rem 1.25rem;
+      border-bottom: 1px solid rgba(186,198,218,0.72); background: rgba(255,255,255,0.86);
+    }
+    .portfolio-modal__meta {
+      display: flex; align-items: center; gap: 0.8rem;
+      font-family: var(--font-mono); font-size: 0.72rem;
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-muted);
+    }
+    .portfolio-modal__actions { display: inline-flex; gap: 0.6rem; align-items: center; }
+    .portfolio-modal__actions a,
+    .portfolio-modal__actions button {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-height: 38px; padding: 0 0.95rem; border-radius: 999px;
+      border: 1px solid rgba(186,198,218,0.72); background: rgba(255,255,255,0.88);
+      color: var(--ink); font-family: var(--font-mono); font-size: 0.66rem;
+      letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer;
+    }
+    .portfolio-modal__actions button:hover,
+    .portfolio-modal__actions a:hover { border-color: rgba(51,108,255,0.32); color: var(--accent); }
+    .portfolio-modal__body {
+      display: grid; grid-template-columns: minmax(0,1fr) 340px; min-height: 0;
+    }
+    /* Stage */
+    .portfolio-stage {
+      position: relative; overflow: hidden; cursor: grab; touch-action: none;
+      background:
+        radial-gradient(circle at top left, rgba(51,108,255,0.08), transparent 34%),
+        radial-gradient(circle at bottom right, rgba(255,216,77,0.12), transparent 38%),
+        linear-gradient(180deg, rgba(250,252,255,0.98) 0%, rgba(245,248,252,0.96) 100%);
+    }
+    .portfolio-stage.is-panning { cursor: grabbing; }
+    .portfolio-stage::before {
+      content: ''; position: absolute; inset: 0;
+      background-image: radial-gradient(circle at 1px 1px, rgba(132,145,175,0.22) 1px, transparent 0);
+      background-size: 28px 28px; opacity: 0.46; pointer-events: none;
+    }
+    .portfolio-world, .portfolio-edges {
+      position: absolute; left: 0; top: 0; width: 2200px; height: 1500px;
+      transform-origin: 0 0; will-change: transform;
+    }
+    .portfolio-edges { overflow: visible; pointer-events: none; }
+    .portfolio-node {
+      position: absolute; display: grid; gap: 0.85rem;
+      width: var(--node-width, 260px); padding: 1rem; border-radius: 26px;
+      border: 1px solid rgba(186,198,218,0.8); background: rgba(255,255,255,0.96);
+      box-shadow: 0 18px 40px rgba(20,31,58,0.09); cursor: pointer; text-align: left;
+      transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+    }
+    .portfolio-node:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 26px 54px rgba(20,31,58,0.16);
+      border-color: rgba(51,108,255,0.3);
+    }
+    .portfolio-node.is-active {
+      border-color: rgba(51,108,255,0.42);
+      box-shadow: 0 0 0 4px rgba(51,108,255,0.12), 0 26px 54px rgba(20,31,58,0.16);
+    }
+    .portfolio-node__eyebrow {
+      font-family: var(--font-mono); font-size: 0.62rem;
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent);
+    }
+    .portfolio-node__thumb {
+      width: 100%; aspect-ratio: 1.26/1; object-fit: cover;
+      border-radius: 18px; border: 1px solid rgba(186,198,218,0.48);
+    }
+    .portfolio-node__title {
+      font-family: var(--font-serif-cn); font-size: 1.04rem;
+      font-weight: 500; line-height: 1.28; color: var(--ink);
+    }
+    .portfolio-node__desc { color: var(--ink-muted); line-height: 1.6; font-size: 0.84rem; }
+    .portfolio-node__tag {
+      display: inline-flex; align-items: center; min-height: 28px;
+      padding: 0 0.7rem; border-radius: 999px;
+      background: rgba(51,108,255,0.1); color: var(--accent);
+      font-family: var(--font-mono); font-size: 0.62rem;
+      letter-spacing: 0.12em; text-transform: uppercase; width: fit-content;
+    }
+    .portfolio-node--hero {
+      --node-width: 320px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(248,251,255,0.95) 100%);
+    }
+    .portfolio-node--hero .portfolio-node__thumb { aspect-ratio: 1.5/1; }
+    /* Inspector */
+    .portfolio-inspector {
+      border-left: 1px solid rgba(186,198,218,0.72);
+      background: rgba(252,253,255,0.92);
+      padding: 1.4rem 1.3rem 1.6rem; overflow: auto;
+    }
+    .portfolio-inspector__eyebrow {
+      display: block; font-family: var(--font-mono); font-size: 0.66rem;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 0.7rem;
+    }
+    .portfolio-inspector h4 {
+      font-family: var(--font-serif-cn); font-size: 1.62rem;
+      line-height: 1.18; font-weight: 500; margin-bottom: 0.7rem; color: var(--ink);
+    }
+    .portfolio-inspector p { color: var(--ink-muted); line-height: 1.78; font-size: 0.95rem; }
+    .portfolio-inspector__image {
+      width: 100%; aspect-ratio: 1.1/1; object-fit: cover;
+      border-radius: 22px; border: 1px solid rgba(186,198,218,0.54);
+      margin: 1rem 0; background: rgba(244,247,251,0.8);
+    }
+    .portfolio-inspector__metrics {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0.55rem; margin: 1rem 0 0.5rem;
+    }
+    .portfolio-inspector__metric {
+      padding: 0.6rem 0.7rem; border: 1px solid rgba(186,198,218,0.45);
+      border-radius: 14px; background: rgba(248,251,255,0.7);
+    }
+    .portfolio-inspector__metric-value {
+      font-family: var(--font-serif-en); font-size: 1.3rem;
+      font-weight: 600; color: var(--accent); line-height: 1.2;
+    }
+    .portfolio-inspector__metric-label { font-size: 0.73rem; color: var(--ink-muted); margin-top: 0.12rem; }
+    .portfolio-inspector__section-label {
+      display: block; font-family: var(--font-mono); font-size: 0.6rem;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--ink-soft); margin: 1rem 0 0.4rem;
+    }
+    .portfolio-inspector__tools { display: flex; flex-wrap: wrap; gap: 0.35rem; margin: 0.3rem 0 0.5rem; }
+    .portfolio-inspector__tool {
+      display: inline-flex; align-items: center; padding: 0.25rem 0.6rem;
+      border-radius: 999px; background: rgba(51,108,255,0.08);
+      font-family: var(--font-mono); font-size: 0.62rem;
+      letter-spacing: 0.06em; color: var(--accent-deep);
+    }
+    .portfolio-inspector__list { display: grid; gap: 0.68rem; margin: 1rem 0 0; }
+    .portfolio-inspector__list li {
+      list-style: none; position: relative; padding-left: 1rem;
+      color: var(--ink); line-height: 1.66; font-size: 0.9rem;
+    }
+    .portfolio-inspector__list li::before {
+      content: ''; position: absolute; left: 0; top: 0.7em;
+      width: 6px; height: 6px; border-radius: 50%; background: rgba(51,108,255,0.48);
+    }
+    .portfolio-inspector__actions {
+      display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 1.2rem;
+    }
+    .portfolio-inspector__actions a {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-height: 38px; padding: 0 0.95rem; border-radius: 999px;
+      border: 1px solid rgba(186,198,218,0.72); background: rgba(255,255,255,0.92);
+      color: var(--ink); font-family: var(--font-mono); font-size: 0.66rem;
+      letter-spacing: 0.14em; text-transform: uppercase;
+    }
+    .portfolio-inspector__actions a:hover { color: var(--accent); border-color: rgba(51,108,255,0.32); }
 
-    .pf-board {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.8rem;
-      padding: 1.8rem;
-      border: 1px solid rgba(186, 198, 218, 0.6);
-      border-radius: 28px;
-      background: rgba(255,255,255,0.92);
-      box-shadow: 0 12px 32px rgba(20, 31, 58, 0.05);
-      transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
-      align-items: center;
-    }
-    .pf-board:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 20px 48px rgba(20, 31, 58, 0.09);
-      border-color: rgba(51, 108, 255, 0.22);
-    }
-    .pf-board--reverse .pf-board__content { order: -1; }
-
-    .pf-board__gallery { display: grid; gap: 0.6rem; align-content: start; }
-    .pf-board__gallery img {
-      width: 100%;
-      border-radius: 16px;
-      border: 1px solid rgba(186, 198, 218, 0.38);
-      transition: transform 0.25s ease;
-      cursor: pointer;
-    }
-    .pf-board__gallery img:hover { transform: scale(1.012); }
-    .pf-board__gallery--trio { grid-template-columns: 1fr 1fr; }
-    .pf-board__gallery--trio img:first-child { grid-column: 1 / -1; }
-
-    .pf-board__content {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-      padding: 0.2rem 0;
-    }
-    .pf-board__eyebrow {
-      font-family: var(--font-mono);
-      font-size: 0.62rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--accent);
-    }
-    .pf-board__title {
-      font-family: var(--font-serif-cn);
-      font-size: clamp(1.35rem, 2.2vw, 1.72rem);
-      font-weight: 500;
-      line-height: 1.22;
-      color: var(--ink);
-    }
-    .pf-board__desc {
-      color: var(--ink-muted);
-      font-size: 0.9rem;
-      line-height: 1.72;
-    }
-    .pf-board__metrics {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-    .pf-board__metric {
-      flex: 1 1 100px;
-      padding: 0.5rem 0.65rem;
-      border: 1px solid rgba(186, 198, 218, 0.4);
-      border-radius: 12px;
-      background: rgba(248, 251, 255, 0.7);
-    }
-    .pf-board__metric-value {
-      font-family: var(--font-serif-en);
-      font-size: 1.15rem;
-      font-weight: 600;
-      color: var(--accent);
-      line-height: 1.2;
-    }
-    .pf-board__metric-label {
-      font-size: 0.68rem;
-      color: var(--ink-muted);
-      margin-top: 0.08rem;
-    }
-    .pf-board__section-label {
-      font-family: var(--font-mono);
-      font-size: 0.56rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--ink-soft);
-      margin-top: 0.15rem;
-    }
-    .pf-board__tools { display: flex; flex-wrap: wrap; gap: 0.3rem; }
-    .pf-board__tool {
-      display: inline-flex;
-      align-items: center;
-      padding: 0.22rem 0.55rem;
-      border-radius: 999px;
-      background: rgba(51, 108, 255, 0.08);
-      font-family: var(--font-mono);
-      font-size: 0.6rem;
-      letter-spacing: 0.05em;
-      color: var(--accent-deep);
-    }
-    .pf-board__highlights { list-style: none; display: grid; gap: 0.35rem; }
-    .pf-board__highlights li {
-      position: relative;
-      padding-left: 0.9rem;
-      color: var(--ink);
-      line-height: 1.55;
-      font-size: 0.84rem;
-    }
-    .pf-board__highlights li::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0.62em;
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: rgba(51,108,255,0.42);
-    }
-
-    .pf-lightbox {
-      position: fixed;
-      inset: 0;
-      z-index: 100;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
-      background: rgba(17, 24, 39, 0.85);
-      backdrop-filter: blur(12px);
-      cursor: zoom-out;
-    }
-    .pf-lightbox.is-open { display: flex; }
-    .pf-lightbox img {
-      max-width: 92vw;
-      max-height: 92vh;
-      object-fit: contain;
-      border-radius: 16px;
-      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
-    }
-
-    @media (max-width: 860px) {
-      .pf-board {
-        grid-template-columns: 1fr;
-      }
-      .pf-board--reverse .pf-board__content { order: 0; }
-      .pf-board__gallery--trio {
-        grid-template-columns: 1fr;
-      }
-      .pf-board__gallery--trio img:first-child { grid-column: auto; }
+    @media (max-width: 980px) {
+      .portfolio-modal__window { inset: 12px; }
+      .portfolio-modal__bar { flex-direction: column; align-items: flex-start; }
+      .portfolio-modal__body { grid-template-columns: 1fr; grid-template-rows: minmax(0,1fr) auto; }
+      .portfolio-stage { min-height: 52svh; }
+      .portfolio-inspector { border-left: none; border-top: 1px solid rgba(186,198,218,0.72); max-height: 40svh; }
     }
 
         /* ============================================================
@@ -1346,6 +1399,16 @@
       .portfolio-shell__head {
         flex-direction: column;
         align-items: flex-start;
+      }
+
+      .portfolio-preview-canvas {
+        display: grid; gap: 0.9rem; min-height: auto; padding: 1.1rem;
+      }
+      .portfolio-preview-edges { display: none; }
+      .portfolio-preview-node,
+      .portfolio-preview-node:hover {
+        position: relative; left: auto !important; top: auto !important;
+        width: 100%; transform: none;
       }
 
 
@@ -1890,359 +1953,95 @@
   </section>
 
   <!-- ============================================================
-       § 02 PORTFOLIO — 创意作品集
+       § 02 PORTFOLIO — 无限画布节点浏览
        ============================================================ -->
   <section class="section" id="portfolio">
     <div class="portfolio-shell reveal">
       <div class="portfolio-shell__head">
-        <div>
-          <h3>创意作品集</h3>
-        </div>
-        <a class="portfolio-shell__canva-link" href="https://canva.link/x22snc2sbb5vpwj" target="_blank" rel="noreferrer">
-          查看 Canva 原版
-        </a>
+        <div><h3>创意作品集 · 无限画布</h3></div>
+        <button class="portfolio-launch" type="button" data-open-portfolio>打开作品集画布</button>
       </div>
       <p class="portfolio-shell__lede">
-        作品集涵盖抖音、小红书、公众号三大平台运营实操，产品原型设计，以及 ComfyUI / Lovart / 即梦 / 可灵四大 AIGC 工具落地成果。每个板块都包含真实数据、工具方法和产出物
+        作品集涵盖抖音、小红书、公众号三大平台运营实操，产品原型设计，以及 ComfyUI / Lovart / 即梦 / 可灵四大 AIGC 工具落地成果。点击节点或打开画布查看每个项目的完整数据与方法
       </p>
-
-      <!-- ─── Category 01: 平台运营经验 ─── -->
-      <div class="pf-category">
-        <div class="pf-category__label">01 / Platform Experience · 平台运营经验</div>
-        <div class="pf-boards">
-
-          <!-- 抖音来客 -->
-          <div class="pf-board">
-            <div class="pf-board__gallery">
-              <img src="/portfolio-pages/page-04.jpg" alt="抖音来客商家活动策划" loading="lazy" />
-            </div>
-            <div class="pf-board__content">
-              <span class="pf-board__eyebrow">字节跳动 · 抖音来客</span>
-              <h4 class="pf-board__title">商家活动策划与 GMV 增长</h4>
-              <p class="pf-board__desc">
-                结合平台行运策略推出商家活动，策划搭建宣传视频，把控主题内容与视觉效果，赋能商家视频发文与直播搭建，推动商家 GMV 增长和用户留存
-              </p>
-              <div class="pf-board__metrics">
-                <div class="pf-board__metric">
-                  <div class="pf-board__metric-value">+65%</div>
-                  <div class="pf-board__metric-label">GMV 增长</div>
-                </div>
-                <div class="pf-board__metric">
-                  <div class="pf-board__metric-value">+40%</div>
-                  <div class="pf-board__metric-label">用户留存提升</div>
-                </div>
-              </div>
-              <span class="pf-board__section-label">Tools</span>
-              <div class="pf-board__tools">
-                <span class="pf-board__tool">抖音来客</span>
-                <span class="pf-board__tool">剪映</span>
-                <span class="pf-board__tool">直播搭建</span>
-              </div>
-              <span class="pf-board__section-label">Highlights</span>
-              <ul class="pf-board__highlights">
-                <li>结合平台行运策略，策划商家活动与宣传视频</li>
-                <li>主题内容与视觉效果把控，赋能商家视频发文</li>
-                <li>联动品牌内容与平台玩法，搭建直播间</li>
-                <li>推动商家 GMV 增长 65%，用户留存提升 40%</li>
-              </ul>
-            </div>
-          </div>
-
-          <!-- 小红书 -->
-          <div class="pf-board pf-board--reverse">
-            <div class="pf-board__gallery pf-board__gallery--trio">
-              <img src="/portfolio-pages/page-05.jpg" alt="小红书账号运营与内容矩阵" loading="lazy" />
-              <img src="/portfolio-pages/page-06.jpg" alt="小红书数据看板与流量分析" loading="lazy" />
-              <img src="/portfolio-pages/page-07.jpg" alt="小红书 LiFE 系列内容设计" loading="lazy" />
-            </div>
-            <div class="pf-board__content">
-              <span class="pf-board__eyebrow">RW 数字游民社区 · 小红书</span>
-              <h4 class="pf-board__title">小红书内容矩阵与数据运营</h4>
-              <p class="pf-board__desc">
-                小红书账号运营（自然流）：搭建账号内容体系与视觉风格，根据产品特征设计视觉内容，提升账号话题丰富度，搭建账号矩阵。根据账号后台流量分布与爆款内容做选题优化，搭建数据看板复盘互动率、涨粉转化率等
-              </p>
-              <div class="pf-board__metrics">
-                <div class="pf-board__metric">
-                  <div class="pf-board__metric-value">3.4-5w</div>
-                  <div class="pf-board__metric-label">账号涨粉</div>
-                </div>
-                <div class="pf-board__metric">
-                  <div class="pf-board__metric-value">+42%</div>
-                  <div class="pf-board__metric-label">笔记私信数</div>
-                </div>
-              </div>
-              <span class="pf-board__section-label">Tools</span>
-              <div class="pf-board__tools">
-                <span class="pf-board__tool">小红书</span>
-                <span class="pf-board__tool">Canva</span>
-                <span class="pf-board__tool">千瓜数据</span>
-              </div>
-              <span class="pf-board__section-label">Highlights</span>
-              <ul class="pf-board__highlights">
-                <li>自然流运营，搭建账号内容体系与视觉风格，提升话题丰富度</li>
-                <li>根据账号后台流量分布与爆款内容做选题优化</li>
-                <li>搭建数据看板，复盘互动率、涨粉转化率、活跃热力图</li>
-                <li>运营 LiFE 系列内容，搭建账号矩阵，涨粉 3.4-5w</li>
-              </ul>
-            </div>
-          </div>
-
-          <!-- 公众号 -->
-          <div class="pf-board">
-            <div class="pf-board__gallery">
-              <img src="/portfolio-pages/page-08.jpg" alt="公众号内容体系与活动传播" loading="lazy" />
-              <img src="/portfolio-pages/page-09.jpg" alt="公众号共创文档与社区协作" loading="lazy" />
-            </div>
-            <div class="pf-board__content">
-              <span class="pf-board__eyebrow">RW 实验室 · 微信公众号</span>
-              <h4 class="pf-board__title">公众号内容体系与媒介传播</h4>
-              <p class="pf-board__desc">
-                搭建账号内容体系，账号定位与风格拓展。内容策划×视觉设计一体化，优化账号内容，与线下活动结合，同步宣发扩大媒介传播声量。编辑共创文档，搭建社区信息收集与协作流程
-              </p>
-              <div class="pf-board__metrics">
-                <div class="pf-board__metric">
-                  <div class="pf-board__metric-value">+70%</div>
-                  <div class="pf-board__metric-label">传播声量</div>
-                </div>
-                <div class="pf-board__metric">
-                  <div class="pf-board__metric-value">+28%</div>
-                  <div class="pf-board__metric-label">阅读转化</div>
-                </div>
-              </div>
-              <span class="pf-board__section-label">Tools</span>
-              <div class="pf-board__tools">
-                <span class="pf-board__tool">公众号</span>
-                <span class="pf-board__tool">共创文档</span>
-                <span class="pf-board__tool">飞书</span>
-              </div>
-              <span class="pf-board__section-label">Highlights</span>
-              <ul class="pf-board__highlights">
-                <li>搭建账号内容体系，账号定位与风格拓展</li>
-                <li>内容策划×视觉设计一体化，优化账号内容</li>
-                <li>与线下活动结合，同步宣发扩大媒介传播声量</li>
-                <li>编辑共创文档，搭建社区信息收集与协作流程</li>
-              </ul>
-            </div>
-          </div>
-
+      <div class="portfolio-window">
+        <div class="window-bar">
+          <div class="window-bar__dots" aria-hidden="true"><span></span><span></span><span></span></div>
+          <div class="window-bar__title">portfolio.canvas / interactive preview</div>
+        </div>
+        <div class="portfolio-preview-canvas">
+          <svg class="portfolio-preview-edges" viewBox="0 0 1000 470" aria-hidden="true">
+            <path d="M 180 130 C 280 130 310 108 400 108" fill="none" stroke="rgba(51,108,255,0.24)" stroke-width="2"/>
+            <path d="M 520 108 C 600 108 610 125 672 125" fill="none" stroke="rgba(51,108,255,0.2)" stroke-width="2"/>
+            <path d="M 180 190 C 210 260 220 300 240 334" fill="none" stroke="rgba(132,145,175,0.26)" stroke-width="1.6" stroke-dasharray="5 7"/>
+            <path d="M 340 334 C 410 334 440 324 510 324" fill="none" stroke="rgba(51,108,255,0.18)" stroke-width="2"/>
+            <path d="M 620 324 C 690 324 720 315 790 315" fill="none" stroke="rgba(255,216,77,0.28)" stroke-width="2"/>
+          </svg>
+          <button class="portfolio-preview-node portfolio-preview-node--atlas" type="button" data-open-portfolio-node="atlas">
+            <img src="portfolio-pages/page-02.jpg" alt="作品集总览" />
+            <div><span>Portfolio</span><strong>作品集总览</strong><em>4 大模块 · 6+ AIGC 工具 · 完整能力证据链</em></div>
+          </button>
+          <button class="portfolio-preview-node portfolio-preview-node--douyin" type="button" data-open-portfolio-node="douyin">
+            <img src="portfolio-pages/page-04.jpg" alt="抖音平台运营" />
+            <div><span>抖音</span><strong>抖音平台运营</strong><em>GMV +65% · 商家活动策划 · 直播搭建</em></div>
+          </button>
+          <button class="portfolio-preview-node portfolio-preview-node--xiaohongshu" type="button" data-open-portfolio-node="xiaohongshu">
+            <img src="portfolio-pages/page-05.jpg" alt="小红书内容矩阵" />
+            <div><span>小红书</span><strong>小红书内容矩阵</strong><em>涨粉 3.4-5w · 数据看板 · 账号矩阵</em></div>
+          </button>
+          <button class="portfolio-preview-node portfolio-preview-node--comfyui" type="button" data-open-portfolio-node="comfyui">
+            <img src="portfolio-pages/page-12.jpg" alt="ComfyUI 产品视觉" />
+            <div><span>ComfyUI</span><strong>产品视觉生成</strong><em>11 维 Prompt 结构 · 批量生成流程</em></div>
+          </button>
+          <button class="portfolio-preview-node portfolio-preview-node--lovart" type="button" data-open-portfolio-node="lovart">
+            <img src="portfolio-pages/page-14.jpg" alt="Lovart 饮品广告" />
+            <div><span>Lovart</span><strong>饮品广告创意</strong><em>9 款口味 · 8K HDR · 分镜头视频</em></div>
+          </button>
+          <button class="portfolio-preview-node portfolio-preview-node--keling" type="button" data-open-portfolio-node="keling">
+            <img src="portfolio-pages/page-17.jpg" alt="可灵 AI 电影感" />
+            <div><span>可灵 AI</span><strong>电影感视频画面</strong><em>4K 电影画质 · 广角构图 · 叙事控制</em></div>
+          </button>
         </div>
       </div>
-
-      <!-- ─── Category 02: 产品原型设计 ─── -->
-      <div class="pf-category">
-        <div class="pf-category__label">02 / Product Design · 产品原型设计</div>
-        <div class="pf-boards">
-
-          <!-- 产品原型 -->
-          <div class="pf-board pf-board--reverse">
-            <div class="pf-board__gallery">
-              <img src="/portfolio-pages/page-10.jpg" alt="AI 语音搜索产品原型与思维导图" loading="lazy" />
-              <img src="/portfolio-pages/page-11.jpg" alt="产品 UI 界面设计与信息架构" loading="lazy" />
-            </div>
-            <div class="pf-board__content">
-              <span class="pf-board__eyebrow">腾讯产品经理创造营</span>
-              <h4 class="pf-board__title">从 0→1 产品方案与功能原型</h4>
-              <p class="pf-board__desc">
-                腾讯产品经理创造营结课作业：从 0 到 1 完成产品方案设计与功能原型搭建。使用产品思维导图梳理信息架构与用户路径，实现 AI 语音搜索功能原型，完成交互流程与界面设计
-              </p>
-              <div class="pf-board__metrics">
-                <div class="pf-board__metric">
-                  <div class="pf-board__metric-value">0→1</div>
-                  <div class="pf-board__metric-label">产品方案</div>
-                </div>
-                <div class="pf-board__metric">
-                  <div class="pf-board__metric-value">2</div>
-                  <div class="pf-board__metric-label">完整原型页</div>
-                </div>
-              </div>
-              <span class="pf-board__section-label">Tools</span>
-              <div class="pf-board__tools">
-                <span class="pf-board__tool">Figma</span>
-                <span class="pf-board__tool">墨刀</span>
-                <span class="pf-board__tool">黑刀</span>
-                <span class="pf-board__tool">XMind</span>
-              </div>
-              <span class="pf-board__section-label">Highlights</span>
-              <ul class="pf-board__highlights">
-                <li>从 0 到 1 完成产品方案设计与功能原型搭建</li>
-                <li>使用产品思维导图梳理信息架构与用户路径</li>
-                <li>输出相关内容与视觉，形成功能演示与效果呈现</li>
-                <li>优化功能细节与界面布局，确保产品体验闭环</li>
-              </ul>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- ─── Category 03: AIGC 工具经验 ─── -->
-      <div class="pf-category">
-        <div class="pf-category__label">03 / AIGC Tools · AI 创意工具经验</div>
-        <div class="pf-boards">
-
-          <!-- ComfyUI -->
-          <div class="pf-board">
-            <div class="pf-board__gallery">
-              <img src="/portfolio-pages/page-12.jpg" alt="ComfyUI 产品视觉生成作品" loading="lazy" />
-              <img src="/portfolio-pages/page-13.jpg" alt="ComfyUI Prompt 结构解析" loading="lazy" />
-            </div>
-            <div class="pf-board__content">
-              <span class="pf-board__eyebrow">AIGC · ComfyUI</span>
-              <h4 class="pf-board__title">产品视觉生成与 Prompt 工程</h4>
-              <p class="pf-board__desc">
-                使用 ComfyUI 构建 AI 视觉闭环：探索提示词结构，构图策略与色彩调性控制。构建 Prompt 数据库，实现批量生成到精修的完整流程，形成从创意到落地的 AI 视觉闭环能力
-              </p>
-              <div class="pf-board__metrics">
-                <div class="pf-board__metric">
-                  <div class="pf-board__metric-value">11维</div>
-                  <div class="pf-board__metric-label">Prompt 结构</div>
-                </div>
-                <div class="pf-board__metric">
-                  <div class="pf-board__metric-value">4+</div>
-                  <div class="pf-board__metric-label">品牌视觉系列</div>
-                </div>
-              </div>
-              <span class="pf-board__section-label">Tools</span>
-              <div class="pf-board__tools">
-                <span class="pf-board__tool">ComfyUI</span>
-                <span class="pf-board__tool">Stable Diffusion</span>
-                <span class="pf-board__tool">Photoshop</span>
-              </div>
-              <span class="pf-board__section-label">Highlights</span>
-              <ul class="pf-board__highlights">
-                <li>产品视觉生成：宣传海报、视频素材、商业产品图（星巴克 / ZARA 等）</li>
-                <li>探索提示词结构，构图策略与色彩调性控制</li>
-                <li>构建 Prompt 数据库，批量生成到精修流程</li>
-                <li>MARIO 品牌系列：含完整 Prompt 结构解析表（11 个维度）</li>
-              </ul>
-            </div>
-          </div>
-
-          <!-- Lovart -->
-          <div class="pf-board pf-board--reverse">
-            <div class="pf-board__gallery">
-              <img src="/portfolio-pages/page-14.jpg" alt="Lovart 饮品系列广告设计" loading="lazy" />
-              <img src="/portfolio-pages/page-15.jpg" alt="Lovart 分镜头广告视频制作" loading="lazy" />
-            </div>
-            <div class="pf-board__content">
-              <span class="pf-board__eyebrow">AIGC · Lovart</span>
-              <h4 class="pf-board__title">饮品系列广告设计与分镜视频</h4>
-              <p class="pf-board__desc">
-                使用 Lovart 完成 9 款饮品系列广告设计，从文本拆解与节奏/情绪设计到分镜头塑造与场景氛围控制，多模型搭配高效产出广告视频，画面节奏对齐分镜与产品图
-              </p>
-              <div class="pf-board__metrics">
-                <div class="pf-board__metric">
-                  <div class="pf-board__metric-value">9</div>
-                  <div class="pf-board__metric-label">款口味广告</div>
-                </div>
-                <div class="pf-board__metric">
-                  <div class="pf-board__metric-value">8K HDR</div>
-                  <div class="pf-board__metric-label">画质标准</div>
-                </div>
-              </div>
-              <span class="pf-board__section-label">Tools</span>
-              <div class="pf-board__tools">
-                <span class="pf-board__tool">Lovart</span>
-                <span class="pf-board__tool">Storyboard</span>
-                <span class="pf-board__tool">Premiere</span>
-              </div>
-              <span class="pf-board__section-label">Highlights</span>
-              <ul class="pf-board__highlights">
-                <li>完成 9 款饮品广告（Green Grape / Coconut Sea Salt / Peach Haze 等）</li>
-                <li>文本拆解与节奏、情绪设计，分镜头塑造与场景氛围控制</li>
-                <li>多模型搭配，高效产出广告视频</li>
-                <li>8K HDR 画质，画面节奏对齐分镜与产品图</li>
-              </ul>
-            </div>
-          </div>
-
-          <!-- 即梦 AI -->
-          <div class="pf-board">
-            <div class="pf-board__gallery">
-              <img src="/portfolio-pages/page-16.jpg" alt="即梦 AI 服装模特生图" loading="lazy" />
-            </div>
-            <div class="pf-board__content">
-              <span class="pf-board__eyebrow">AIGC · 即梦 AI</span>
-              <h4 class="pf-board__title">服装换装与模特生图</h4>
-              <p class="pf-board__desc">
-                上传服装图以及模特素材并进行 AI 生图，通过提示词控制生成正面、侧面、正侧面、背面四个角度的全身照，保证生图质量和产品还原精准度
-              </p>
-              <div class="pf-board__metrics">
-                <div class="pf-board__metric">
-                  <div class="pf-board__metric-value">4</div>
-                  <div class="pf-board__metric-label">角度输出</div>
-                </div>
-                <div class="pf-board__metric">
-                  <div class="pf-board__metric-value">高精度</div>
-                  <div class="pf-board__metric-label">产品还原</div>
-                </div>
-              </div>
-              <span class="pf-board__section-label">Tools</span>
-              <div class="pf-board__tools">
-                <span class="pf-board__tool">即梦 AI</span>
-                <span class="pf-board__tool">Photoshop</span>
-              </div>
-              <span class="pf-board__section-label">Highlights</span>
-              <ul class="pf-board__highlights">
-                <li>上传服装图以及模特素材并进行 AI 生图</li>
-                <li>生成正面、侧面、正侧面、背面四个角度全身照</li>
-                <li>通过提示词保证生图质量和产品还原精准度</li>
-                <li>适用于品牌视觉、电商种草和虚拟拍摄场景</li>
-              </ul>
-            </div>
-          </div>
-
-          <!-- 可灵 AI -->
-          <div class="pf-board pf-board--reverse">
-            <div class="pf-board__gallery">
-              <img src="/portfolio-pages/page-17.jpg" alt="可灵 AI 电影感视频画面生成" loading="lazy" />
-            </div>
-            <div class="pf-board__content">
-              <span class="pf-board__eyebrow">AIGC · 可灵 AI</span>
-              <h4 class="pf-board__title">电影感视频画面生成</h4>
-              <p class="pf-board__desc">
-                使用可灵 AI 生成 4K 电影画质视频画面，通过详细的镜头语言和文字描述控制叙事调性和画面审美。草原清晨场景：电影级广角构图，细节极致丰富，色彩自然而富有层次
-              </p>
-              <div class="pf-board__metrics">
-                <div class="pf-board__metric">
-                  <div class="pf-board__metric-value">4K</div>
-                  <div class="pf-board__metric-label">电影画质</div>
-                </div>
-                <div class="pf-board__metric">
-                  <div class="pf-board__metric-value">广角</div>
-                  <div class="pf-board__metric-label">构图类型</div>
-                </div>
-              </div>
-              <span class="pf-board__section-label">Tools</span>
-              <div class="pf-board__tools">
-                <span class="pf-board__tool">可灵 AI</span>
-                <span class="pf-board__tool">Runway</span>
-                <span class="pf-board__tool">剪映</span>
-              </div>
-              <span class="pf-board__section-label">Highlights</span>
-              <ul class="pf-board__highlights">
-                <li>电影级广角构图，光影对比戏剧化但不刺眼</li>
-                <li>细节极致丰富：画面带有细腻的电影胶片颗粒质感</li>
-                <li>色彩自然而富有层次，整体气氛宏大、静谧</li>
-                <li>完整 Prompt 示例展示镜头语言到画面审美的控制能力</li>
-              </ul>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
       <div class="placeholder__meta">
-        <span>Structure: <strong>3 Categories · 8 Projects</strong></span>
-        <span>Assets: <strong>Portfolio images · Canva source</strong></span>
+        <span>Mode: <strong>Infinite canvas / node graph</strong></span>
+        <span>Assets: <strong>PDF portfolio · Canva source</strong></span>
         <span><a href="https://canva.link/x22snc2sbb5vpwj" target="_blank" rel="noreferrer">Canva source ↗</a></span>
       </div>
     </div>
   </section>
 
-  <!-- Image lightbox -->
-  <div class="pf-lightbox" id="pfLightbox">
-    <img id="pfLightboxImg" src="" alt="放大预览" />
+  <div class="portfolio-modal" id="portfolioModal" aria-hidden="true">
+    <div class="portfolio-modal__scrim" data-close-portfolio></div>
+    <div class="portfolio-modal__window" role="dialog" aria-modal="true" aria-label="作品集节点画布">
+      <div class="portfolio-modal__bar">
+        <div class="portfolio-modal__meta"><span>mario.canvas</span><span>drag to pan</span><span>wheel to zoom</span></div>
+        <div class="portfolio-modal__actions">
+          <a href="https://canva.link/x22snc2sbb5vpwj" target="_blank" rel="noreferrer">Open Canva</a>
+          <button type="button" data-close-portfolio>Close</button>
+        </div>
+      </div>
+      <div class="portfolio-modal__body">
+        <div class="portfolio-stage" id="portfolioStage">
+          <svg class="portfolio-edges" id="portfolioEdges" aria-hidden="true"></svg>
+          <div class="portfolio-world" id="portfolioWorld"></div>
+        </div>
+        <aside class="portfolio-inspector">
+          <span class="portfolio-inspector__eyebrow">Selected node</span>
+          <h4 id="portfolioInspectorTitle">作品集总览</h4>
+          <p id="portfolioInspectorSummary"></p>
+          <div class="portfolio-inspector__metrics" id="portfolioInspectorMetrics"></div>
+          <img class="portfolio-inspector__image" id="portfolioInspectorImage" src="portfolio-pages/page-02.jpg" alt="预览" />
+          <span class="portfolio-inspector__section-label" id="portfolioToolsLabel">Tools</span>
+          <div class="portfolio-inspector__tools" id="portfolioInspectorTools"></div>
+          <span class="portfolio-inspector__section-label" id="portfolioPointsLabel">Highlights</span>
+          <ul class="portfolio-inspector__list" id="portfolioInspectorList"></ul>
+          <div class="portfolio-inspector__actions">
+            <a id="portfolioInspectorLink" href="https://canva.link/x22snc2sbb5vpwj" target="_blank" rel="noreferrer">Open source</a>
+          </div>
+        </aside>
+      </div>
+    </div>
   </div>
 
     <!-- ============================================================
@@ -2393,29 +2192,220 @@
       );
       reveals.forEach((el) => observer.observe(el));
 
-      // 3. Portfolio image lightbox
-      var pfLightbox = document.getElementById('pfLightbox');
-      if (pfLightbox) {
-        var pfLightboxImg = document.getElementById('pfLightboxImg');
-        document.querySelectorAll('.pf-board__gallery img').forEach(function(img) {
-          img.addEventListener('click', function() {
-            pfLightboxImg.src = img.src;
-            pfLightboxImg.alt = img.alt;
-            pfLightbox.classList.add('is-open');
-            document.body.style.overflow = 'hidden';
-          });
-        });
-        pfLightbox.addEventListener('click', function() {
-          pfLightbox.classList.remove('is-open');
-          document.body.style.overflow = '';
-        });
-        window.addEventListener('keydown', function(event) {
-          if (event.key === 'Escape' && pfLightbox.classList.contains('is-open')) {
-            pfLightbox.classList.remove('is-open');
-            document.body.style.overflow = '';
-          }
-        });
+      // 3. Portfolio — infinite canvas
+      var portfolioModal = document.getElementById('portfolioModal');
+      var portfolioStage = document.getElementById('portfolioStage');
+      var portfolioWorld = document.getElementById('portfolioWorld');
+      var portfolioEdges = document.getElementById('portfolioEdges');
+      if (!portfolioModal || !portfolioStage || !portfolioWorld || !portfolioEdges) return;
+
+      var inspectorTitle = document.getElementById('portfolioInspectorTitle');
+      var inspectorSummary = document.getElementById('portfolioInspectorSummary');
+      var inspectorImage = document.getElementById('portfolioInspectorImage');
+      var inspectorList = document.getElementById('portfolioInspectorList');
+      var inspectorLink = document.getElementById('portfolioInspectorLink');
+
+      var portfolioNodes = [
+        { id:'atlas', className:'portfolio-node--hero', eyebrow:'Portfolio', title:'作品集总览',
+          desc:'新媒体、AIGC内容 & 产品策划作品集，涵盖平台运营、产品原型、AI视觉生成和广告创意四大模块',
+          image:'portfolio-pages/page-02.jpg', tag:'Canvas Entry', x:160, y:170, width:328,
+          metrics:[{value:'4',label:'核心模块'},{value:'6+',label:'AIGC 工具'}], tools:[],
+          points:['围绕 AI 产品经理、新媒体运营、AI 创意策划三个方向组织','从平台实操到 AIGC 工具链，形成完整能力证据闭环','每个节点都包含真实数据、工具方法和落地产出'],
+          link:'https://canva.link/x22snc2sbb5vpwj' },
+        { id:'douyin', eyebrow:'字节跳动 · 抖音来客', title:'商家活动策划与 GMV 增长',
+          desc:'结合平台行运策略推出商家活动，策划搭建宣传视频，把控主题内容与视觉效果，赋能商家视频发文与直播搭建，推动商家 GMV 增长和用户留存',
+          image:'portfolio-pages/page-04.jpg', tag:'Platform · Douyin', x:580, y:100, width:280,
+          metrics:[{value:'+65%',label:'GMV 增长'},{value:'+40%',label:'用户留存提升'}],
+          tools:['抖音来客','剪映','直播搭建'],
+          points:['结合平台行运策略，策划商家活动与宣传视频','主题内容与视觉效果把控，赋能商家视频发文','联动品牌内容与平台玩法，搭建直播间','推动商家 GMV 增长 65%，用户留存提升 40%'],
+          link:'https://canva.link/x22snc2sbb5vpwj' },
+        { id:'xiaohongshu', eyebrow:'RW 数字游民社区 · 小红书', title:'小红书内容矩阵与数据运营',
+          desc:'小红书账号运营（自然流）：搭建账号内容体系与视觉风格，根据产品特征设计视觉内容，搭建账号矩阵。搭建数据看板复盘互动率、涨粉转化率等',
+          image:'portfolio-pages/page-05.jpg', tag:'Platform · RED', x:960, y:80, width:284,
+          metrics:[{value:'3.4-5w',label:'账号涨粉'},{value:'+42%',label:'笔记私信数'}],
+          tools:['小红书','Canva','千瓜数据'],
+          points:['自然流运营，搭建账号内容体系与视觉风格','根据账号后台流量分布与爆款内容做选题优化','搭建数据看板，复盘互动率、涨粉转化率、活跃热力图','运营 LiFE 系列内容，搭建账号矩阵，涨粉 3.4-5w'],
+          link:'https://canva.link/x22snc2sbb5vpwj' },
+        { id:'wechat', eyebrow:'RW 实验室 · 微信公众号', title:'公众号内容体系与媒介传播',
+          desc:'搭建账号内容体系，账号定位与风格拓展。内容策划×视觉设计一体化，与线下活动结合，同步宣发扩大媒介传播声量',
+          image:'portfolio-pages/page-08.jpg', tag:'Platform · WeChat', x:1380, y:120, width:280,
+          metrics:[{value:'+70%',label:'传播声量'},{value:'+28%',label:'阅读转化'}],
+          tools:['公众号','共创文档','飞书'],
+          points:['搭建账号内容体系，账号定位与风格拓展','内容策划×视觉设计一体化，优化账号内容','与线下活动结合，同步宣发扩大媒介传播声量','编辑共创文档，搭建社区信息收集与协作流程'],
+          link:'https://canva.link/x22snc2sbb5vpwj' },
+        { id:'prototype', eyebrow:'腾讯产品经理创造营', title:'从 0→1 产品方案与功能原型',
+          desc:'腾讯产品经理创造营结课作业：从 0 到 1 完成产品方案设计与功能原型搭建，实现 AI 语音搜索功能原型，完成交互流程与界面设计',
+          image:'portfolio-pages/page-10.jpg', tag:'Product Design', x:320, y:550, width:290,
+          metrics:[{value:'0→1',label:'产品方案'},{value:'2',label:'完整原型页'}],
+          tools:['Figma','墨刀','黑刀','XMind'],
+          points:['从 0 到 1 完成产品方案设计与功能原型搭建','使用产品思维导图梳理信息架构与用户路径','输出相关内容与视觉，形成功能演示与效果呈现','优化功能细节与界面布局，确保产品体验闭环'],
+          link:'https://canva.link/x22snc2sbb5vpwj' },
+        { id:'comfyui', eyebrow:'AIGC · ComfyUI', title:'产品视觉生成与 Prompt 工程',
+          desc:'使用 ComfyUI 构建 AI 视觉闭环：探索提示词结构，构图策略与色彩调性控制。构建 Prompt 数据库，批量生成到精修的完整流程',
+          image:'portfolio-pages/page-12.jpg', tag:'AIGC · Visual', x:780, y:480, width:292,
+          metrics:[{value:'11维',label:'Prompt 结构'},{value:'4+',label:'品牌视觉系列'}],
+          tools:['ComfyUI','Stable Diffusion','Photoshop'],
+          points:['产品视觉生成：宣传海报、视频素材、商业产品图（星巴克 / ZARA 等）','探索提示词结构，构图策略与色彩调性控制','构建 Prompt 数据库，批量生成到精修流程','MARIO 品牌系列：含完整 Prompt 结构解析表（11 个维度）'],
+          link:'https://canva.link/x22snc2sbb5vpwj' },
+        { id:'lovart', eyebrow:'AIGC · Lovart', title:'饮品系列广告设计与分镜视频',
+          desc:'使用 Lovart 完成 9 款饮品系列广告设计，文本拆解与节奏/情绪设计到分镜头塑造与场景氛围控制，多模型搭配高效产出广告视频',
+          image:'portfolio-pages/page-14.jpg', tag:'AIGC · Ads', x:1200, y:520, width:292,
+          metrics:[{value:'9',label:'款口味广告'},{value:'8K HDR',label:'画质标准'}],
+          tools:['Lovart','Storyboard','Premiere'],
+          points:['完成 9 款饮品广告（Green Grape / Coconut Sea Salt / Peach Haze 等）','文本拆解与节奏、情绪设计，分镜头塑造与场景氛围控制','多模型搭配，高效产出广告视频','8K HDR 画质，画面节奏对齐分镜与产品图'],
+          link:'https://canva.link/x22snc2sbb5vpwj' },
+        { id:'jimeng', eyebrow:'AIGC · 即梦 AI', title:'服装换装与模特生图',
+          desc:'上传服装图以及模特素材并进行 AI 生图，通过提示词控制生成四个角度的全身照，保证生图质量和产品还原精准度',
+          image:'portfolio-pages/page-16.jpg', tag:'AIGC · Fashion', x:560, y:860, width:286,
+          metrics:[{value:'4',label:'角度输出'},{value:'高精度',label:'产品还原'}],
+          tools:['即梦 AI','Photoshop'],
+          points:['上传服装图以及模特素材并进行 AI 生图','生成正面、侧面、正侧面、背面四个角度全身照','通过提示词保证生图质量和产品还原精准度','适用于品牌视觉、电商种草和虚拟拍摄场景'],
+          link:'https://canva.link/x22snc2sbb5vpwj' },
+        { id:'keling', eyebrow:'AIGC · 可灵 AI', title:'电影感视频画面生成',
+          desc:'使用可灵 AI 生成 4K 电影画质视频画面，通过镜头语言和文字描述控制叙事调性和画面审美',
+          image:'portfolio-pages/page-17.jpg', tag:'AIGC · Cinematic', x:1020, y:820, width:286,
+          metrics:[{value:'4K',label:'电影画质'},{value:'广角',label:'构图类型'}],
+          tools:['可灵 AI','Runway','剪映'],
+          points:['电影级广角构图，光影对比戏剧化但不刺眼','细节极致丰富：画面带有细腻的电影胶片颗粒质感','色彩自然而富有层次，整体气氛宏大、静谧','完整 Prompt 示例展示镜头语言到画面审美的控制能力'],
+          link:'https://canva.link/x22snc2sbb5vpwj' }
+      ];
+
+      var portfolioLinks = [
+        ['atlas','douyin'],['atlas','prototype'],['atlas','comfyui'],
+        ['douyin','xiaohongshu'],['xiaohongshu','wechat'],
+        ['prototype','comfyui'],['comfyui','lovart'],
+        ['comfyui','jimeng'],['comfyui','keling'],
+        ['lovart','keling'],['jimeng','keling']
+      ];
+
+      var nodeMap = new Map(portfolioNodes.map(function(n){return[n.id,n]}));
+      var view = {x:80, y:40, scale:0.52};
+      var pan = {active:false, startX:0, startY:0, originX:0, originY:0};
+      var activePortfolioNode = 'atlas';
+
+      function clamp(v,min,max){return Math.min(Math.max(v,min),max)}
+      function getNodeCenter(n){
+        var w=n.width||260, h=n.className==='portfolio-node--hero'?344:312;
+        return {x:n.x+w/2, y:n.y+h/2};
       }
+      function renderPortfolioNodes(){
+        portfolioWorld.innerHTML = portfolioNodes.map(function(node){
+          var cls=['portfolio-node'];
+          if(node.className) cls.push(node.className);
+          if(node.id===activePortfolioNode) cls.push('is-active');
+          var img = node.image ? '<img class="portfolio-node__thumb" src="'+node.image+'" alt="'+node.title+'"/>' : '';
+          var tag = node.tag ? '<span class="portfolio-node__tag">'+node.tag+'</span>' : '';
+          return '<button class="'+cls.join(' ')+'" type="button" data-portfolio-node="'+node.id+'" style="left:'+node.x+'px;top:'+node.y+'px;--node-width:'+(node.width||260)+'px;">'+
+            '<span class="portfolio-node__eyebrow">'+node.eyebrow+'</span>'+img+
+            '<strong class="portfolio-node__title">'+node.title+'</strong>'+
+            '<span class="portfolio-node__desc">'+node.desc+'</span>'+tag+'</button>';
+        }).join('');
+      }
+      function renderPortfolioEdges(){
+        var paths = portfolioLinks.map(function(pair){
+          var f=nodeMap.get(pair[0]), t=nodeMap.get(pair[1]);
+          if(!f||!t) return '';
+          var fc=getNodeCenter(f), tc=getNodeCenter(t), mid=(tc.x-fc.x)*0.38;
+          return '<path d="M '+fc.x+' '+fc.y+' C '+(fc.x+mid)+' '+fc.y+' '+(tc.x-mid)+' '+tc.y+' '+tc.x+' '+tc.y+'" fill="none" stroke="rgba(51,108,255,0.22)" stroke-width="2"/>';
+        }).join('');
+        portfolioEdges.setAttribute('viewBox','0 0 2200 1500');
+        portfolioEdges.innerHTML = paths;
+      }
+      function renderPortfolioView(){
+        var t='translate('+view.x+'px,'+view.y+'px) scale('+view.scale+')';
+        portfolioWorld.style.transform=t; portfolioEdges.style.transform=t;
+      }
+      function updateInspector(node){
+        inspectorTitle.textContent=node.title;
+        inspectorSummary.textContent=node.desc;
+        inspectorImage.src=node.image||'portfolio-pages/page-02.jpg';
+        inspectorImage.alt=node.title;
+        var me=document.getElementById('portfolioInspectorMetrics');
+        if(node.metrics&&node.metrics.length>0){me.style.display='';me.innerHTML=node.metrics.map(function(m){return '<div class="portfolio-inspector__metric"><div class="portfolio-inspector__metric-value">'+m.value+'</div><div class="portfolio-inspector__metric-label">'+m.label+'</div></div>';}).join('');}else{me.style.display='none';}
+        var te=document.getElementById('portfolioInspectorTools'),tl=document.getElementById('portfolioToolsLabel');
+        if(node.tools&&node.tools.length>0){te.style.display='';tl.style.display='';te.innerHTML=node.tools.map(function(t){return '<span class="portfolio-inspector__tool">'+t+'</span>';}).join('');}else{te.style.display='none';tl.style.display='none';}
+        var pl=document.getElementById('portfolioPointsLabel');
+        if(node.points&&node.points.length>0){pl.style.display='';inspectorList.style.display='';inspectorList.innerHTML=node.points.map(function(p){return '<li>'+p+'</li>';}).join('');}else{pl.style.display='none';inspectorList.style.display='none';}
+        inspectorLink.href=node.link||'https://canva.link/x22snc2sbb5vpwj';
+      }
+      function focusPortfolioNode(id){
+        var n=nodeMap.get(id); if(!n) return;
+        var c=getNodeCenter(n), fx=window.innerWidth<980?0.5:0.38, fy=window.innerWidth<980?0.33:0.42;
+        view.x=portfolioStage.clientWidth*fx-c.x*view.scale;
+        view.y=portfolioStage.clientHeight*fy-c.y*view.scale;
+        renderPortfolioView();
+      }
+      function setActivePortfolioNode(id,focus){
+        var n=nodeMap.get(id); if(!n) return;
+        activePortfolioNode=id; renderPortfolioNodes(); updateInspector(n);
+        if(focus) focusPortfolioNode(id);
+      }
+      function resetPortfolioView(){
+        view.scale=window.innerWidth<980?0.36:0.52;
+        view.x=window.innerWidth<980?16:80;
+        view.y=window.innerWidth<980?20:40;
+        renderPortfolioView();
+      }
+      function openPortfolio(id){
+        portfolioModal.classList.add('is-open');
+        portfolioModal.setAttribute('aria-hidden','false');
+        document.body.style.overflow='hidden';
+        resetPortfolioView();
+        setActivePortfolioNode(id||activePortfolioNode||'atlas',true);
+      }
+      function closePortfolio(){
+        portfolioModal.classList.remove('is-open');
+        portfolioModal.setAttribute('aria-hidden','true');
+        document.body.style.overflow='';
+        pan.active=false; portfolioStage.classList.remove('is-panning');
+      }
+      renderPortfolioNodes(); renderPortfolioEdges();
+      updateInspector(nodeMap.get(activePortfolioNode)); renderPortfolioView();
+
+      document.querySelectorAll('[data-open-portfolio]').forEach(function(b){b.addEventListener('click',function(){openPortfolio('atlas')})});
+      document.querySelectorAll('[data-open-portfolio-node]').forEach(function(b){b.addEventListener('click',function(){openPortfolio(b.getAttribute('data-open-portfolio-node'))})});
+      portfolioModal.addEventListener('click',function(e){
+        if(e.target.closest('[data-close-portfolio]')){closePortfolio();return;}
+        var nb=e.target.closest('[data-portfolio-node]');
+        if(nb) setActivePortfolioNode(nb.getAttribute('data-portfolio-node'),false);
+      });
+      portfolioStage.addEventListener('pointerdown',function(e){
+        if(e.target.closest('[data-portfolio-node]')) return;
+        pan.active=true; pan.startX=e.clientX; pan.startY=e.clientY;
+        pan.originX=view.x; pan.originY=view.y;
+        portfolioStage.classList.add('is-panning');
+        portfolioStage.setPointerCapture(e.pointerId);
+      });
+      portfolioStage.addEventListener('pointermove',function(e){
+        if(!pan.active) return;
+        view.x=pan.originX+(e.clientX-pan.startX);
+        view.y=pan.originY+(e.clientY-pan.startY);
+        renderPortfolioView();
+      });
+      function endPan(e){
+        if(!pan.active) return; pan.active=false;
+        portfolioStage.classList.remove('is-panning');
+        if(e&&typeof e.pointerId==='number') portfolioStage.releasePointerCapture(e.pointerId);
+      }
+      portfolioStage.addEventListener('pointerup',endPan);
+      portfolioStage.addEventListener('pointercancel',endPan);
+      portfolioStage.addEventListener('pointerleave',endPan);
+      portfolioStage.addEventListener('wheel',function(e){
+        e.preventDefault();
+        var r=portfolioStage.getBoundingClientRect();
+        var px=e.clientX-r.left, py=e.clientY-r.top;
+        var wx=(px-view.x)/view.scale, wy=(py-view.y)/view.scale;
+        var ns=clamp(view.scale*(e.deltaY>0?0.92:1.08),0.36,1.32);
+        view.x=px-wx*ns; view.y=py-wy*ns; view.scale=ns;
+        renderPortfolioView();
+      },{passive:false});
+      window.addEventListener('resize',function(){
+        if(portfolioModal.classList.contains('is-open')){resetPortfolioView();focusPortfolioNode(activePortfolioNode);}
+        else renderPortfolioView();
+      });
+      window.addEventListener('keydown',function(e){
+        if(e.key==='Escape'&&portfolioModal.classList.contains('is-open')) closePortfolio();
+      });
         })();
   </script>
 
