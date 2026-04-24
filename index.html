@@ -22,6 +22,11 @@
     rel="stylesheet"
   />
 
+  <!-- Lenis smooth scroll + GSAP animations -->
+  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
   <style>
     /* ============================================================
        DESIGN TOKENS — 编辑设计杂志审美
@@ -67,7 +72,7 @@
        RESET & BASE
        ============================================================ */
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: auto; }
     body {
       background:
         linear-gradient(180deg, rgba(255,255,255,0.94) 0%, rgba(245,247,251,0.98) 42%, rgba(255,249,232,0.88) 100%);
@@ -247,7 +252,10 @@
       gap: 0.8em;
       margin-bottom: 2rem;
       opacity: 0;
-      animation: fadeUp 0.9s 0.3s ease-out forwards;
+      transform: translateY(24px);
+    }
+    .is-loaded .boot .kicker {
+      animation: fadeUp 0.9s 0.1s ease-out forwards;
     }
     .kicker__rule {
       display: inline-block;
@@ -277,11 +285,13 @@
       display: inline-block;
       opacity: 0;
       transform: translateY(40px);
+    }
+    .is-loaded .boot__name .ch {
       animation: revealChar 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
-    .boot__name .ch:nth-child(1) { animation-delay: 0.7s; }
-    .boot__name .ch:nth-child(2) { animation-delay: 0.88s; }
-    .boot__name .ch:nth-child(3) { animation-delay: 1.06s; }
+    .is-loaded .boot__name .ch:nth-child(1) { animation-delay: 0.3s; }
+    .is-loaded .boot__name .ch:nth-child(2) { animation-delay: 0.48s; }
+    .is-loaded .boot__name .ch:nth-child(3) { animation-delay: 0.66s; }
     @keyframes revealChar {
       to { opacity: 1; transform: translateY(0); }
     }
@@ -296,7 +306,10 @@
       margin-bottom: 2.5rem;
       transform: rotate(-4deg) translateX(-4px);
       opacity: 0;
-      animation: fadeUp 0.9s 1.5s ease-out forwards;
+      animation: none;
+    }
+    .is-loaded .boot__sig {
+      animation: fadeUp 0.9s 0.8s ease-out forwards;
     }
 
     /* 杂志式副标题 — 带下划线装饰的引子 */
@@ -304,7 +317,10 @@
       max-width: 560px;
       margin-bottom: 2rem;
       opacity: 0;
-      animation: fadeUp 0.9s 1.8s ease-out forwards;
+      animation: none;
+    }
+    .is-loaded .boot__lede {
+      animation: fadeUp 0.9s 1.0s ease-out forwards;
     }
     .boot__lede__role {
       font-family: var(--font-serif-cn);
@@ -333,7 +349,10 @@
       flex-wrap: wrap;
       align-items: center;
       opacity: 0;
-      animation: fadeUp 0.9s 2.1s ease-out forwards;
+      animation: none;
+    }
+    .is-loaded .boot__cta {
+      animation: fadeUp 0.9s 1.2s ease-out forwards;
     }
     .btn {
       display: inline-flex;
@@ -386,7 +405,10 @@
       justify-content: center;
       padding: 2rem 0;
       opacity: 0;
-      animation: fadeUp 1.1s 2.4s ease-out forwards;
+      animation: none;
+    }
+    .is-loaded .boot__toc {
+      animation: fadeUp 1.1s 1.4s ease-out forwards;
     }
 
     .toc-wrap {
@@ -1490,16 +1512,10 @@
     }
 
     /* ============================================================
-       SCROLL REVEAL — 章节进入视窗时淡入
+       SCROLL REVEAL — GSAP handles animation, class is a marker
        ============================================================ */
     .reveal {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.9s ease-out, transform 0.9s ease-out;
-    }
-    .reveal.in {
-      opacity: 1;
-      transform: translateY(0);
+      will-change: transform, opacity;
     }
 
     /* ============================================================
@@ -1516,10 +1532,191 @@
         display: none !important;
       }
     }
+
+    /* ============================================================
+       INKWELL-STYLE INTERACTIONS
+       ============================================================ */
+
+    /* Lenis smooth scroll */
+    html.lenis, html.lenis body { height: auto; }
+    .lenis.lenis-smooth { scroll-behavior: auto !important; }
+    .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+
+    /* Scroll progress bar */
+    .scroll-progress {
+      position: fixed;
+      top: 0; left: 0;
+      width: 0%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-warm));
+      z-index: 100;
+      transition: none;
+      pointer-events: none;
+    }
+
+    /* Loading screen */
+    .loader {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background: var(--paper);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .loader.is-done {
+      pointer-events: none;
+    }
+    .loader__name {
+      font-family: var(--font-serif-cn);
+      font-size: clamp(3rem, 8vw, 6rem);
+      font-weight: 500;
+      color: var(--ink);
+      opacity: 0;
+      transform: translateY(30px);
+      letter-spacing: -0.02em;
+    }
+    .loader__sig {
+      font-family: var(--font-script);
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      color: var(--accent);
+      opacity: 0;
+      transform: translateY(20px) rotate(-3deg);
+      margin-top: 0.5rem;
+    }
+    .loader__line {
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-warm));
+      margin-top: 2rem;
+      border-radius: 1px;
+    }
+
+    /* Pathfinder — fixed side progress */
+    .pathfinder {
+      position: fixed;
+      right: 2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 40;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+    }
+    .pathfinder.is-visible { opacity: 1; }
+    .pathfinder__dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      border: 1.5px solid var(--ink-soft);
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      padding: 0;
+    }
+    .pathfinder__dot::after {
+      content: attr(data-label);
+      position: absolute;
+      right: 22px; top: 50%;
+      transform: translateY(-50%);
+      font-family: var(--font-mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      transform: translateY(-50%) translateX(6px);
+    }
+    .pathfinder__dot:hover::after {
+      opacity: 1;
+      transform: translateY(-50%) translateX(0);
+    }
+    .pathfinder__dot.is-active {
+      background: var(--accent);
+      border-color: var(--accent);
+      transform: scale(1.35);
+      box-shadow: 0 0 0 4px rgba(51,108,255,0.15);
+    }
+    @media (max-width: 900px) {
+      .pathfinder { display: none; }
+    }
+
+    /* Cursor glow */
+    .cursor-glow {
+      position: fixed;
+      width: 340px; height: 340px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(51,108,255,0.05) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+      transform: translate(-50%, -50%);
+      will-change: left, top;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+    }
+    .cursor-glow.is-visible { opacity: 1; }
+    @media (hover: none) { .cursor-glow { display: none; } }
+
+    /* Section divider */
+    .section-divider {
+      display: block;
+      width: 0;
+      max-width: 180px;
+      height: 1px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-warm), transparent);
+      margin: 0 auto 4rem;
+    }
+
+    /* Parallax year numbers */
+    .entry__year { will-change: transform; }
+
+    /* Smooth entry body transitions for tilt */
+    .entry__body {
+      will-change: transform;
+      transform-style: preserve-3d;
+    }
+    .hub-card {
+      will-change: transform;
+      transform-style: preserve-3d;
+    }
+    .footnote__item {
+      will-change: transform;
+      transform-style: preserve-3d;
+    }
+
   </style>
 </head>
 
 <body>
+
+  <!-- Scroll progress bar -->
+  <div class="scroll-progress" id="scrollProgress"></div>
+
+  <!-- Loading screen -->
+  <div class="loader" id="loader">
+    <div class="loader__name">冯漪轩</div>
+    <div class="loader__sig">Mario</div>
+    <div class="loader__line"></div>
+  </div>
+
+  <!-- Cursor glow -->
+  <div class="cursor-glow" id="cursorGlow"></div>
+
+  <!-- Pathfinder -->
+  <nav class="pathfinder" id="pathfinder" aria-label="Section progress">
+    <button class="pathfinder__dot" data-section="boot" data-label="Cover" aria-label="Cover"></button>
+    <button class="pathfinder__dot" data-section="experience" data-label="Experience" aria-label="Experience"></button>
+    <button class="pathfinder__dot" data-section="portfolio" data-label="Portfolio" aria-label="Portfolio"></button>
+    <button class="pathfinder__dot" data-section="ailab" data-label="AI Lab" aria-label="AI Lab"></button>
+    <button class="pathfinder__dot" data-section="contact" data-label="Contact" aria-label="Contact"></button>
+  </nav>
+
 
   <!-- ============================================================
        固定顶栏 — 滚出 boot 后显现
@@ -1540,7 +1737,7 @@
   <!-- ============================================================
        BOOT — 杂志封面 + 目录
        ============================================================ -->
-  <section class="boot">
+  <section class="boot" id="boot">
     <!-- 顶部 meta 行:杂志刊号 + 版本 + 日期 -->
     <div class="boot__meta">
       <span>Mario.Portfolio — Issue 01 / Winter 2026<span class="cursor"></span></span>
@@ -1952,6 +2149,8 @@
     </div>
   </section>
 
+  <hr class="section-divider" aria-hidden="true" />
+
   <!-- ============================================================
        § 02 PORTFOLIO — 无限画布节点浏览
        ============================================================ -->
@@ -2022,7 +2221,7 @@
         </div>
       </div>
       <div class="portfolio-modal__body">
-        <div class="portfolio-stage" id="portfolioStage">
+        <div class="portfolio-stage" id="portfolioStage" data-lenis-prevent>
           <svg class="portfolio-edges" id="portfolioEdges" aria-hidden="true"></svg>
           <div class="portfolio-world" id="portfolioWorld"></div>
         </div>
@@ -2043,6 +2242,8 @@
       </div>
     </div>
   </div>
+
+  <hr class="section-divider" aria-hidden="true" />
 
     <!-- ============================================================
        § 03 AI LAB — 占位章节
@@ -2159,40 +2360,352 @@
        ============================================================ -->
   <script>
     (function () {
-      // 1. Topbar 显隐 —— 滚过 boot 区域(约 80vh)后显现
-      const topbar = document.getElementById('topbar');
-      const bootHeight = () => window.innerHeight * 0.8;
+      /* ============================================================
+         LENIS SMOOTH SCROLL
+         ============================================================ */
+      var lenis = new Lenis({
+        duration: 1.4,
+        easing: function(t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); },
+        touchMultiplier: 1.5,
+        infinite: false
+      });
 
-      const updateTopbar = () => {
-        if (window.scrollY > bootHeight()) {
-          topbar.classList.add('visible');
-        } else {
-          topbar.classList.remove('visible');
-        }
-      };
-      window.addEventListener('scroll', updateTopbar, { passive: true });
-      updateTopbar();
+      function lenisRaf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(lenisRaf);
+      }
+      requestAnimationFrame(lenisRaf);
 
-      // 2. Reveal 动画 —— 元素进入视窗时淡入
-      // 用 IntersectionObserver 比滚动事件监听性能更好
-      const reveals = document.querySelectorAll('.reveal');
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('in');
-              observer.unobserve(entry.target); // 一次触发,之后不再观察
+      /* ============================================================
+         GSAP + SCROLLTRIGGER
+         ============================================================ */
+      gsap.registerPlugin(ScrollTrigger);
+
+      ScrollTrigger.defaults({
+        toggleActions: 'play none none none'
+      });
+
+      /* ============================================================
+         SCROLL PROGRESS BAR
+         ============================================================ */
+      var scrollProgress = document.getElementById('scrollProgress');
+      window.addEventListener('scroll', function() {
+        var h = document.documentElement.scrollHeight - window.innerHeight;
+        var pct = h > 0 ? (window.scrollY / h) * 100 : 0;
+        scrollProgress.style.width = pct + '%';
+      }, { passive: true });
+
+      /* ============================================================
+         LOADING SEQUENCE
+         ============================================================ */
+      var loader = document.getElementById('loader');
+      var loaderName = loader.querySelector('.loader__name');
+      var loaderSig = loader.querySelector('.loader__sig');
+      var loaderLine = loader.querySelector('.loader__line');
+
+      document.body.style.overflow = 'hidden';
+
+      var loaderTL = gsap.timeline({
+        onComplete: function() {
+          gsap.to(loader, {
+            opacity: 0,
+            duration: 0.6,
+            ease: 'power2.inOut',
+            onComplete: function() {
+              loader.classList.add('is-done');
+              loader.style.display = 'none';
             }
           });
-        },
-        {
-          threshold: 0.12,      // 元素露出 12% 就触发
-          rootMargin: '0px 0px -50px 0px' // 提前 50px 触发,避免边缘闪烁
+          document.body.style.overflow = '';
+          document.body.classList.add('is-loaded');
+          initScrollAnimations();
+          setTimeout(function() {
+            var glow = document.getElementById('cursorGlow');
+            if (glow) glow.classList.add('is-visible');
+          }, 800);
         }
-      );
-      reveals.forEach((el) => observer.observe(el));
+      });
 
-      // 3. Portfolio — infinite canvas
+      loaderTL
+        .to(loaderName, { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' }, 0.2)
+        .to(loaderSig, { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, 0.5)
+        .to(loaderLine, { width: '120px', duration: 1.0, ease: 'power2.inOut' }, 0.7)
+        .to(loaderLine, { opacity: 0, duration: 0.3 }, 1.8)
+        .to([loaderName, loaderSig], { opacity: 0, y: -20, duration: 0.5, ease: 'power2.in', stagger: 0.05 }, 1.9);
+
+      /* ============================================================
+         SCROLL ANIMATIONS (replace old IntersectionObserver)
+         ============================================================ */
+      function initScrollAnimations() {
+        /* --- Topbar visibility --- */
+        var topbar = document.getElementById('topbar');
+        ScrollTrigger.create({
+          trigger: '.boot',
+          start: 'bottom 80%',
+          onEnter: function() { topbar.classList.add('visible'); },
+          onLeaveBack: function() { topbar.classList.remove('visible'); }
+        });
+
+        /* --- Section titles --- */
+        gsap.utils.toArray('.section__title, .hub__title').forEach(function(el) {
+          gsap.from(el, {
+            scrollTrigger: { trigger: el, start: 'top 85%' },
+            opacity: 0, y: 60,
+            duration: 1.2, ease: 'power3.out'
+          });
+        });
+
+        /* --- Kicker lines (except boot) --- */
+        gsap.utils.toArray('.kicker').forEach(function(el) {
+          if (el.closest('.boot')) return;
+          var rule = el.querySelector('.kicker__rule');
+          gsap.from(el, {
+            scrollTrigger: { trigger: el, start: 'top 88%' },
+            opacity: 0, x: -30,
+            duration: 0.8, ease: 'power2.out'
+          });
+          if (rule) {
+            gsap.from(rule, {
+              scrollTrigger: { trigger: el, start: 'top 88%' },
+              width: 0, duration: 1.0, ease: 'power2.inOut', delay: 0.2
+            });
+          }
+        });
+
+        /* --- Section lede text --- */
+        gsap.utils.toArray('.section__lede, .hub__sub, .portfolio-shell__lede').forEach(function(el) {
+          gsap.from(el, {
+            scrollTrigger: { trigger: el, start: 'top 85%' },
+            opacity: 0, y: 35,
+            duration: 1.0, ease: 'power2.out', delay: 0.15
+          });
+        });
+
+        /* --- Hub cards: staggered scale --- */
+        gsap.from('.hub-card', {
+          scrollTrigger: { trigger: '.hub__grid', start: 'top 80%' },
+          opacity: 0, y: 50, scale: 0.93,
+          duration: 0.9, stagger: 0.12, ease: 'power3.out'
+        });
+
+        /* --- Experience entries: cinematic reveal --- */
+        gsap.utils.toArray('.entry').forEach(function(entry) {
+          var year = entry.querySelector('.entry__year');
+          var body = entry.querySelector('.entry__body');
+
+          if (year) {
+            gsap.from(year, {
+              scrollTrigger: { trigger: entry, start: 'top 78%' },
+              opacity: 0, x: -50, duration: 1.0, ease: 'power3.out'
+            });
+          }
+          if (body) {
+            gsap.from(body, {
+              scrollTrigger: { trigger: entry, start: 'top 78%' },
+              opacity: 0, y: 55, scale: 0.96,
+              duration: 1.1, ease: 'power3.out', delay: 0.1
+            });
+            var children = body.querySelectorAll('.entry__tag, .entry__role, .entry__company, .entry__lede, .pullquote, .bullets, .chips');
+            gsap.from(children, {
+              scrollTrigger: { trigger: body, start: 'top 70%' },
+              opacity: 0, y: 20,
+              duration: 0.6, stagger: 0.06, ease: 'power2.out', delay: 0.3
+            });
+          }
+        });
+
+        /* --- Pullquote values: pop in --- */
+        gsap.utils.toArray('.pullquote__value').forEach(function(el) {
+          gsap.from(el, {
+            scrollTrigger: { trigger: el, start: 'top 86%' },
+            opacity: 0, scale: 0.6, duration: 0.8, ease: 'back.out(1.6)'
+          });
+        });
+
+        /* --- Portfolio section --- */
+        var pShell = document.querySelector('.portfolio-shell');
+        if (pShell) {
+          gsap.from(pShell, {
+            scrollTrigger: { trigger: pShell, start: 'top 80%' },
+            opacity: 0, y: 70, scale: 0.97,
+            duration: 1.2, ease: 'power3.out'
+          });
+          gsap.from('.portfolio-preview-node', {
+            scrollTrigger: { trigger: '.portfolio-preview-canvas', start: 'top 76%' },
+            opacity: 0, y: 35, scale: 0.88,
+            duration: 0.8, stagger: 0.1, ease: 'power3.out', delay: 0.3
+          });
+        }
+
+        /* --- AI Lab placeholder --- */
+        var placeholder = document.querySelector('.placeholder');
+        if (placeholder) {
+          gsap.from(placeholder, {
+            scrollTrigger: { trigger: placeholder, start: 'top 80%' },
+            opacity: 0, y: 60, scale: 0.97,
+            duration: 1.2, ease: 'power3.out'
+          });
+        }
+        gsap.from('.preview-box', {
+          scrollTrigger: { trigger: '.preview-grid', start: 'top 78%' },
+          opacity: 0, y: 30, scale: 0.9,
+          duration: 0.7, stagger: 0.07, ease: 'power3.out', delay: 0.2
+        });
+
+        /* --- Education footnote --- */
+        gsap.from('.footnote__item', {
+          scrollTrigger: { trigger: '.footnote', start: 'top 82%' },
+          opacity: 0, y: 35, scale: 0.95,
+          duration: 0.9, stagger: 0.15, ease: 'power3.out'
+        });
+
+        /* --- Footer --- */
+        var fq = document.querySelector('.footer__quote');
+        if (fq) {
+          gsap.from(fq, {
+            scrollTrigger: { trigger: fq, start: 'top 84%' },
+            opacity: 0, y: 50, duration: 1.2, ease: 'power3.out'
+          });
+        }
+        gsap.from('.contact-row', {
+          scrollTrigger: { trigger: '.footer__contacts', start: 'top 82%' },
+          opacity: 0, x: 35,
+          duration: 0.7, stagger: 0.08, ease: 'power2.out'
+        });
+
+        /* --- Section dividers --- */
+        gsap.utils.toArray('.section-divider').forEach(function(el) {
+          gsap.to(el, {
+            scrollTrigger: { trigger: el, start: 'top 86%' },
+            width: '180px', duration: 1.4, ease: 'power2.inOut'
+          });
+        });
+
+        /* --- Parallax: year numbers --- */
+        gsap.utils.toArray('.entry__year').forEach(function(el) {
+          gsap.to(el, {
+            scrollTrigger: {
+              trigger: el.closest('.entry'),
+              start: 'top bottom', end: 'bottom top', scrub: 1.2
+            },
+            y: -35, ease: 'none'
+          });
+        });
+
+        /* --- Parallax: boot signature --- */
+        var bootSig = document.querySelector('.boot__sig');
+        if (bootSig) {
+          gsap.to(bootSig, {
+            scrollTrigger: {
+              trigger: '.boot', start: 'top top', end: 'bottom top', scrub: 1
+            },
+            y: -40, opacity: 0.3, ease: 'none'
+          });
+        }
+      }
+
+      /* ============================================================
+         PATHFINDER
+         ============================================================ */
+      var pathfinder = document.getElementById('pathfinder');
+      var pfDots = pathfinder.querySelectorAll('.pathfinder__dot');
+      var sectionIds = ['boot', 'experience', 'portfolio', 'ailab', 'contact'];
+
+      function updatePathfinder() {
+        var scrollY = window.scrollY + window.innerHeight * 0.4;
+        var currentIdx = 0;
+        sectionIds.forEach(function(id, i) {
+          var el = document.getElementById(id);
+          if (el && el.offsetTop <= scrollY) currentIdx = i;
+        });
+        pfDots.forEach(function(dot, i) {
+          dot.classList.toggle('is-active', i === currentIdx);
+        });
+      }
+
+      ScrollTrigger.create({
+        trigger: '.boot',
+        start: 'bottom 60%',
+        onEnter: function() { pathfinder.classList.add('is-visible'); },
+        onLeaveBack: function() { pathfinder.classList.remove('is-visible'); }
+      });
+
+      pfDots.forEach(function(dot) {
+        dot.addEventListener('click', function() {
+          var sectionId = dot.getAttribute('data-section');
+          var target = document.getElementById(sectionId);
+          if (target) lenis.scrollTo(target, { offset: -80 });
+        });
+      });
+
+      window.addEventListener('scroll', updatePathfinder, { passive: true });
+
+      /* ============================================================
+         CURSOR GLOW
+         ============================================================ */
+      var cursorGlow = document.getElementById('cursorGlow');
+      if (cursorGlow && !('ontouchstart' in window)) {
+        var mouseX = 0, mouseY = 0, glowX = 0, glowY = 0;
+        document.addEventListener('mousemove', function(e) {
+          mouseX = e.clientX; mouseY = e.clientY;
+        });
+        (function animGlow() {
+          glowX += (mouseX - glowX) * 0.07;
+          glowY += (mouseY - glowY) * 0.07;
+          cursorGlow.style.left = glowX + 'px';
+          cursorGlow.style.top = glowY + 'px';
+          requestAnimationFrame(animGlow);
+        })();
+      }
+
+      /* ============================================================
+         3D TILT ON CARDS
+         ============================================================ */
+      document.querySelectorAll('.hub-card, .entry__body, .footnote__item').forEach(function(card) {
+        card.addEventListener('mousemove', function(e) {
+          var rect = card.getBoundingClientRect();
+          var x = (e.clientX - rect.left) / rect.width - 0.5;
+          var y = (e.clientY - rect.top) / rect.height - 0.5;
+          gsap.to(card, {
+            rotateX: y * -5, rotateY: x * 5,
+            transformPerspective: 700,
+            duration: 0.4, ease: 'power2.out',
+            overwrite: 'auto'
+          });
+        });
+        card.addEventListener('mouseleave', function() {
+          gsap.to(card, {
+            rotateX: 0, rotateY: 0, y: 0,
+            duration: 0.6, ease: 'power2.out',
+            overwrite: 'auto'
+          });
+        });
+      });
+
+      /* ============================================================
+         MAGNETIC BUTTONS
+         ============================================================ */
+      document.querySelectorAll('.btn, .portfolio-launch').forEach(function(btn) {
+        btn.addEventListener('mousemove', function(e) {
+          var rect = btn.getBoundingClientRect();
+          var dx = e.clientX - rect.left - rect.width / 2;
+          var dy = e.clientY - rect.top - rect.height / 2;
+          gsap.to(btn, {
+            x: dx * 0.2, y: dy * 0.2,
+            duration: 0.3, ease: 'power2.out', overwrite: 'auto'
+          });
+        });
+        btn.addEventListener('mouseleave', function() {
+          gsap.to(btn, {
+            x: 0, y: 0,
+            duration: 0.5, ease: 'elastic.out(1, 0.4)', overwrite: 'auto'
+          });
+        });
+      });
+
+      /* ============================================================
+         PORTFOLIO — infinite canvas (preserved)
+         ============================================================ */
       var portfolioModal = document.getElementById('portfolioModal');
       var portfolioStage = document.getElementById('portfolioStage');
       var portfolioWorld = document.getElementById('portfolioWorld');
@@ -2350,6 +2863,7 @@
         portfolioModal.classList.add('is-open');
         portfolioModal.setAttribute('aria-hidden','false');
         document.body.style.overflow='hidden';
+        lenis.stop();
         resetPortfolioView();
         setActivePortfolioNode(id||activePortfolioNode||'atlas',true);
       }
@@ -2357,6 +2871,7 @@
         portfolioModal.classList.remove('is-open');
         portfolioModal.setAttribute('aria-hidden','true');
         document.body.style.overflow='';
+        lenis.start();
         pan.active=false; portfolioStage.classList.remove('is-panning');
       }
       renderPortfolioNodes(); renderPortfolioEdges();
@@ -2406,7 +2921,7 @@
       window.addEventListener('keydown',function(e){
         if(e.key==='Escape'&&portfolioModal.classList.contains('is-open')) closePortfolio();
       });
-        })();
+    })();
   </script>
 
 </body>
