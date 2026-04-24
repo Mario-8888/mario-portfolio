@@ -72,7 +72,7 @@
        RESET & BASE
        ============================================================ */
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: auto; }
+    html { scroll-behavior: auto; overflow-x: hidden; width: 100%; }
     body {
       background:
         linear-gradient(180deg, rgba(255,255,255,0.94) 0%, rgba(245,247,251,0.98) 42%, rgba(255,249,232,0.88) 100%);
@@ -81,6 +81,8 @@
       font-size: 16px;
       line-height: 1.7;
       overflow-x: hidden;
+      width: 100%;
+      min-width: 0;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
@@ -156,11 +158,11 @@
       position: fixed; top: 0; left: 0; right: 0;
       display: flex; justify-content: space-between; align-items: center;
       padding: 0.9rem var(--pad-h);
-      background: rgba(255, 255, 255, 0.76);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(186, 198, 218, 0.55);
-      box-shadow: 0 12px 36px rgba(28, 38, 71, 0.06);
+      background: rgba(255, 255, 255, 0.55);
+      backdrop-filter: blur(28px) saturate(1.4);
+      -webkit-backdrop-filter: blur(28px) saturate(1.4);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255,255,255,0.5);
       z-index: 50;
       transform: translateY(-100%);
       transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
@@ -1249,7 +1251,7 @@
       background-size: 28px 28px; opacity: 0.46; pointer-events: none;
     }
     .portfolio-world, .portfolio-edges {
-      position: absolute; left: 0; top: 0; width: 2200px; height: 1500px;
+      position: absolute; left: 0; top: 0; width: 3600px; height: 2400px;
       transform-origin: 0 0; will-change: transform;
     }
     .portfolio-edges { overflow: visible; pointer-events: none; }
@@ -1465,9 +1467,12 @@
       align-items: baseline;
       gap: 1rem;
       padding: 1rem 1.1rem;
-      border: 1px solid rgba(186, 198, 218, 0.72);
-      border-radius: 22px;
-      background: rgba(255,255,255,0.78);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.55);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255,255,255,0.5);
       transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
     }
     .contact-row:hover {
@@ -1509,6 +1514,12 @@
     .footer__bottom em {
       color: var(--accent);
       font-style: normal;
+    }
+
+    .section {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
     }
 
     /* ============================================================
@@ -1650,15 +1661,20 @@
     /* Cursor glow */
     .cursor-glow {
       position: fixed;
-      width: 340px; height: 340px;
+      width: 480px; height: 480px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(51,108,255,0.05) 0%, transparent 70%);
+      background: radial-gradient(circle,
+        rgba(255, 248, 230, 0.28) 0%,
+        rgba(255, 240, 210, 0.15) 30%,
+        rgba(255, 232, 190, 0.06) 55%,
+        transparent 75%);
       pointer-events: none;
       z-index: 0;
       transform: translate(-50%, -50%);
       will-change: left, top;
       opacity: 0;
-      transition: opacity 0.8s ease;
+      transition: opacity 1s ease;
+      mix-blend-mode: screen;
     }
     .cursor-glow.is-visible { opacity: 1; }
     @media (hover: none) { .cursor-glow { display: none; } }
@@ -1680,14 +1696,34 @@
     .entry__body {
       will-change: transform;
       transform-style: preserve-3d;
+      background: rgba(255, 255, 255, 0.65);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      border-radius: 28px;
+      padding: 2rem 2.2rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255,255,255,0.6);
     }
     .hub-card {
       will-change: transform;
       transform-style: preserve-3d;
+      background: rgba(255, 255, 255, 0.6) !important;
+      backdrop-filter: blur(24px) !important;
+      -webkit-backdrop-filter: blur(24px) !important;
+      border: 1px solid rgba(255, 255, 255, 0.45) !important;
+      border-radius: 28px !important;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255,255,255,0.6) !important;
     }
     .footnote__item {
       will-change: transform;
       transform-style: preserve-3d;
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      border-radius: 28px;
+      padding: 2rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255,255,255,0.6);
     }
 
     /* ============================================================
@@ -1837,6 +1873,216 @@
       .portfolio-wheel-center h3 { font-size: 1.4rem; }
     }
 
+
+    /* Liquid Glass — AI Lab preview boxes */
+    .preview-box {
+      background: rgba(255, 255, 255, 0.55) !important;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.4) !important;
+      border-radius: 28px !important;
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255,255,255,0.5);
+    }
+
+    /* Liquid Glass — Portfolio shell */
+    .portfolio-shell {
+      background: rgba(255, 255, 255, 0.5) !important;
+      backdrop-filter: blur(24px) !important;
+      -webkit-backdrop-filter: blur(24px) !important;
+      border: 1px solid rgba(255, 255, 255, 0.4) !important;
+      border-radius: 32px !important;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255,255,255,0.5) !important;
+    }
+
+    /* Liquid Glass — Wheel cards */
+    .wheel-card {
+      background: rgba(255, 255, 255, 0.65) !important;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.45) !important;
+      border-radius: 24px !important;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255,255,255,0.5) !important;
+    }
+
+    /* Liquid Glass — Portfolio modal */
+    .portfolio-modal__window {
+      background: rgba(255, 255, 255, 0.6) !important;
+      backdrop-filter: blur(32px) saturate(1.3) !important;
+      -webkit-backdrop-filter: blur(32px) saturate(1.3) !important;
+      border: 1px solid rgba(255, 255, 255, 0.35) !important;
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255,255,255,0.4) !important;
+    }
+
+    /* Liquid Glass — Canvas nodes */
+    .portfolio-node {
+      background: rgba(255, 255, 255, 0.6) !important;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.4) !important;
+      border-radius: 28px !important;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255,255,255,0.5) !important;
+    }
+
+    /* Liquid Glass — Portfolio inspector */
+    .portfolio-inspector {
+      background: rgba(252, 253, 255, 0.55) !important;
+      backdrop-filter: blur(24px) !important;
+      -webkit-backdrop-filter: blur(24px) !important;
+    }
+
+    /* Liquid Glass — Buttons */
+    .btn {
+      border-radius: 24px !important;
+    }
+    .btn--ghost {
+      background: rgba(255, 255, 255, 0.45) !important;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.4) !important;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04), inset 0 1px 0 rgba(255,255,255,0.5);
+    }
+    .btn--primary {
+      border-radius: 24px !important;
+      box-shadow: 0 8px 24px rgba(17, 24, 39, 0.15), inset 0 1px 0 rgba(255,255,255,0.1) !important;
+    }
+
+    /* Liquid Glass — Pathfinder dots */
+    .pathfinder__dot {
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      background: rgba(255, 255, 255, 0.35);
+      border: 1.5px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+    .pathfinder__dot.is-active {
+      background: var(--accent) !important;
+      border-color: rgba(255, 255, 255, 0.6) !important;
+      box-shadow: 0 0 0 4px rgba(51,108,255,0.15), 0 4px 12px rgba(51,108,255,0.2);
+    }
+
+    /* Liquid Glass — Scroll progress bar */
+    .scroll-progress {
+      background: linear-gradient(90deg,
+        rgba(51, 108, 255, 0.8),
+        rgba(255, 216, 77, 0.8)) !important;
+      backdrop-filter: blur(8px);
+      height: 3px !important;
+    }
+
+    /* Liquid Glass — Pullquote items */
+    .pullquote__item {
+      background: rgba(255, 255, 255, 0.45);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 20px;
+      padding: 1rem;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04), inset 0 1px 0 rgba(255,255,255,0.5);
+    }
+
+    /* Liquid Glass — Chips */
+    .chip {
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      background: rgba(255, 255, 255, 0.4) !important;
+      border: 1px solid rgba(255, 255, 255, 0.35) !important;
+      border-radius: 16px !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.4);
+    }
+
+    /* Liquid Glass — Loading screen */
+    .loader {
+      background: rgba(245, 247, 251, 0.85) !important;
+      backdrop-filter: blur(40px) saturate(1.5);
+      -webkit-backdrop-filter: blur(40px) saturate(1.5);
+    }
+
+    /* 3D Wheel — Drag interaction hint */
+    .wheel-hints {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 5;
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+    .wheel-hint-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 20px;
+      padding: 0.5rem 1rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    }
+    .wheel-hint-icon {
+      font-size: 1rem;
+      line-height: 1;
+    }
+    @media (max-width: 768px) {
+      .wheel-hints {
+        flex-direction: column;
+        gap: 0.6rem;
+        bottom: 1.5rem;
+      }
+      .wheel-hint-item {
+        font-size: 0.55rem;
+        padding: 0.4rem 0.8rem;
+      }
+    }
+
+    /* Two-level node structure */
+    .portfolio-node--theme {
+      --node-width: 300px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.7) 0%, rgba(248,251,255,0.65) 100%) !important;
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 1.5px solid rgba(51, 108, 255, 0.2) !important;
+      border-radius: 32px !important;
+      box-shadow: 0 16px 48px rgba(20, 31, 58, 0.12), inset 0 1px 0 rgba(255,255,255,0.6) !important;
+      padding: 1.4rem !important;
+    }
+    .portfolio-node--theme .portfolio-node__title {
+      font-size: 1.2rem;
+    }
+    .portfolio-node--theme .portfolio-node__eyebrow {
+      font-size: 0.68rem;
+      color: var(--accent);
+    }
+    .portfolio-node--page {
+      --node-width: 210px;
+      padding: 0.7rem !important;
+      border-radius: 22px !important;
+      background: rgba(255, 255, 255, 0.55) !important;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.4) !important;
+      box-shadow: 0 6px 24px rgba(20, 31, 58, 0.07), inset 0 1px 0 rgba(255,255,255,0.5) !important;
+    }
+    .portfolio-node--page .portfolio-node__thumb {
+      aspect-ratio: 16/9;
+      border-radius: 16px;
+    }
+    .portfolio-node--page .portfolio-node__title {
+      font-size: 0.88rem;
+    }
+    .portfolio-node--page .portfolio-node__desc {
+      font-size: 0.76rem;
+      line-height: 1.5;
+    }
+    .portfolio-node--page .portfolio-node__eyebrow {
+      font-size: 0.56rem;
+    }
   </style>
 </head>
 
@@ -2320,40 +2566,45 @@
           <h3>创意作品集</h3>
           <span class="wheel-hint">↓ scroll to rotate</span>
         </div>
+        <div class="wheel-hints">
+          <div class="wheel-hint-item"><span class="wheel-hint-icon">⟳</span> 滚轮切换作品</div>
+          <div class="wheel-hint-item"><span class="wheel-hint-icon">✋</span> 拖拽旋转轮盘</div>
+        </div
+        </div>
         <div class="wheel-track" id="wheelTrack">
-          <button class="wheel-card" type="button" data-open-portfolio-node="atlas" style="transform: rotateY(0deg) translateZ(320px)">
+          <button class="wheel-card" type="button" data-open-portfolio-node="theme-atlas" style="transform: rotateY(0deg) translateZ(320px)">
             <img src="portfolio-pages/page-02.jpg" alt="作品集总览" loading="lazy" />
             <div class="wheel-card__info"><span>Portfolio</span><strong>作品集总览</strong></div>
           </button>
-          <button class="wheel-card" type="button" data-open-portfolio-node="douyin" style="transform: rotateY(40deg) translateZ(320px)">
+          <button class="wheel-card" type="button" data-open-portfolio-node="theme-douyin" style="transform: rotateY(40deg) translateZ(320px)">
             <img src="portfolio-pages/page-04.jpg" alt="抖音平台运营" loading="lazy" />
             <div class="wheel-card__info"><span>抖音</span><strong>商家活动策划</strong></div>
           </button>
-          <button class="wheel-card" type="button" data-open-portfolio-node="xiaohongshu" style="transform: rotateY(80deg) translateZ(320px)">
+          <button class="wheel-card" type="button" data-open-portfolio-node="theme-xhs" style="transform: rotateY(80deg) translateZ(320px)">
             <img src="portfolio-pages/page-05.jpg" alt="小红书内容矩阵" loading="lazy" />
             <div class="wheel-card__info"><span>小红书</span><strong>内容矩阵运营</strong></div>
           </button>
-          <button class="wheel-card" type="button" data-open-portfolio-node="wechat" style="transform: rotateY(120deg) translateZ(320px)">
+          <button class="wheel-card" type="button" data-open-portfolio-node="theme-wechat" style="transform: rotateY(120deg) translateZ(320px)">
             <img src="portfolio-pages/page-08.jpg" alt="公众号内容" loading="lazy" />
             <div class="wheel-card__info"><span>公众号</span><strong>媒介传播体系</strong></div>
           </button>
-          <button class="wheel-card" type="button" data-open-portfolio-node="prototype" style="transform: rotateY(160deg) translateZ(320px)">
+          <button class="wheel-card" type="button" data-open-portfolio-node="theme-ai" style="transform: rotateY(160deg) translateZ(320px)">
             <img src="portfolio-pages/page-10.jpg" alt="产品原型" loading="lazy" />
             <div class="wheel-card__info"><span>Product</span><strong>产品功能原型</strong></div>
           </button>
-          <button class="wheel-card" type="button" data-open-portfolio-node="comfyui" style="transform: rotateY(200deg) translateZ(320px)">
+          <button class="wheel-card" type="button" data-open-portfolio-node="theme-ai" style="transform: rotateY(200deg) translateZ(320px)">
             <img src="portfolio-pages/page-12.jpg" alt="ComfyUI" loading="lazy" />
             <div class="wheel-card__info"><span>ComfyUI</span><strong>产品视觉生成</strong></div>
           </button>
-          <button class="wheel-card" type="button" data-open-portfolio-node="lovart" style="transform: rotateY(240deg) translateZ(320px)">
+          <button class="wheel-card" type="button" data-open-portfolio-node="theme-ai" style="transform: rotateY(240deg) translateZ(320px)">
             <img src="portfolio-pages/page-14.jpg" alt="Lovart" loading="lazy" />
             <div class="wheel-card__info"><span>Lovart</span><strong>饮品广告创意</strong></div>
           </button>
-          <button class="wheel-card" type="button" data-open-portfolio-node="jimeng" style="transform: rotateY(280deg) translateZ(320px)">
+          <button class="wheel-card" type="button" data-open-portfolio-node="theme-ai" style="transform: rotateY(280deg) translateZ(320px)">
             <img src="portfolio-pages/page-16.jpg" alt="即梦 AI" loading="lazy" />
             <div class="wheel-card__info"><span>即梦 AI</span><strong>服装换装生图</strong></div>
           </button>
-          <button class="wheel-card" type="button" data-open-portfolio-node="keling" style="transform: rotateY(320deg) translateZ(320px)">
+          <button class="wheel-card" type="button" data-open-portfolio-node="theme-ai" style="transform: rotateY(320deg) translateZ(320px)">
             <img src="portfolio-pages/page-17.jpg" alt="可灵 AI" loading="lazy" />
             <div class="wheel-card__info"><span>可灵 AI</span><strong>电影感视频</strong></div>
           </button>
@@ -2391,7 +2642,7 @@
           <h4 id="portfolioInspectorTitle">作品集总览</h4>
           <p id="portfolioInspectorSummary"></p>
           <div class="portfolio-inspector__metrics" id="portfolioInspectorMetrics"></div>
-          <img class="portfolio-inspector__image" id="portfolioInspectorImage" src="portfolio-pages/page-02.jpg" alt="预览" />
+          <img class="portfolio-inspector__image" id="portfolioInspectorImage" src="portfolio-pages/page-01.jpg" alt="预览" />
           <span class="portfolio-inspector__section-label" id="portfolioToolsLabel">Tools</span>
           <div class="portfolio-inspector__tools" id="portfolioInspectorTools"></div>
           <span class="portfolio-inspector__section-label" id="portfolioPointsLabel">Highlights</span>
@@ -2773,61 +3024,93 @@
       function initPortfolioWheel() {
         var wheelTrack = document.getElementById('wheelTrack');
         var wheelPin = document.querySelector('.portfolio-wheel-pin');
-        if (!wheelTrack || !wheelPin) return;
+        var wheelWrap = document.querySelector('.portfolio-wheel-wrap');
+        if (!wheelTrack || !wheelPin || !wheelWrap) return;
 
         var radius = window.innerWidth <= 768 ? 180 : 320;
+        var currentRotY = 0;
+        var dragActive = false;
+        var dragStartX = 0;
+        var dragStartRotY = 0;
+        var velocity = 0;
+        var inertiaRaf = null;
+        var scrollDriven = true;
 
-        // Update card translateZ for current screen size
         document.querySelectorAll('.wheel-card').forEach(function(card) {
           var t = card.style.transform;
           card.style.transform = t.replace(/translateZ\(\d+px\)/, 'translateZ(' + radius + 'px)');
         });
 
-        // Build scroll-pinned timeline
+        function applyRotation(ry, rx, sc) {
+          wheelTrack.style.transform = 'rotateY(' + ry + 'deg) rotateX(' + (rx || 0) + 'deg) scale(' + (sc || 1) + ')';
+        }
+
         var wheelTL = gsap.timeline({
           scrollTrigger: {
             trigger: wheelPin,
             start: 'top top',
             end: '+=280%',
             pin: true,
-            scrub: 1.5,
-            anticipatePin: 1
+            scrub: 0.8,
+            anticipatePin: 1,
+            onUpdate: function(self) {
+              if (!dragActive) {
+                var p = self.progress;
+                currentRotY = p * 720;
+              }
+            }
           }
         });
 
-        // Phase 1 (0-1): Spin 240deg, no tilt
-        wheelTL.to(wheelTrack, {
-          rotateY: 240,
-          duration: 1,
-          ease: 'none'
-        }, 0);
+        wheelTL.to(wheelTrack, { rotateY: 240, duration: 1, ease: 'none' }, 0);
+        wheelTL.to(wheelTrack, { rotateY: 480, rotateX: -14, duration: 1, ease: 'none' }, 1);
+        wheelTL.to(wheelTrack, { rotateY: 720, rotateX: -6, scale: 1.04, duration: 1, ease: 'none' }, 2);
+        wheelTL.to('.portfolio-wheel-center', { opacity: 0, scale: 0.85, duration: 0.4, ease: 'power2.in' }, 0.1);
 
-        // Phase 2 (1-2): Spin another 240deg + tilt for drama
-        wheelTL.to(wheelTrack, {
-          rotateY: 480,
-          rotateX: -14,
-          duration: 1,
-          ease: 'none'
-        }, 1);
+        // --- Drag interaction ---
+        wheelWrap.addEventListener('pointerdown', function(e) {
+          if (e.target.closest('.wheel-card')) return;
+          dragActive = true;
+          dragStartX = e.clientX;
+          dragStartRotY = currentRotY;
+          velocity = 0;
+          if (inertiaRaf) cancelAnimationFrame(inertiaRaf);
+          wheelWrap.setPointerCapture(e.pointerId);
+          wheelWrap.style.cursor = 'grabbing';
+          e.preventDefault();
+        });
 
-        // Phase 3 (2-3): Final 240deg + slight scale + tilt back
-        wheelTL.to(wheelTrack, {
-          rotateY: 720,
-          rotateX: -6,
-          scale: 1.04,
-          duration: 1,
-          ease: 'none'
-        }, 2);
+        wheelWrap.addEventListener('pointermove', function(e) {
+          if (!dragActive) return;
+          var dx = e.clientX - dragStartX;
+          var newRot = dragStartRotY + dx * 0.35;
+          velocity = (newRot - currentRotY) * 0.5;
+          currentRotY = newRot;
+          applyRotation(currentRotY, 0, 1);
+        });
 
-        // Center text fades out as wheel starts rotating
-        wheelTL.to('.portfolio-wheel-center', {
-          opacity: 0,
-          scale: 0.85,
-          duration: 0.4,
-          ease: 'power2.in'
-        }, 0.1);
+        function endDrag(e) {
+          if (!dragActive) return;
+          dragActive = false;
+          wheelWrap.style.cursor = 'grab';
+          if (e && typeof e.pointerId === 'number') {
+            try { wheelWrap.releasePointerCapture(e.pointerId); } catch(err) {}
+          }
+          function inertiaStep() {
+            if (Math.abs(velocity) < 0.15) { velocity = 0; return; }
+            velocity *= 0.94;
+            currentRotY += velocity;
+            applyRotation(currentRotY, 0, 1);
+            inertiaRaf = requestAnimationFrame(inertiaStep);
+          }
+          inertiaStep();
+        }
 
-        // Intro animations (these fire on scroll into view, before pinning)
+        wheelWrap.addEventListener('pointerup', endDrag);
+        wheelWrap.addEventListener('pointercancel', endDrag);
+        wheelWrap.style.cursor = 'grab';
+
+        // --- Intro animations ---
         var intro = document.querySelector('.portfolio-intro');
         if (intro) {
           var kicker = intro.querySelector('.kicker');
@@ -2847,28 +3130,30 @@
           });
         }
 
-        // Cards entrance
         gsap.from('.wheel-card', {
           scrollTrigger: { trigger: '.portfolio-wheel-wrap', start: 'top 80%' },
           opacity: 0, scale: 0.5,
           duration: 0.7, stagger: 0.05, ease: 'back.out(1.2)'
         });
 
-        // Center text entrance
         gsap.from('.portfolio-wheel-center', {
           scrollTrigger: { trigger: '.portfolio-wheel-wrap', start: 'top 82%' },
           opacity: 0, scale: 0.7,
           duration: 1, ease: 'power3.out'
         });
 
-        // CTA entrance
         gsap.from('.portfolio-wheel-cta', {
           scrollTrigger: { trigger: '.portfolio-wheel-cta', start: 'top 85%' },
           opacity: 0, y: 30,
           duration: 0.8, ease: 'power2.out'
         });
 
-        // Handle resize
+        gsap.from('.wheel-hints', {
+          scrollTrigger: { trigger: '.portfolio-wheel-wrap', start: 'top 80%' },
+          opacity: 0, y: 20,
+          duration: 0.8, ease: 'power2.out', delay: 0.5
+        });
+
         var resizeTimer;
         window.addEventListener('resize', function() {
           clearTimeout(resizeTimer);
@@ -2926,13 +3211,14 @@
          ============================================================ */
       var cursorGlow = document.getElementById('cursorGlow');
       if (cursorGlow && !('ontouchstart' in window)) {
-        var mouseX = 0, mouseY = 0, glowX = 0, glowY = 0;
+        var mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+        var glowX = mouseX, glowY = mouseY;
         document.addEventListener('mousemove', function(e) {
           mouseX = e.clientX; mouseY = e.clientY;
         });
         (function animGlow() {
-          glowX += (mouseX - glowX) * 0.07;
-          glowY += (mouseY - glowY) * 0.07;
+          glowX += (mouseX - glowX) * 0.12;
+          glowY += (mouseY - glowY) * 0.12;
           cursorGlow.style.left = glowX + 'px';
           cursorGlow.style.top = glowY + 'px';
           requestAnimationFrame(animGlow);
@@ -3000,86 +3286,189 @@
       var inspectorLink = document.getElementById('portfolioInspectorLink');
 
       var portfolioNodes = [
-        { id:'atlas', className:'portfolio-node--hero', eyebrow:'Portfolio', title:'作品集总览',
-          desc:'新媒体、AIGC内容 & 产品策划作品集，涵盖平台运营、产品原型、AI视觉生成和广告创意四大模块',
-          image:'portfolio-pages/page-02.jpg', tag:'Canvas Entry', x:160, y:170, width:328,
-          metrics:[{value:'4',label:'核心模块'},{value:'6+',label:'AIGC 工具'}], tools:[],
-          points:['围绕 AI 产品经理、新媒体运营、AI 创意策划三个方向组织','从平台实操到 AIGC 工具链，形成完整能力证据闭环','每个节点都包含真实数据、工具方法和落地产出'],
+        // ═══════════════════════════════════════════
+        // THEME NODES (parents)
+        // ═══════════════════════════════════════════
+        { id:'theme-atlas', className:'portfolio-node--theme', eyebrow:'§ 封面', title:'作品集封面',
+          desc:'内容 & 产品策划作品集总览，涵盖新媒体运营、产品原型、AIGC 视觉生成等核心模块',
+          image:'portfolio-pages/page-01.jpg', tag:'Cover', x:120, y:80, width:300,
+          metrics:[{value:'19',label:'总页数'},{value:'4',label:'核心板块'}], tools:[],
+          points:['涵盖抖音、小红书、公众号三大平台运营','产品原型设计与 AIGC 工具链落地成果','完整的能力证据闭环'],
           link:'https://canva.link/x22snc2sbb5vpwj' },
-        { id:'douyin', eyebrow:'字节跳动 · 抖音来客', title:'商家活动策划与 GMV 增长',
-          desc:'结合平台行运策略推出商家活动，策划搭建宣传视频，把控主题内容与视觉效果，赋能商家视频发文与直播搭建，推动商家 GMV 增长和用户留存',
-          image:'portfolio-pages/page-04.jpg', tag:'Platform · Douyin', x:580, y:100, width:280,
-          metrics:[{value:'+65%',label:'GMV 增长'},{value:'+40%',label:'用户留存提升'}],
+
+        { id:'theme-douyin', className:'portfolio-node--theme', eyebrow:'§ 平台运营 · 抖音', title:'抖音平台运营',
+          desc:'字节跳动 · 抖音来客：品牌商家增长运营，活动策划与 GMV 增长，搭建品牌化运营体系',
+          image:'portfolio-pages/page-03.jpg', tag:'Douyin', x:620, y:60, width:300,
+          metrics:[{value:'+65%',label:'GMV 增长'},{value:'+40%',label:'复投率'}],
           tools:['抖音来客','剪映','直播搭建'],
-          points:['结合平台行运策略，策划商家活动与宣传视频','主题内容与视觉效果把控，赋能商家视频发文','联动品牌内容与平台玩法，搭建直播间','推动商家 GMV 增长 65%，用户留存提升 40%'],
+          points:['结合平台行运策略推出商家活动','策划搭建宣传视频与直播间','推动商家 GMV 增长 65%'],
           link:'https://canva.link/x22snc2sbb5vpwj' },
-        { id:'xiaohongshu', eyebrow:'RW 数字游民社区 · 小红书', title:'小红书内容矩阵与数据运营',
-          desc:'小红书账号运营（自然流）：搭建账号内容体系与视觉风格，根据产品特征设计视觉内容，搭建账号矩阵。搭建数据看板复盘互动率、涨粉转化率等',
-          image:'portfolio-pages/page-05.jpg', tag:'Platform · RED', x:960, y:80, width:284,
-          metrics:[{value:'3.4-5w',label:'账号涨粉'},{value:'+42%',label:'笔记私信数'}],
+
+        { id:'theme-xhs', className:'portfolio-node--theme', eyebrow:'§ 平台运营 · 小红书', title:'小红书账号运营',
+          desc:'RW 数字游民社区：小红书矩阵搭建，自然流运营，内容体系与数据看板搭建',
+          image:'portfolio-pages/page-05.jpg', tag:'Xiaohongshu', x:1120, y:60, width:300,
+          metrics:[{value:'3.4→5w',label:'涨粉'},{value:'+42%',label:'私信数'}],
           tools:['小红书','Canva','千瓜数据'],
-          points:['自然流运营，搭建账号内容体系与视觉风格','根据账号后台流量分布与爆款内容做选题优化','搭建数据看板，复盘互动率、涨粉转化率、活跃热力图','运营 LiFE 系列内容，搭建账号矩阵，涨粉 3.4-5w'],
+          points:['搭建账号内容体系与视觉风格','数据看板复盘互动率、涨粉转化率','运营 LiFE 系列内容矩阵'],
           link:'https://canva.link/x22snc2sbb5vpwj' },
-        { id:'wechat', eyebrow:'RW 实验室 · 微信公众号', title:'公众号内容体系与媒介传播',
-          desc:'搭建账号内容体系，账号定位与风格拓展。内容策划×视觉设计一体化，与线下活动结合，同步宣发扩大媒介传播声量',
-          image:'portfolio-pages/page-08.jpg', tag:'Platform · WeChat', x:1380, y:120, width:280,
+
+        { id:'theme-wechat', className:'portfolio-node--theme', eyebrow:'§ 平台运营 · 公众号', title:'公众号内容矩阵',
+          desc:'RW 实验室：公众号内容体系搭建，账号定位与风格拓展，内容策划 × 视觉设计一体化',
+          image:'portfolio-pages/page-07.jpg', tag:'WeChat', x:1620, y:60, width:300,
           metrics:[{value:'+70%',label:'传播声量'},{value:'+28%',label:'阅读转化'}],
           tools:['公众号','共创文档','飞书'],
-          points:['搭建账号内容体系，账号定位与风格拓展','内容策划×视觉设计一体化，优化账号内容','与线下活动结合，同步宣发扩大媒介传播声量','编辑共创文档，搭建社区信息收集与协作流程'],
+          points:['搭建账号内容体系，定位与风格拓展','内容策划 × 视觉设计一体化','与线下活动结合同步宣发'],
           link:'https://canva.link/x22snc2sbb5vpwj' },
-        { id:'prototype', eyebrow:'腾讯产品经理创造营', title:'从 0→1 产品方案与功能原型',
-          desc:'腾讯产品经理创造营结课作业：从 0 到 1 完成产品方案设计与功能原型搭建，实现 AI 语音搜索功能原型，完成交互流程与界面设计',
-          image:'portfolio-pages/page-10.jpg', tag:'Product Design', x:320, y:550, width:290,
-          metrics:[{value:'0→1',label:'产品方案'},{value:'2',label:'完整原型页'}],
-          tools:['Figma','墨刀','黑刀','XMind'],
-          points:['从 0 到 1 完成产品方案设计与功能原型搭建','使用产品思维导图梳理信息架构与用户路径','输出相关内容与视觉，形成功能演示与效果呈现','优化功能细节与界面布局，确保产品体验闭环'],
+
+        { id:'theme-ai', className:'portfolio-node--theme', eyebrow:'§ AIGC 工具', title:'AI 工具使用介绍',
+          desc:'涵盖产品原型设计、ComfyUI 视觉生成、Lovart 广告创意、即梦 AI 换装、可灵 AI 视频等 AIGC 落地成果',
+          image:'portfolio-pages/page-09.jpg', tag:'AI Tools', x:700, y:680, width:340,
+          metrics:[{value:'6+',label:'AI 工具'},{value:'9',label:'页面'}],
+          tools:['ComfyUI','Lovart','即梦 AI','可灵 AI','Figma','墨刀'],
+          points:['产品原型设计与功能搭建','ComfyUI Prompt 工程与品牌视觉系列','Lovart 饮品广告与分镜视频','即梦 AI 换装生图 / 可灵 AI 电影感视频'],
           link:'https://canva.link/x22snc2sbb5vpwj' },
-        { id:'comfyui', eyebrow:'AIGC · ComfyUI', title:'产品视觉生成与 Prompt 工程',
-          desc:'使用 ComfyUI 构建 AI 视觉闭环：探索提示词结构，构图策略与色彩调性控制。构建 Prompt 数据库，批量生成到精修的完整流程',
-          image:'portfolio-pages/page-12.jpg', tag:'AIGC · Visual', x:780, y:480, width:292,
-          metrics:[{value:'11维',label:'Prompt 结构'},{value:'4+',label:'品牌视觉系列'}],
-          tools:['ComfyUI','Stable Diffusion','Photoshop'],
-          points:['产品视觉生成：宣传海报、视频素材、商业产品图（星巴克 / ZARA 等）','探索提示词结构，构图策略与色彩调性控制','构建 Prompt 数据库，批量生成到精修流程','MARIO 品牌系列：含完整 Prompt 结构解析表（11 个维度）'],
+
+        { id:'theme-ending', className:'portfolio-node--theme', eyebrow:'§ 结尾', title:'总结与联系',
+          desc:'能力总结、个人标签与联系方式',
+          image:'portfolio-pages/page-18.jpg', tag:'Ending', x:1700, y:680, width:280,
+          metrics:[], tools:[],
+          points:['完整能力矩阵总结','联系方式与社交账号'],
           link:'https://canva.link/x22snc2sbb5vpwj' },
-        { id:'lovart', eyebrow:'AIGC · Lovart', title:'饮品系列广告设计与分镜视频',
-          desc:'使用 Lovart 完成 9 款饮品系列广告设计，文本拆解与节奏/情绪设计到分镜头塑造与场景氛围控制，多模型搭配高效产出广告视频',
-          image:'portfolio-pages/page-14.jpg', tag:'AIGC · Ads', x:1200, y:520, width:292,
-          metrics:[{value:'9',label:'款口味广告'},{value:'8K HDR',label:'画质标准'}],
-          tools:['Lovart','Storyboard','Premiere'],
-          points:['完成 9 款饮品广告（Green Grape / Coconut Sea Salt / Peach Haze 等）','文本拆解与节奏、情绪设计，分镜头塑造与场景氛围控制','多模型搭配，高效产出广告视频','8K HDR 画质，画面节奏对齐分镜与产品图'],
+
+        // ═══════════════════════════════════════════
+        // PAGE NODES (children) — Atlas
+        // ═══════════════════════════════════════════
+        { id:'page-01', className:'portfolio-node--page', eyebrow:'Page 01', title:'封面',
+          desc:'作品集封面设计',
+          image:'portfolio-pages/page-01.jpg', tag:'', x:80, y:420, width:210,
+          metrics:[], tools:[], points:['作品集封面'],
           link:'https://canva.link/x22snc2sbb5vpwj' },
-        { id:'jimeng', eyebrow:'AIGC · 即梦 AI', title:'服装换装与模特生图',
-          desc:'上传服装图以及模特素材并进行 AI 生图，通过提示词控制生成四个角度的全身照，保证生图质量和产品还原精准度',
-          image:'portfolio-pages/page-16.jpg', tag:'AIGC · Fashion', x:560, y:860, width:286,
-          metrics:[{value:'4',label:'角度输出'},{value:'高精度',label:'产品还原'}],
-          tools:['即梦 AI','Photoshop'],
-          points:['上传服装图以及模特素材并进行 AI 生图','生成正面、侧面、正侧面、背面四个角度全身照','通过提示词保证生图质量和产品还原精准度','适用于品牌视觉、电商种草和虚拟拍摄场景'],
+        { id:'page-02', className:'portfolio-node--page', eyebrow:'Page 02', title:'目录与总览',
+          desc:'作品集目录与核心模块索引',
+          image:'portfolio-pages/page-02.jpg', tag:'', x:340, y:420, width:210,
+          metrics:[], tools:[], points:['作品集目录与模块索引'],
           link:'https://canva.link/x22snc2sbb5vpwj' },
-        { id:'keling', eyebrow:'AIGC · 可灵 AI', title:'电影感视频画面生成',
-          desc:'使用可灵 AI 生成 4K 电影画质视频画面，通过镜头语言和文字描述控制叙事调性和画面审美',
-          image:'portfolio-pages/page-17.jpg', tag:'AIGC · Cinematic', x:1020, y:820, width:286,
-          metrics:[{value:'4K',label:'电影画质'},{value:'广角',label:'构图类型'}],
-          tools:['可灵 AI','Runway','剪映'],
-          points:['电影级广角构图，光影对比戏剧化但不刺眼','细节极致丰富：画面带有细腻的电影胶片颗粒质感','色彩自然而富有层次，整体气氛宏大、静谧','完整 Prompt 示例展示镜头语言到画面审美的控制能力'],
+
+        // PAGE NODES — Douyin
+        { id:'page-03', className:'portfolio-node--page', eyebrow:'Page 03', title:'抖音运营策略',
+          desc:'品牌商家增长策略与平台行运分析',
+          image:'portfolio-pages/page-03.jpg', tag:'', x:580, y:400, width:210,
+          metrics:[], tools:['抖音来客'], points:['品牌增长策略'],
+          link:'https://canva.link/x22snc2sbb5vpwj' },
+        { id:'page-04', className:'portfolio-node--page', eyebrow:'Page 04', title:'商家活动策划',
+          desc:'商家大促品牌专场策划与 GMV 增长案例',
+          image:'portfolio-pages/page-04.jpg', tag:'', x:840, y:400, width:210,
+          metrics:[{value:'+65%',label:'GMV'}], tools:['剪映'], points:['活动策划案例'],
+          link:'https://canva.link/x22snc2sbb5vpwj' },
+
+        // PAGE NODES — Xiaohongshu
+        { id:'page-05', className:'portfolio-node--page', eyebrow:'Page 05', title:'小红书自然流运营',
+          desc:'账号内容体系搭建与视觉风格设计',
+          image:'portfolio-pages/page-05.jpg', tag:'', x:1080, y:400, width:210,
+          metrics:[], tools:['小红书'], points:['自然流运营策略'],
+          link:'https://canva.link/x22snc2sbb5vpwj' },
+        { id:'page-06', className:'portfolio-node--page', eyebrow:'Page 06', title:'数据运营与复盘',
+          desc:'数据看板搭建，复盘互动率与涨粉转化率',
+          image:'portfolio-pages/page-06.jpg', tag:'', x:1340, y:400, width:210,
+          metrics:[{value:'3.4→5w',label:'涨粉'}], tools:['千瓜数据'], points:['数据驱动运营'],
+          link:'https://canva.link/x22snc2sbb5vpwj' },
+
+        // PAGE NODES — WeChat
+        { id:'page-07', className:'portfolio-node--page', eyebrow:'Page 07', title:'公众号定位拓展',
+          desc:'账号定位与内容风格拓展',
+          image:'portfolio-pages/page-07.jpg', tag:'', x:1580, y:400, width:210,
+          metrics:[], tools:['公众号'], points:['账号定位策略'],
+          link:'https://canva.link/x22snc2sbb5vpwj' },
+        { id:'page-08', className:'portfolio-node--page', eyebrow:'Page 08', title:'媒介传播体系',
+          desc:'线上线下联动宣发，扩大媒介传播声量',
+          image:'portfolio-pages/page-08.jpg', tag:'', x:1840, y:400, width:210,
+          metrics:[{value:'+70%',label:'声量'}], tools:['飞书'], points:['传播体系搭建'],
+          link:'https://canva.link/x22snc2sbb5vpwj' },
+
+        // PAGE NODES — AI Tools
+        { id:'page-09', className:'portfolio-node--page', eyebrow:'Page 09', title:'产品原型概览',
+          desc:'产品方案设计方法论与工具',
+          image:'portfolio-pages/page-09.jpg', tag:'', x:140, y:1060, width:210,
+          metrics:[], tools:['Figma','墨刀'], points:['产品原型设计'],
+          link:'https://canva.link/x22snc2sbb5vpwj' },
+        { id:'page-10', className:'portfolio-node--page', eyebrow:'Page 10', title:'功能原型搭建',
+          desc:'从 0→1 完成产品方案与交互流程设计',
+          image:'portfolio-pages/page-10.jpg', tag:'', x:400, y:1060, width:210,
+          metrics:[{value:'0→1',label:'方案'}], tools:['XMind'], points:['功能原型搭建'],
+          link:'https://canva.link/x22snc2sbb5vpwj' },
+        { id:'page-11', className:'portfolio-node--page', eyebrow:'Page 11', title:'ComfyUI 概览',
+          desc:'ComfyUI 视觉生成工作流概览',
+          image:'portfolio-pages/page-11.jpg', tag:'', x:660, y:1060, width:210,
+          metrics:[], tools:['ComfyUI'], points:['AI 视觉工作流'],
+          link:'https://canva.link/x22snc2sbb5vpwj' },
+        { id:'page-12', className:'portfolio-node--page', eyebrow:'Page 12', title:'Prompt 工程',
+          desc:'提示词结构探索与产品视觉生成',
+          image:'portfolio-pages/page-12.jpg', tag:'', x:920, y:1060, width:210,
+          metrics:[{value:'11维',label:'Prompt'}], tools:['Stable Diffusion'], points:['Prompt 结构解析'],
+          link:'https://canva.link/x22snc2sbb5vpwj' },
+        { id:'page-13', className:'portfolio-node--page', eyebrow:'Page 13', title:'品牌视觉系列',
+          desc:'MARIO 品牌系列完整视觉设计',
+          image:'portfolio-pages/page-13.jpg', tag:'', x:1180, y:1060, width:210,
+          metrics:[{value:'4+',label:'品牌系列'}], tools:['Photoshop'], points:['品牌视觉设计'],
+          link:'https://canva.link/x22snc2sbb5vpwj' },
+        { id:'page-14', className:'portfolio-node--page', eyebrow:'Page 14', title:'Lovart 饮品广告',
+          desc:'9 款饮品系列广告设计',
+          image:'portfolio-pages/page-14.jpg', tag:'', x:1440, y:1060, width:210,
+          metrics:[{value:'9',label:'款广告'}], tools:['Lovart'], points:['饮品广告系列'],
+          link:'https://canva.link/x22snc2sbb5vpwj' },
+        { id:'page-15', className:'portfolio-node--page', eyebrow:'Page 15', title:'分镜与视频制作',
+          desc:'文本拆解、节奏设计到分镜头场景控制',
+          image:'portfolio-pages/page-15.jpg', tag:'', x:300, y:1400, width:210,
+          metrics:[{value:'8K',label:'HDR'}], tools:['Premiere'], points:['分镜视频制作'],
+          link:'https://canva.link/x22snc2sbb5vpwj' },
+        { id:'page-16', className:'portfolio-node--page', eyebrow:'Page 16', title:'即梦 AI 换装',
+          desc:'服装图上传 + AI 生图，四角度全身照',
+          image:'portfolio-pages/page-16.jpg', tag:'', x:560, y:1400, width:210,
+          metrics:[{value:'4',label:'角度'}], tools:['即梦 AI'], points:['AI 换装生图'],
+          link:'https://canva.link/x22snc2sbb5vpwj' },
+        { id:'page-17', className:'portfolio-node--page', eyebrow:'Page 17', title:'可灵 AI 视频',
+          desc:'4K 电影画质视频画面生成',
+          image:'portfolio-pages/page-17.jpg', tag:'', x:820, y:1400, width:210,
+          metrics:[{value:'4K',label:'画质'}], tools:['可灵 AI'], points:['电影感视频'],
+          link:'https://canva.link/x22snc2sbb5vpwj' },
+
+        // PAGE NODES — Ending
+        { id:'page-18', className:'portfolio-node--page', eyebrow:'Page 18', title:'能力总结',
+          desc:'核心能力矩阵与个人标签',
+          image:'portfolio-pages/page-18.jpg', tag:'', x:1660, y:1060, width:210,
+          metrics:[], tools:[], points:['能力总结'],
+          link:'https://canva.link/x22snc2sbb5vpwj' },
+        { id:'page-19', className:'portfolio-node--page', eyebrow:'Page 19', title:'联系方式',
+          desc:'联系方式与社交平台',
+          image:'portfolio-pages/page-19.jpg', tag:'', x:1920, y:1060, width:210,
+          metrics:[], tools:[], points:['联系方式'],
           link:'https://canva.link/x22snc2sbb5vpwj' }
-      ];
+      ]];
 
       var portfolioLinks = [
-        ['atlas','douyin'],['atlas','prototype'],['atlas','comfyui'],
-        ['douyin','xiaohongshu'],['xiaohongshu','wechat'],
-        ['prototype','comfyui'],['comfyui','lovart'],
-        ['comfyui','jimeng'],['comfyui','keling'],
-        ['lovart','keling'],['jimeng','keling']
-      ];
+        // Theme → Page connections
+        ['theme-atlas','page-01'],['theme-atlas','page-02'],
+        ['theme-douyin','page-03'],['theme-douyin','page-04'],
+        ['theme-xhs','page-05'],['theme-xhs','page-06'],
+        ['theme-wechat','page-07'],['theme-wechat','page-08'],
+        ['theme-ai','page-09'],['theme-ai','page-10'],['theme-ai','page-11'],
+        ['theme-ai','page-12'],['theme-ai','page-13'],['theme-ai','page-14'],
+        ['theme-ai','page-15'],['theme-ai','page-16'],['theme-ai','page-17'],
+        ['theme-ending','page-18'],['theme-ending','page-19'],
+        // Theme inter-connections
+        ['theme-atlas','theme-douyin'],['theme-atlas','theme-ai'],
+        ['theme-douyin','theme-xhs'],['theme-xhs','theme-wechat'],
+        ['theme-wechat','theme-ending'],['theme-ai','theme-ending']
+      ]];
 
       var nodeMap = new Map(portfolioNodes.map(function(n){return[n.id,n]}));
-      var view = {x:80, y:40, scale:0.52};
+      var view = {x:60, y:30, scale:0.38};
       var pan = {active:false, startX:0, startY:0, originX:0, originY:0};
-      var activePortfolioNode = 'atlas';
+      var activePortfolioNode = 'theme-atlas';
 
       function clamp(v,min,max){return Math.min(Math.max(v,min),max)}
       function getNodeCenter(n){
-        var w=n.width||260, h=n.className==='portfolio-node--hero'?344:312;
+        var w=n.width||260, h=n.className&&n.className.indexOf('theme')>=0?320:(n.className&&n.className.indexOf('page')>=0?240:312);
         return {x:n.x+w/2, y:n.y+h/2};
       }
       function renderPortfolioNodes(){
@@ -3102,7 +3491,7 @@
           var fc=getNodeCenter(f), tc=getNodeCenter(t), mid=(tc.x-fc.x)*0.38;
           return '<path d="M '+fc.x+' '+fc.y+' C '+(fc.x+mid)+' '+fc.y+' '+(tc.x-mid)+' '+tc.y+' '+tc.x+' '+tc.y+'" fill="none" stroke="rgba(51,108,255,0.22)" stroke-width="2"/>';
         }).join('');
-        portfolioEdges.setAttribute('viewBox','0 0 2200 1500');
+        portfolioEdges.setAttribute('viewBox','0 0 3600 2400');
         portfolioEdges.innerHTML = paths;
       }
       function renderPortfolioView(){
@@ -3135,9 +3524,9 @@
         if(focus) focusPortfolioNode(id);
       }
       function resetPortfolioView(){
-        view.scale=window.innerWidth<980?0.36:0.52;
-        view.x=window.innerWidth<980?16:80;
-        view.y=window.innerWidth<980?20:40;
+        view.scale=window.innerWidth<980?0.26:0.38;
+        view.x=window.innerWidth<980?10:60;
+        view.y=window.innerWidth<980?10:30;
         renderPortfolioView();
       }
       function openPortfolio(id){
@@ -3146,7 +3535,7 @@
         document.body.style.overflow='hidden';
         lenis.stop();
         resetPortfolioView();
-        setActivePortfolioNode(id||activePortfolioNode||'atlas',true);
+        setActivePortfolioNode(id||activePortfolioNode||'theme-atlas',true);
       }
       function closePortfolio(){
         portfolioModal.classList.remove('is-open');
@@ -3158,7 +3547,7 @@
       renderPortfolioNodes(); renderPortfolioEdges();
       updateInspector(nodeMap.get(activePortfolioNode)); renderPortfolioView();
 
-      document.querySelectorAll('[data-open-portfolio]').forEach(function(b){b.addEventListener('click',function(){openPortfolio('atlas')})});
+      document.querySelectorAll('[data-open-portfolio]').forEach(function(b){b.addEventListener('click',function(){openPortfolio('theme-atlas')})});
       document.querySelectorAll('[data-open-portfolio-node]').forEach(function(b){b.addEventListener('click',function(){openPortfolio(b.getAttribute('data-open-portfolio-node'))})});
       portfolioModal.addEventListener('click',function(e){
         if(e.target.closest('[data-close-portfolio]')){closePortfolio();return;}
@@ -3191,7 +3580,7 @@
         var r=portfolioStage.getBoundingClientRect();
         var px=e.clientX-r.left, py=e.clientY-r.top;
         var wx=(px-view.x)/view.scale, wy=(py-view.y)/view.scale;
-        var ns=clamp(view.scale*(e.deltaY>0?0.92:1.08),0.36,1.32);
+        var ns=clamp(view.scale*(e.deltaY>0?0.92:1.08),0.22,1.5);
         view.x=px-wx*ns; view.y=py-wy*ns; view.scale=ns;
         renderPortfolioView();
       },{passive:false});
