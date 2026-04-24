@@ -1690,6 +1690,153 @@
       transform-style: preserve-3d;
     }
 
+    /* ============================================================
+       PORTFOLIO WHEEL — Inkwell-style 3D rotating showcase
+       ============================================================ */
+    .portfolio-scene {
+      padding: 0 !important;
+      max-width: none !important;
+    }
+    .portfolio-intro {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 6rem var(--pad-h) 2rem;
+    }
+    .portfolio-wheel-pin {
+      position: relative;
+    }
+    .portfolio-wheel-wrap {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      min-height: 580px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      perspective: 1200px;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse at center, rgba(51,108,255,0.03) 0%, transparent 55%),
+        radial-gradient(ellipse at 80% 80%, rgba(255,216,77,0.05) 0%, transparent 45%);
+    }
+    .portfolio-wheel-center {
+      position: absolute;
+      text-align: center;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .portfolio-wheel-center .wheel-label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.66rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.7rem;
+    }
+    .portfolio-wheel-center h3 {
+      font-family: var(--font-serif-cn);
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 0.5rem;
+      line-height: 1.2;
+    }
+    .portfolio-wheel-center .wheel-hint {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.66rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+    }
+    .wheel-track {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+    .wheel-card {
+      position: absolute;
+      width: 185px;
+      left: 50%;
+      top: 50%;
+      margin-left: -92px;
+      margin-top: -142px;
+      cursor: pointer;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(186,198,218,0.55);
+      box-shadow: 0 20px 44px rgba(20,31,58,0.1);
+      transition: box-shadow 0.35s ease, border-color 0.35s ease;
+      backface-visibility: hidden;
+      background: rgba(255,255,255,0.97);
+      padding: 0;
+      outline: none;
+      font-family: inherit;
+    }
+    .wheel-card:hover {
+      box-shadow: 0 28px 60px rgba(20,31,58,0.18);
+      border-color: rgba(51,108,255,0.4);
+    }
+    .wheel-card img {
+      width: 100%;
+      height: 215px;
+      object-fit: cover;
+      display: block;
+    }
+    .wheel-card__info {
+      padding: 0.65rem 0.8rem 0.7rem;
+      text-align: left;
+    }
+    .wheel-card__info span {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.56rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.2rem;
+    }
+    .wheel-card__info strong {
+      display: block;
+      font-family: var(--font-serif-cn);
+      font-size: 0.88rem;
+      font-weight: 500;
+      line-height: 1.3;
+      color: var(--ink);
+    }
+    .portfolio-wheel-cta {
+      text-align: center;
+      padding: 2.5rem var(--pad-h) 3.5rem;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+    .portfolio-wheel-cta .placeholder__meta {
+      justify-content: center;
+      margin-top: 1.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .portfolio-wheel-wrap {
+        height: 75vh;
+        min-height: 460px;
+        perspective: 800px;
+      }
+      .wheel-card {
+        width: 125px;
+        margin-left: -62px;
+        margin-top: -105px;
+        border-radius: 14px;
+      }
+      .wheel-card img { height: 145px; }
+      .wheel-card__info { padding: 0.45rem 0.55rem; }
+      .wheel-card__info strong { font-size: 0.74rem; }
+      .wheel-card__info span { font-size: 0.5rem; }
+      .portfolio-wheel-center h3 { font-size: 1.4rem; }
+    }
+
   </style>
 </head>
 
@@ -2154,58 +2301,72 @@
   <!-- ============================================================
        § 02 PORTFOLIO — 无限画布节点浏览
        ============================================================ -->
-  <section class="section" id="portfolio">
-    <div class="portfolio-shell reveal">
-      <div class="portfolio-shell__head">
-        <div><h3>创意作品集 · 无限画布</h3></div>
-        <button class="portfolio-launch" type="button" data-open-portfolio>打开作品集画布</button>
+  <section class="portfolio-scene" id="portfolio">
+    <div class="portfolio-intro">
+      <div class="kicker">
+        <span class="kicker__rule"></span>
+        <span class="kicker__label">§ 02 / Portfolio</span>
       </div>
-      <p class="portfolio-shell__lede">
-        作品集涵盖抖音、小红书、公众号三大平台运营实操，产品原型设计，以及 ComfyUI / Lovart / 即梦 / 可灵四大 AIGC 工具落地成果。点击节点或打开画布查看每个项目的完整数据与方法
+      <h2 class="section__title">创意作品集</h2>
+      <p class="section__lede">
+        作品集涵盖抖音、小红书、公众号三大平台运营实操，产品原型设计，以及 ComfyUI / Lovart / 即梦 / 可灵四大 AIGC 工具落地成果。滚动探索 3D 轮盘，点击任意卡片查看详情
       </p>
-      <div class="portfolio-window">
-        <div class="window-bar">
-          <div class="window-bar__dots" aria-hidden="true"><span></span><span></span><span></span></div>
-          <div class="window-bar__title">portfolio.canvas / interactive preview</div>
+    </div>
+
+    <div class="portfolio-wheel-pin">
+      <div class="portfolio-wheel-wrap">
+        <div class="portfolio-wheel-center">
+          <span class="wheel-label">§ 02 · Portfolio Wheel</span>
+          <h3>创意作品集</h3>
+          <span class="wheel-hint">↓ scroll to rotate</span>
         </div>
-        <div class="portfolio-preview-canvas">
-          <svg class="portfolio-preview-edges" viewBox="0 0 1000 470" aria-hidden="true">
-            <path d="M 180 130 C 280 130 310 108 400 108" fill="none" stroke="rgba(51,108,255,0.24)" stroke-width="2"/>
-            <path d="M 520 108 C 600 108 610 125 672 125" fill="none" stroke="rgba(51,108,255,0.2)" stroke-width="2"/>
-            <path d="M 180 190 C 210 260 220 300 240 334" fill="none" stroke="rgba(132,145,175,0.26)" stroke-width="1.6" stroke-dasharray="5 7"/>
-            <path d="M 340 334 C 410 334 440 324 510 324" fill="none" stroke="rgba(51,108,255,0.18)" stroke-width="2"/>
-            <path d="M 620 324 C 690 324 720 315 790 315" fill="none" stroke="rgba(255,216,77,0.28)" stroke-width="2"/>
-          </svg>
-          <button class="portfolio-preview-node portfolio-preview-node--atlas" type="button" data-open-portfolio-node="atlas">
-            <img src="portfolio-pages/page-02.jpg" alt="作品集总览" />
-            <div><span>Portfolio</span><strong>作品集总览</strong><em>4 大模块 · 6+ AIGC 工具 · 完整能力证据链</em></div>
+        <div class="wheel-track" id="wheelTrack">
+          <button class="wheel-card" type="button" data-open-portfolio-node="atlas" style="transform: rotateY(0deg) translateZ(320px)">
+            <img src="portfolio-pages/page-02.jpg" alt="作品集总览" loading="lazy" />
+            <div class="wheel-card__info"><span>Portfolio</span><strong>作品集总览</strong></div>
           </button>
-          <button class="portfolio-preview-node portfolio-preview-node--douyin" type="button" data-open-portfolio-node="douyin">
-            <img src="portfolio-pages/page-04.jpg" alt="抖音平台运营" />
-            <div><span>抖音</span><strong>抖音平台运营</strong><em>GMV +65% · 商家活动策划 · 直播搭建</em></div>
+          <button class="wheel-card" type="button" data-open-portfolio-node="douyin" style="transform: rotateY(40deg) translateZ(320px)">
+            <img src="portfolio-pages/page-04.jpg" alt="抖音平台运营" loading="lazy" />
+            <div class="wheel-card__info"><span>抖音</span><strong>商家活动策划</strong></div>
           </button>
-          <button class="portfolio-preview-node portfolio-preview-node--xiaohongshu" type="button" data-open-portfolio-node="xiaohongshu">
-            <img src="portfolio-pages/page-05.jpg" alt="小红书内容矩阵" />
-            <div><span>小红书</span><strong>小红书内容矩阵</strong><em>涨粉 3.4-5w · 数据看板 · 账号矩阵</em></div>
+          <button class="wheel-card" type="button" data-open-portfolio-node="xiaohongshu" style="transform: rotateY(80deg) translateZ(320px)">
+            <img src="portfolio-pages/page-05.jpg" alt="小红书内容矩阵" loading="lazy" />
+            <div class="wheel-card__info"><span>小红书</span><strong>内容矩阵运营</strong></div>
           </button>
-          <button class="portfolio-preview-node portfolio-preview-node--comfyui" type="button" data-open-portfolio-node="comfyui">
-            <img src="portfolio-pages/page-12.jpg" alt="ComfyUI 产品视觉" />
-            <div><span>ComfyUI</span><strong>产品视觉生成</strong><em>11 维 Prompt 结构 · 批量生成流程</em></div>
+          <button class="wheel-card" type="button" data-open-portfolio-node="wechat" style="transform: rotateY(120deg) translateZ(320px)">
+            <img src="portfolio-pages/page-08.jpg" alt="公众号内容" loading="lazy" />
+            <div class="wheel-card__info"><span>公众号</span><strong>媒介传播体系</strong></div>
           </button>
-          <button class="portfolio-preview-node portfolio-preview-node--lovart" type="button" data-open-portfolio-node="lovart">
-            <img src="portfolio-pages/page-14.jpg" alt="Lovart 饮品广告" />
-            <div><span>Lovart</span><strong>饮品广告创意</strong><em>9 款口味 · 8K HDR · 分镜头视频</em></div>
+          <button class="wheel-card" type="button" data-open-portfolio-node="prototype" style="transform: rotateY(160deg) translateZ(320px)">
+            <img src="portfolio-pages/page-10.jpg" alt="产品原型" loading="lazy" />
+            <div class="wheel-card__info"><span>Product</span><strong>产品功能原型</strong></div>
           </button>
-          <button class="portfolio-preview-node portfolio-preview-node--keling" type="button" data-open-portfolio-node="keling">
-            <img src="portfolio-pages/page-17.jpg" alt="可灵 AI 电影感" />
-            <div><span>可灵 AI</span><strong>电影感视频画面</strong><em>4K 电影画质 · 广角构图 · 叙事控制</em></div>
+          <button class="wheel-card" type="button" data-open-portfolio-node="comfyui" style="transform: rotateY(200deg) translateZ(320px)">
+            <img src="portfolio-pages/page-12.jpg" alt="ComfyUI" loading="lazy" />
+            <div class="wheel-card__info"><span>ComfyUI</span><strong>产品视觉生成</strong></div>
+          </button>
+          <button class="wheel-card" type="button" data-open-portfolio-node="lovart" style="transform: rotateY(240deg) translateZ(320px)">
+            <img src="portfolio-pages/page-14.jpg" alt="Lovart" loading="lazy" />
+            <div class="wheel-card__info"><span>Lovart</span><strong>饮品广告创意</strong></div>
+          </button>
+          <button class="wheel-card" type="button" data-open-portfolio-node="jimeng" style="transform: rotateY(280deg) translateZ(320px)">
+            <img src="portfolio-pages/page-16.jpg" alt="即梦 AI" loading="lazy" />
+            <div class="wheel-card__info"><span>即梦 AI</span><strong>服装换装生图</strong></div>
+          </button>
+          <button class="wheel-card" type="button" data-open-portfolio-node="keling" style="transform: rotateY(320deg) translateZ(320px)">
+            <img src="portfolio-pages/page-17.jpg" alt="可灵 AI" loading="lazy" />
+            <div class="wheel-card__info"><span>可灵 AI</span><strong>电影感视频</strong></div>
           </button>
         </div>
       </div>
-      <div class="placeholder__meta">
-        <span>Mode: <strong>Infinite canvas / node graph</strong></span>
-        <span>Assets: <strong>PDF portfolio · Canva source</strong></span>
-        <span><a href="https://canva.link/x22snc2sbb5vpwj" target="_blank" rel="noreferrer">Canva source ↗</a></span>
+
+      <div class="portfolio-wheel-cta">
+        <button class="portfolio-launch" type="button" data-open-portfolio>打开完整画布 →</button>
+        <div class="placeholder__meta">
+          <span>Mode: <strong>3D Wheel / Infinite Canvas</strong></span>
+          <span>Assets: <strong>PDF portfolio · Canva source</strong></span>
+          <span><a href="https://canva.link/x22snc2sbb5vpwj" target="_blank" rel="noreferrer">Canva source ↗</a></span>
+        </div>
       </div>
     </div>
   </section>
@@ -2419,6 +2580,7 @@
           document.body.style.overflow = '';
           document.body.classList.add('is-loaded');
           initScrollAnimations();
+          initPortfolioWheel();
           setTimeout(function() {
             var glow = document.getElementById('cursorGlow');
             if (glow) glow.classList.add('is-visible');
@@ -2602,6 +2764,125 @@
             y: -40, opacity: 0.3, ease: 'none'
           });
         }
+      }
+
+
+      /* ============================================================
+         PORTFOLIO WHEEL — Inkwell-style 3D rotating showcase
+         ============================================================ */
+      function initPortfolioWheel() {
+        var wheelTrack = document.getElementById('wheelTrack');
+        var wheelPin = document.querySelector('.portfolio-wheel-pin');
+        if (!wheelTrack || !wheelPin) return;
+
+        var radius = window.innerWidth <= 768 ? 180 : 320;
+
+        // Update card translateZ for current screen size
+        document.querySelectorAll('.wheel-card').forEach(function(card) {
+          var t = card.style.transform;
+          card.style.transform = t.replace(/translateZ\(\d+px\)/, 'translateZ(' + radius + 'px)');
+        });
+
+        // Build scroll-pinned timeline
+        var wheelTL = gsap.timeline({
+          scrollTrigger: {
+            trigger: wheelPin,
+            start: 'top top',
+            end: '+=280%',
+            pin: true,
+            scrub: 1.5,
+            anticipatePin: 1
+          }
+        });
+
+        // Phase 1 (0-1): Spin 240deg, no tilt
+        wheelTL.to(wheelTrack, {
+          rotateY: 240,
+          duration: 1,
+          ease: 'none'
+        }, 0);
+
+        // Phase 2 (1-2): Spin another 240deg + tilt for drama
+        wheelTL.to(wheelTrack, {
+          rotateY: 480,
+          rotateX: -14,
+          duration: 1,
+          ease: 'none'
+        }, 1);
+
+        // Phase 3 (2-3): Final 240deg + slight scale + tilt back
+        wheelTL.to(wheelTrack, {
+          rotateY: 720,
+          rotateX: -6,
+          scale: 1.04,
+          duration: 1,
+          ease: 'none'
+        }, 2);
+
+        // Center text fades out as wheel starts rotating
+        wheelTL.to('.portfolio-wheel-center', {
+          opacity: 0,
+          scale: 0.85,
+          duration: 0.4,
+          ease: 'power2.in'
+        }, 0.1);
+
+        // Intro animations (these fire on scroll into view, before pinning)
+        var intro = document.querySelector('.portfolio-intro');
+        if (intro) {
+          var kicker = intro.querySelector('.kicker');
+          var title = intro.querySelector('.section__title');
+          var lede = intro.querySelector('.section__lede');
+          if (kicker) gsap.from(kicker, {
+            scrollTrigger: { trigger: intro, start: 'top 86%' },
+            opacity: 0, x: -30, duration: 0.8, ease: 'power2.out'
+          });
+          if (title) gsap.from(title, {
+            scrollTrigger: { trigger: intro, start: 'top 86%' },
+            opacity: 0, y: 50, duration: 1.2, ease: 'power3.out', delay: 0.1
+          });
+          if (lede) gsap.from(lede, {
+            scrollTrigger: { trigger: intro, start: 'top 86%' },
+            opacity: 0, y: 30, duration: 1, ease: 'power2.out', delay: 0.2
+          });
+        }
+
+        // Cards entrance
+        gsap.from('.wheel-card', {
+          scrollTrigger: { trigger: '.portfolio-wheel-wrap', start: 'top 80%' },
+          opacity: 0, scale: 0.5,
+          duration: 0.7, stagger: 0.05, ease: 'back.out(1.2)'
+        });
+
+        // Center text entrance
+        gsap.from('.portfolio-wheel-center', {
+          scrollTrigger: { trigger: '.portfolio-wheel-wrap', start: 'top 82%' },
+          opacity: 0, scale: 0.7,
+          duration: 1, ease: 'power3.out'
+        });
+
+        // CTA entrance
+        gsap.from('.portfolio-wheel-cta', {
+          scrollTrigger: { trigger: '.portfolio-wheel-cta', start: 'top 85%' },
+          opacity: 0, y: 30,
+          duration: 0.8, ease: 'power2.out'
+        });
+
+        // Handle resize
+        var resizeTimer;
+        window.addEventListener('resize', function() {
+          clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(function() {
+            var newR = window.innerWidth <= 768 ? 180 : 320;
+            if (newR !== radius) {
+              radius = newR;
+              document.querySelectorAll('.wheel-card').forEach(function(card) {
+                var t = card.style.transform;
+                card.style.transform = t.replace(/translateZ\(\d+px\)/, 'translateZ(' + radius + 'px)');
+              });
+            }
+          }, 250);
+        });
       }
 
       /* ============================================================
