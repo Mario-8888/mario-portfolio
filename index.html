@@ -1885,101 +1885,68 @@
     /* Cursor glow — frosted-glass-aware ambient light */
     .cursor-glow {
       position: fixed;
-      width: clamp(420px, 32vw, 580px);
-      height: clamp(420px, 32vw, 580px);
+      width: clamp(440px, 34vw, 620px);
+      height: clamp(440px, 34vw, 620px);
       border-radius: 50%;
-      background:
-        radial-gradient(circle at 50% 50%,
-          rgba(255, 252, 247, 0.13) 0%,
-          rgba(255, 248, 238, 0.1) 12%,
-          rgba(255, 244, 230, 0.075) 24%,
-          rgba(255, 239, 221, 0.04) 38%,
-          rgba(255, 236, 217, 0.015) 56%,
-          transparent 72%);
       pointer-events: none;
       z-index: 0;
       transform: translate3d(-50%, -50%, 0);
       will-change: left, top, opacity;
-      filter: blur(88px) saturate(1.03);
       opacity: 0;
-      transition: opacity 0.45s ease;
+      transition: opacity 0.6s ease;
     }
     .cursor-glow::before,
     .cursor-glow::after {
       content: '';
       position: absolute;
-      inset: 0;
-      border-radius: inherit;
+      border-radius: 50%;
       pointer-events: none;
     }
     .cursor-glow::before {
-      inset: 13%;
+      inset: 8%;
       background: radial-gradient(circle,
-        rgba(255,255,255,0.14) 0%,
-        rgba(255,249,239,0.1) 26%,
-        rgba(255,244,228,0.035) 54%,
-        transparent 78%);
-      filter: blur(34px);
-      opacity: 0.88;
+        rgba(255, 253, 248, 0.20) 0%,
+        rgba(255, 250, 240, 0.14) 15%,
+        rgba(255, 246, 232, 0.08) 30%,
+        rgba(255, 242, 224, 0.04) 48%,
+        rgba(255, 238, 218, 0.01) 65%,
+        transparent 82%);
+      filter: blur(60px);
     }
     .cursor-glow::after {
-      inset: -10%;
+      inset: -18%;
       background: radial-gradient(circle,
-        rgba(255,246,231,0.065) 0%,
-        rgba(255,240,222,0.028) 42%,
-        transparent 72%);
-      filter: blur(112px);
-      opacity: 0.72;
+        rgba(255, 248, 235, 0.08) 0%,
+        rgba(255, 243, 226, 0.04) 35%,
+        rgba(255, 239, 220, 0.015) 55%,
+        transparent 78%);
+      filter: blur(120px);
     }
-    .cursor-glow.is-visible { opacity: 0.52; }
+    .cursor-glow.is-visible { opacity: 1; }
     @media (hover: none) { .cursor-glow { display: none; } }
 
-    /* Glass refraction — light hitting glass panels */
+    /* Glass refraction — light refracting through frosted glass */
     .glass-lit {
       position: relative;
       isolation: isolate;
-      overflow: hidden;
     }
-    .glass-lit::before,
     .glass-lit::after {
       content: '';
       position: absolute;
       inset: 0;
       border-radius: inherit;
       pointer-events: none;
-      opacity: 0;
-      transition: opacity 0.24s ease;
-    }
-    .glass-lit::before {
-      inset: -20%;
-      background: radial-gradient(
-        260px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-        rgba(255,255,255,0.24) 0%,
-        rgba(255,251,243,0.14) 16%,
-        rgba(255,244,228,0.07) 34%,
-        transparent 72%
-      );
-      filter: blur(34px);
-      z-index: 1;
-    }
-    .glass-lit::after {
-      background:
-        linear-gradient(145deg,
-          rgba(255,255,255,0.26),
-          rgba(255,255,255,0.02) 36%,
-          rgba(255,255,255,0.01) 64%,
-          rgba(255,255,255,0.18)),
-        radial-gradient(
-          180px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-          rgba(255,255,255,0.24) 0%,
-          rgba(255,248,236,0.12) 28%,
-          transparent 76%);
-      box-shadow:
-        inset 0 1px 0 rgba(255,255,255,0.34),
-        inset 0 0 0 1px rgba(255,255,255,0.12);
       z-index: 2;
+      background: radial-gradient(
+        220px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        rgba(255, 253, 245, 0.18) 0%,
+        rgba(255, 250, 238, 0.10) 22%,
+        rgba(255, 246, 230, 0.04) 45%,
+        transparent 72%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      mix-blend-mode: overlay;
     }
-    .glass-lit.is-lit::before,
     .glass-lit.is-lit::after {
       opacity: 1;
     }
@@ -2027,13 +1994,14 @@
     .portfolio-wheel-wrap {
       position: relative;
       width: 100%;
-      height: 100vh;
-      min-height: 580px;
+      height: 80vh;
+      min-height: 520px;
+      max-height: 700px;
       display: flex;
       align-items: center;
       justify-content: center;
       perspective: 1200px;
-      overflow: hidden;
+      overflow: visible;
       background:
         radial-gradient(ellipse at center, rgba(51,108,255,0.03) 0%, transparent 55%),
         radial-gradient(ellipse at 80% 80%, rgba(255,216,77,0.05) 0%, transparent 45%);
@@ -2126,22 +2094,27 @@
       margin-left: -92px;
       margin-top: -142px;
       cursor: pointer;
-      border-radius: 20px;
+      border-radius: 22px;
       overflow: hidden;
-      border: 1px solid rgba(186,198,218,0.55);
-      box-shadow: 0 20px 44px rgba(20,31,58,0.1);
-      transition: box-shadow 0.35s ease, border-color 0.35s ease;
+      border: 1.5px solid rgba(255,255,255,0.5);
+      background: rgba(255,255,255,0.72);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      box-shadow: 0 16px 40px rgba(20,31,58,0.10), inset 0 1px 0 rgba(255,255,255,0.6);
+      transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.28s ease, border-color 0.28s ease;
       backface-visibility: hidden;
-      background: rgba(255,255,255,0.97);
       padding: 0;
       outline: none;
       font-family: inherit;
     }
     .wheel-card:hover {
-      box-shadow: 0 16px 44px rgba(0, 0, 0, 0.14), inset 0 1px 0 rgba(255,255,255,0.6) !important;
-      border-color: rgba(51, 108, 255, 0.35) !important;
-      backdrop-filter: blur(26px);
-      -webkit-backdrop-filter: blur(26px);
+      transform: scale(1.06) !important;
+      box-shadow: 0 22px 52px rgba(20,31,58,0.16), inset 0 1px 0 rgba(255,255,255,0.7) !important;
+      border-color: rgba(51, 108, 255, 0.3) !important;
+    }
+    .wheel-card:active {
+      transform: scale(0.97) !important;
+      transition-duration: 0.12s;
     }
     .wheel-card img {
       width: 100%;
@@ -2236,15 +2209,7 @@
       box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255,255,255,0.5) !important;
     }
 
-    /* Liquid Glass — Wheel cards */
-    .wheel-card {
-      background: rgba(255, 255, 255, 0.65) !important;
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.45) !important;
-      border-radius: 24px !important;
-      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255,255,255,0.5) !important;
-    }
+
 
     /* Liquid Glass — Portfolio modal */
     .portfolio-modal__window {
@@ -3114,6 +3079,7 @@
       <div class="portfolio-wheel-cta">
         <p class="wheel-lede">作品集涵盖抖音、小红书、公众号三大平台运营实操，产品原型设计，以及 ComfyUI / Lovart / 即梦 / 可灵四大 AIGC 工具落地成果。点击卡片查看详情</p>
         <div class="portfolio-cta-buttons">
+          <a href="https://canva.link/x22snc2sbb5vpwj" target="_blank" rel="noreferrer" class="btn-canva">查看完整 Canva 作品集 <span class="btn__arrow">↗</span></a>
           <button class="portfolio-launch" type="button" data-open-portfolio>打开完整画布 →</button>
         </div>
         <div class="placeholder__meta">
@@ -3560,38 +3526,136 @@
 
         var radius = window.innerWidth <= 768 ? 180 : 320;
         var cardCount = cards.length;
+        var degPerCard = 360 / cardCount;
+        var currentAngle = 0;
+        var targetAngle = 0;
+        var maxAngle = degPerCard * (cardCount - 1);
+        var animFrame = null;
 
         cards.forEach(function(card) {
           var t = card.style.transform;
           card.style.transform = t.replace(/translateZ\(\d+px\)/, 'translateZ(' + radius + 'px)');
         });
 
-        var wheelTL = gsap.timeline({
-          scrollTrigger: {
-            trigger: wheelPin,
-            start: 'top top',
-            end: '+=350%',
-            pin: true,
-            scrub: 1,
-            anticipatePin: 1
+        function applyWheel(angle) {
+          currentAngle = angle;
+          wheelTrack.style.transform = 'rotateY(' + (-angle) + 'deg)';
+        }
+
+        function animateToTarget() {
+          var diff = targetAngle - currentAngle;
+          if (Math.abs(diff) < 0.3) {
+            applyWheel(targetAngle);
+            animFrame = null;
+            return;
+          }
+          applyWheel(currentAngle + diff * 0.14);
+          animFrame = requestAnimationFrame(animateToTarget);
+        }
+
+        function snapToNearest() {
+          var idx = Math.round(targetAngle / degPerCard);
+          idx = Math.max(0, Math.min(idx, cardCount - 1));
+          targetAngle = idx * degPerCard;
+          if (!animFrame) animFrame = requestAnimationFrame(animateToTarget);
+        }
+
+        // Scroll: short/slow = rotate cards, long/fast = pass to page
+        var scrollAccum = 0;
+        var scrollTimer = null;
+        var SCROLL_THRESHOLD = 80;
+
+        wheelWrap.addEventListener('wheel', function(e) {
+          var atStart = targetAngle <= 0 && e.deltaY < 0;
+          var atEnd = targetAngle >= maxAngle && e.deltaY > 0;
+          if (atStart || atEnd) return;
+
+          scrollAccum += Math.abs(e.deltaY);
+
+          if (scrollAccum > SCROLL_THRESHOLD * 3) {
+            scrollAccum = 0;
+            return;
+          }
+
+          e.preventDefault();
+
+          targetAngle += e.deltaY * 0.15;
+          targetAngle = Math.max(-degPerCard * 0.3, Math.min(targetAngle, maxAngle + degPerCard * 0.3));
+
+          if (!animFrame) animFrame = requestAnimationFrame(animateToTarget);
+
+          clearTimeout(scrollTimer);
+          scrollTimer = setTimeout(function() {
+            scrollAccum = 0;
+            snapToNearest();
+          }, 180);
+        }, { passive: false });
+
+        // Drag interaction
+        var drag = { active: false, moved: false, startX: 0, lastX: 0, velocity: 0, baseAngle: 0 };
+        var inertiaFrame = null;
+
+        wheelWrap.addEventListener('pointerdown', function(e) {
+          if (e.button !== 0 || e.target.closest('a')) return;
+          drag.active = true;
+          drag.moved = false;
+          drag.startX = e.clientX;
+          drag.lastX = e.clientX;
+          drag.velocity = 0;
+          drag.baseAngle = currentAngle;
+          if (animFrame) { cancelAnimationFrame(animFrame); animFrame = null; }
+          if (inertiaFrame) { cancelAnimationFrame(inertiaFrame); inertiaFrame = null; }
+          wheelWrap.setPointerCapture(e.pointerId);
+          wheelWrap.style.cursor = 'grabbing';
+        });
+
+        wheelWrap.addEventListener('pointermove', function(e) {
+          if (!drag.active) return;
+          var dx = e.clientX - drag.startX;
+          if (Math.abs(dx) > 4) drag.moved = true;
+          if (drag.moved) {
+            drag.velocity = (e.clientX - drag.lastX) * 0.5;
+            drag.lastX = e.clientX;
+            var newAngle = drag.baseAngle - dx * 0.3;
+            newAngle = Math.max(-degPerCard * 0.5, Math.min(newAngle, maxAngle + degPerCard * 0.5));
+            targetAngle = newAngle;
+            applyWheel(newAngle);
           }
         });
 
-        // Phase 1 (0-1): slow rotation + center text fades out
-        wheelTL.to(wheelTrack, { rotateY: 180, duration: 1, ease: 'none' }, 0);
-        wheelTL.to('.portfolio-wheel-center', { opacity: 0, scale: 0.8, duration: 0.5, ease: 'power2.in' }, 0);
+        function endDrag(e) {
+          if (!drag.active) return;
+          drag.active = false;
+          wheelWrap.style.cursor = 'grab';
+          if (e && typeof e.pointerId === 'number') {
+            try { wheelWrap.releasePointerCapture(e.pointerId); } catch(err) {}
+          }
+          if (drag.moved && Math.abs(drag.velocity) > 1) {
+            (function inertia() {
+              if (Math.abs(drag.velocity) < 0.3) { snapToNearest(); return; }
+              drag.velocity *= 0.92;
+              targetAngle -= drag.velocity;
+              targetAngle = Math.max(-degPerCard * 0.3, Math.min(targetAngle, maxAngle + degPerCard * 0.3));
+              applyWheel(targetAngle);
+              inertiaFrame = requestAnimationFrame(inertia);
+            })();
+          } else {
+            snapToNearest();
+          }
+        }
 
-        // Phase 2 (1-2): tilt down + continue rotating — perspective view
-        wheelTL.to(wheelTrack, { rotateY: 420, rotateX: -18, duration: 1, ease: 'none' }, 1);
+        wheelWrap.addEventListener('pointerup', endDrag);
+        wheelWrap.addEventListener('pointercancel', endDrag);
+        wheelWrap.style.cursor = 'grab';
 
-        // Phase 3 (2-3): tilt back up + scale up slightly — dramatic close
-        wheelTL.to(wheelTrack, { rotateY: 720, rotateX: 0, scale: 1.08, duration: 1, ease: 'none' }, 2);
+        wheelWrap.addEventListener('click', function(e) {
+          if (!drag.moved) return;
+          drag.moved = false;
+          e.preventDefault();
+          e.stopPropagation();
+        }, true);
 
-        // Phase 4 (3-3.5): settle + center reappears
-        wheelTL.to(wheelTrack, { rotateY: 800, scale: 1, duration: 0.5, ease: 'power1.out' }, 3);
-        wheelTL.to('.portfolio-wheel-center', { opacity: 1, scale: 1, duration: 0.4, ease: 'power2.out' }, 3.1);
-
-        // Card stagger entrance
+        // Entrance animations
         gsap.from('.wheel-card', {
           scrollTrigger: { trigger: wheelWrap, start: 'top 80%' },
           opacity: 0, scale: 0.4,
@@ -3605,37 +3669,6 @@
         });
 
         gsap.set('.portfolio-wheel-cta', { clearProps: 'opacity,transform' });
-
-        var wheelDrag = { active: false, moved: false, startX: 0, baseY: 0 };
-        wheelWrap.addEventListener('pointerdown', function(e) {
-          if (e.button !== 0) return;
-          wheelDrag.active = true;
-          wheelDrag.moved = false;
-          wheelDrag.startX = e.clientX;
-          wheelDrag.baseY = Number(gsap.getProperty(wheelTrack, 'rotationY')) || 0;
-          wheelWrap.setPointerCapture(e.pointerId);
-        });
-        wheelWrap.addEventListener('pointermove', function(e) {
-          if (!wheelDrag.active) return;
-          var dx = e.clientX - wheelDrag.startX;
-          if (Math.abs(dx) > 4) wheelDrag.moved = true;
-          if (wheelDrag.moved) {
-            gsap.set(wheelTrack, { rotationY: wheelDrag.baseY + dx * 0.34 });
-          }
-        });
-        function endWheelDrag(e) {
-          if (!wheelDrag.active) return;
-          wheelDrag.active = false;
-          if (e && typeof e.pointerId === 'number') wheelWrap.releasePointerCapture(e.pointerId);
-        }
-        wheelWrap.addEventListener('pointerup', endWheelDrag);
-        wheelWrap.addEventListener('pointercancel', endWheelDrag);
-        wheelWrap.addEventListener('click', function(e) {
-          if (!wheelDrag.moved) return;
-          wheelDrag.moved = false;
-          e.preventDefault();
-          e.stopPropagation();
-        }, true);
 
         var resizeTimer;
         window.addEventListener('resize', function() {
@@ -3760,8 +3793,8 @@
 
         cursorGlow.classList.add('is-visible');
         (function animGlow() {
-          glowX += (mouseX - glowX) * 0.12;
-          glowY += (mouseY - glowY) * 0.12;
+          glowX += (mouseX - glowX) * 0.08;
+          glowY += (mouseY - glowY) * 0.08;
           cursorGlow.style.left = glowX + 'px';
           cursorGlow.style.top = glowY + 'px';
           requestAnimationFrame(animGlow);
