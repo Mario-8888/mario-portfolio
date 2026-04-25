@@ -2576,6 +2576,131 @@
       background: rgba(28,79,224,0.92) !important;
       color: #ffffff !important;
     }
+    .cursor-glow {
+      z-index: 2;
+      width: clamp(440px, 34vw, 600px);
+      height: clamp(440px, 34vw, 600px);
+      background: radial-gradient(circle,
+        rgba(255,255,255,0.96) 0%,
+        rgba(255,250,240,0.82) 18%,
+        rgba(255,244,226,0.48) 38%,
+        rgba(255,239,218,0.20) 58%,
+        rgba(255,236,214,0.06) 74%,
+        transparent 86%);
+      filter: blur(150px) saturate(1.05);
+      mix-blend-mode: normal;
+    }
+    .cursor-glow.is-visible {
+      opacity: 0.22;
+    }
+    .hub-card {
+      display: flex;
+      flex-direction: column;
+      min-height: 330px;
+      padding-bottom: 1.55rem !important;
+    }
+    .hub-card__desc {
+      margin-bottom: 1.35rem;
+    }
+    .hub-card__arrow {
+      display: inline-flex;
+      align-items: center;
+      margin-top: auto;
+      min-height: 42px;
+      width: fit-content;
+      min-width: 132px;
+      padding: 0 1.05rem;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.74);
+      border: 1.5px solid rgba(255,255,255,0.46);
+      box-shadow: 0 8px 22px rgba(17,24,39,0.06), inset 0 1px 0 rgba(255,255,255,0.58);
+      justify-content: center;
+      transition: color 0.3s ease, background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, gap 0.3s ease;
+    }
+    .hub-card:hover .hub-card__arrow {
+      background: rgba(51,108,255,0.1);
+      border-color: rgba(51,108,255,0.28);
+      box-shadow: 0 12px 28px rgba(51,108,255,0.12), inset 0 1px 0 rgba(255,255,255,0.7);
+    }
+    .pullquote {
+      grid-template-columns: repeat(auto-fit, minmax(0, 1fr)) !important;
+      gap: 0.75rem !important;
+      padding: 1.05rem !important;
+    }
+    .pullquote__item {
+      min-width: 0;
+      padding: 0.85rem 0.95rem;
+      border-radius: 24px !important;
+      overflow: hidden;
+    }
+    .pullquote__item + .pullquote__item::before {
+      display: none;
+    }
+    .pullquote__value {
+      max-width: 100%;
+      font-size: clamp(1.35rem, 1.65vw, 2rem) !important;
+      letter-spacing: 0;
+      overflow: visible;
+      text-overflow: clip;
+      white-space: nowrap;
+    }
+    .pullquote__label {
+      font-size: 0.64rem;
+      letter-spacing: 0.06em;
+      white-space: normal;
+    }
+    .footnote__grid {
+      align-items: stretch;
+    }
+    .footnote__item {
+      height: 100%;
+      min-height: 190px;
+      transform: translate3d(0,0,0);
+    }
+    .wheel-card {
+      transform-origin: center center;
+      transition: box-shadow 0.3s ease, border-color 0.3s ease, filter 0.3s ease, background 0.3s ease !important;
+      will-change: auto;
+    }
+    .wheel-card img {
+      transition: transform 0.3s ease;
+      transform-origin: center;
+    }
+    .wheel-card:hover img {
+      transform: scale(1.035);
+    }
+    .wheel-hint-item {
+      width: 210px;
+      min-width: 210px;
+      height: 46px;
+      min-height: 46px;
+      padding: 0 1rem;
+    }
+    .portfolio-cta-buttons {
+      gap: 1rem;
+    }
+    .portfolio-cta-buttons .btn-canva,
+    .portfolio-cta-buttons .portfolio-launch {
+      width: 310px !important;
+      min-width: 310px !important;
+      height: 64px !important;
+      min-height: 64px !important;
+      padding: 0 1.3rem !important;
+      margin-top: 0 !important;
+      text-align: center;
+      transform: none !important;
+      transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease !important;
+    }
+    .boot__cta {
+      gap: 1rem;
+    }
+    .boot__cta .btn {
+      height: 58px;
+      min-height: 58px;
+      min-width: 220px;
+      padding: 0 1.65rem;
+      border-radius: 999px !important;
+    }
     @media (max-width: 1100px) {
       .hub__grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -3490,12 +3615,9 @@
           duration: 0.7, stagger: 0.07, ease: 'power3.out', delay: 0.2
         });
 
-        /* --- Education footnote --- */
-        gsap.from('.footnote__item', {
-          scrollTrigger: { trigger: '.footnote', start: 'top 82%' },
-          opacity: 0, y: 35, scale: 0.95,
-          duration: 0.9, stagger: 0.15, ease: 'power3.out'
-        });
+        /* --- Education footnote ---
+           Keep both cards on the same baseline immediately after load. */
+        gsap.set('.footnote__item', { opacity: 1, y: 0, scale: 1, clearProps: 'transform' });
 
         /* --- Footer --- */
         var fq = document.querySelector('.footer__quote');
@@ -3833,7 +3955,7 @@
       /* ============================================================
          3D TILT ON CARDS
          ============================================================ */
-      document.querySelectorAll('.hub-card, .entry__body, .footnote__item').forEach(function(card) {
+      document.querySelectorAll('.hub-card, .entry__body').forEach(function(card) {
         card.addEventListener('mousemove', function(e) {
           var rect = card.getBoundingClientRect();
           var x = (e.clientX - rect.left) / rect.width - 0.5;
@@ -3857,7 +3979,7 @@
       /* ============================================================
          MAGNETIC BUTTONS
          ============================================================ */
-      document.querySelectorAll('.btn, .portfolio-launch, .btn-canva').forEach(function(btn) {
+      document.querySelectorAll('.boot__cta .btn').forEach(function(btn) {
         btn.addEventListener('mousemove', function(e) {
           var rect = btn.getBoundingClientRect();
           var dx = e.clientX - rect.left - rect.width / 2;
