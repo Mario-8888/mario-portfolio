@@ -2433,7 +2433,9 @@
     .portfolio-inspector__tool,
     .portfolio-inspector__actions a,
     .portfolio-inspector__canva,
+    .portfolio-inspector__reset,
     .portfolio-inspector__cluster-chip,
+    .portfolio-cluster-label,
     .portfolio-focus__panel,
     .portfolio-focus__close,
     .portfolio-focus__actions a,
@@ -2472,6 +2474,7 @@
     .portfolio-modal__actions button:hover,
     .portfolio-inspector__actions a:hover,
     .portfolio-inspector__canva:hover,
+    .portfolio-inspector__reset:hover,
     .portfolio-inspector__cluster-chip:hover,
     .portfolio-focus__close:hover,
     .portfolio-focus__actions a:hover {
@@ -2701,9 +2704,236 @@
       padding: 0 1.65rem;
       border-radius: 999px !important;
     }
+
+    /* Portfolio infinite canvas — extensible v3 framework */
+    .portfolio-modal__window {
+      inset: 18px !important;
+      grid-template-rows: auto 1fr !important;
+      background: rgba(248, 250, 253, 0.72) !important;
+    }
+    .portfolio-modal__bar {
+      min-height: 70px;
+      padding: 0.95rem 1.1rem 0.95rem 1.35rem !important;
+      background: rgba(255,255,255,0.72) !important;
+      backdrop-filter: blur(26px) saturate(1.2) !important;
+      -webkit-backdrop-filter: blur(26px) saturate(1.2) !important;
+    }
+    .portfolio-modal__actions button {
+      min-width: 112px;
+      min-height: 48px;
+      border-radius: 999px !important;
+      background: rgba(255,255,255,0.76) !important;
+      box-shadow: 0 10px 35px rgba(17,24,39,0.08), inset 0 1px 0 rgba(255,255,255,0.62) !important;
+    }
+    .portfolio-modal__body {
+      display: grid;
+      grid-template-columns: minmax(330px, 360px) minmax(0, 1fr);
+      gap: 0;
+      overflow: hidden;
+    }
+    .portfolio-inspector {
+      position: relative !important;
+      inset: auto !important;
+      z-index: 8;
+      width: auto !important;
+      height: 100%;
+      max-height: none;
+      border-radius: 0 32px 32px 0 !important;
+      padding: 1.45rem 1.1rem 1.3rem !important;
+      background: rgba(255,255,255,0.72) !important;
+      border-right: 1.5px solid rgba(255,255,255,0.48) !important;
+      overflow-y: auto;
+    }
+    .portfolio-inspector__block,
+    .portfolio-inspector__detail {
+      display: grid;
+      gap: 0.55rem;
+    }
+    .portfolio-inspector__intro h4,
+    .portfolio-inspector__detail h5 {
+      font-family: var(--font-serif-cn);
+      color: var(--ink);
+      font-weight: 500;
+      line-height: 1.16;
+    }
+    .portfolio-inspector__intro h4 {
+      font-size: clamp(1.75rem, 2.3vw, 2.2rem);
+    }
+    .portfolio-inspector__detail h5 {
+      font-size: 1.22rem;
+      margin-top: 0.1rem;
+    }
+    .portfolio-inspector__intro p,
+    .portfolio-inspector__detail p {
+      color: #4f5b6f;
+      line-height: 1.76;
+      font-size: 0.9rem;
+    }
+    .portfolio-inspector__cta {
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      margin: 1rem 0 1.1rem !important;
+    }
+    .portfolio-inspector__canva,
+    .portfolio-inspector__reset {
+      min-height: 48px !important;
+      border-radius: 999px !important;
+      background: rgba(255,255,255,0.76) !important;
+      border: 1.5px solid rgba(255,255,255,0.46) !important;
+      box-shadow: 0 10px 35px rgba(17,24,39,0.08), inset 0 1px 0 rgba(255,255,255,0.62) !important;
+      transform: none !important;
+    }
+    .portfolio-inspector__reset {
+      border: 0;
+      padding: 0 0.95rem;
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      color: var(--ink);
+      cursor: pointer;
+    }
+    .portfolio-inspector__cluster-grid {
+      display: grid !important;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.55rem !important;
+    }
+    .portfolio-inspector__cluster-chip {
+      justify-content: space-between !important;
+      min-height: 44px !important;
+      padding: 0 0.85rem !important;
+      border-radius: 999px !important;
+      background: rgba(255,255,255,0.68) !important;
+      line-height: 1;
+    }
+    .portfolio-inspector__cluster-chip span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 24px;
+      height: 24px;
+      margin-left: 0.55rem;
+      border-radius: 999px;
+      color: var(--accent);
+      background: rgba(51,108,255,0.1);
+    }
+    .portfolio-inspector__metrics {
+      grid-template-columns: 1fr 1fr !important;
+      margin: 0.85rem 0 0.95rem !important;
+    }
+    .portfolio-inspector__metric {
+      min-height: 76px;
+      border-radius: 28px !important;
+      background: rgba(255,255,255,0.7) !important;
+    }
+    .portfolio-inspector__image {
+      aspect-ratio: 16 / 10 !important;
+      max-height: 170px;
+      object-fit: contain !important;
+      padding: 0.35rem;
+      margin: 0.2rem 0 0.3rem !important;
+      background: rgba(255,255,255,0.78) !important;
+    }
+    .portfolio-stage {
+      position: relative !important;
+      inset: auto !important;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background:
+        linear-gradient(rgba(255,255,255,0.72), rgba(248,251,255,0.76)),
+        radial-gradient(circle at 18% 20%, rgba(51,108,255,0.08), transparent 32%),
+        radial-gradient(circle at 84% 78%, rgba(255,216,77,0.11), transparent 38%) !important;
+    }
+    .portfolio-stage::before {
+      background-image:
+        linear-gradient(rgba(120,141,178,0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(120,141,178,0.08) 1px, transparent 1px),
+        radial-gradient(circle at 1px 1px, rgba(96,115,150,0.16) 1px, transparent 1px) !important;
+      background-size: 56px 56px, 56px 56px, 28px 28px !important;
+      opacity: 0.58 !important;
+    }
+    .portfolio-world,
+    .portfolio-edges {
+      width: 3600px !important;
+      height: 2400px !important;
+      transform-origin: 0 0;
+    }
+    .portfolio-edges path {
+      stroke: rgba(51,108,255,0.16);
+      stroke-linecap: round;
+    }
+    .portfolio-cluster-label {
+      position: absolute;
+      display: grid;
+      gap: 0.25rem;
+      width: 280px;
+      padding: 0.95rem 1rem;
+      border-radius: 30px;
+      background: rgba(255,255,255,0.54);
+      border: 1.5px solid rgba(255,255,255,0.42);
+      box-shadow: 0 10px 35px rgba(17,24,39,0.06), inset 0 1px 0 rgba(255,255,255,0.5);
+      pointer-events: none;
+    }
+    .portfolio-cluster-label span {
+      font-family: var(--font-mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .portfolio-cluster-label strong {
+      font-family: var(--font-serif-cn);
+      font-size: 1.1rem;
+      color: var(--ink);
+      font-weight: 500;
+    }
+    .portfolio-node {
+      border-radius: 30px !important;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, background 0.3s ease !important;
+      contain: layout paint;
+    }
+    .portfolio-node:hover {
+      transform: translateY(-5px) scale(1.018) !important;
+    }
+    .portfolio-node.is-active {
+      transform: translateY(-7px) scale(1.045) !important;
+      z-index: 5;
+    }
+    .portfolio-node--template-large {
+      --node-width: 320px;
+      padding: 1.25rem !important;
+    }
+    .portfolio-node--template-medium {
+      --node-width: 230px;
+      padding: 0.82rem !important;
+    }
+    .portfolio-node--template-small {
+      --node-width: 190px;
+      padding: 0.68rem !important;
+      gap: 0.6rem !important;
+    }
+    .portfolio-node--template-large .portfolio-node__thumb {
+      aspect-ratio: 1.48 / 1 !important;
+    }
+    .portfolio-node--template-medium .portfolio-node__thumb,
+    .portfolio-node--template-small .portfolio-node__thumb {
+      aspect-ratio: 0.78 / 1 !important;
+      object-fit: contain !important;
+      background: rgba(255,255,255,0.82);
+      padding: 0.25rem;
+    }
+    .portfolio-node--template-small .portfolio-node__desc {
+      display: none;
+    }
     @media (max-width: 1100px) {
       .hub__grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .portfolio-modal__body {
+        grid-template-columns: 300px minmax(0, 1fr);
+      }
+      .portfolio-inspector__cluster-grid {
+        grid-template-columns: 1fr;
       }
     }
     @media (max-width: 640px) {
@@ -3254,40 +3484,49 @@
         </div>
       </div>
       <div class="portfolio-modal__body">
-        <div class="portfolio-stage" id="portfolioStage" data-lenis-prevent>
-          <svg class="portfolio-edges" id="portfolioEdges" aria-hidden="true"></svg>
-          <div class="portfolio-world" id="portfolioWorld"></div>
-        </div>
         <aside class="portfolio-inspector">
-          <span class="portfolio-inspector__eyebrow">Selected node</span>
-          <h4 id="portfolioInspectorTitle">作品集总览</h4>
-          <p id="portfolioInspectorSummary"></p>
+          <section class="portfolio-inspector__block portfolio-inspector__intro">
+            <span class="portfolio-inspector__eyebrow">Portfolio Atlas</span>
+            <h4>作品集导航总览</h4>
+            <p>整套作品集的导航枢纽，所有作品以节点形式分类排布，点击节点即可查看完整详情。</p>
+          </section>
           <div class="portfolio-inspector__cta">
             <a class="portfolio-inspector__canva btn-canva" href="https://canva.link/x22snc2sbb5vpwj" target="_blank" rel="noreferrer">
-              查看完整 Canva 作品集 <span class="btn__arrow">↗</span>
+              查看完整 CANVA 作品集 <span class="btn__arrow">↗</span>
             </a>
+            <button class="portfolio-inspector__reset" type="button" data-reset-portfolio>复位画布</button>
           </div>
           <div class="portfolio-inspector__clusters">
-            <span class="portfolio-inspector__section-label">Categories</span>
+            <span class="portfolio-inspector__section-label">作品分类目录</span>
             <div class="portfolio-inspector__cluster-grid">
-              <button class="portfolio-inspector__cluster-chip" type="button" data-focus-cluster="theme-douyin">抖音平台运营</button>
-              <button class="portfolio-inspector__cluster-chip" type="button" data-focus-cluster="theme-xhs">小红书账号运营</button>
-              <button class="portfolio-inspector__cluster-chip" type="button" data-focus-cluster="theme-wechat">公众号内容矩阵</button>
-              <button class="portfolio-inspector__cluster-chip" type="button" data-focus-cluster="theme-product">产品原型设计</button>
-              <button class="portfolio-inspector__cluster-chip" type="button" data-focus-cluster="theme-aigc">AIGC 工具落地</button>
-              <button class="portfolio-inspector__cluster-chip" type="button" data-focus-cluster="theme-creative">其他创意作品</button>
+              <button class="portfolio-inspector__cluster-chip" type="button" data-focus-cluster="theme-douyin">抖音平台运营 <span data-cluster-count="theme-douyin">0</span></button>
+              <button class="portfolio-inspector__cluster-chip" type="button" data-focus-cluster="theme-xhs">小红书账号运营 <span data-cluster-count="theme-xhs">0</span></button>
+              <button class="portfolio-inspector__cluster-chip" type="button" data-focus-cluster="theme-wechat">公众号内容矩阵 <span data-cluster-count="theme-wechat">0</span></button>
+              <button class="portfolio-inspector__cluster-chip" type="button" data-focus-cluster="theme-product">产品原型设计 <span data-cluster-count="theme-product">0</span></button>
+              <button class="portfolio-inspector__cluster-chip" type="button" data-focus-cluster="theme-aigc">AIGC 工具落地 <span data-cluster-count="theme-aigc">0</span></button>
+              <button class="portfolio-inspector__cluster-chip" type="button" data-focus-cluster="theme-creative">其他创意作品 <span data-cluster-count="theme-creative">0</span></button>
             </div>
           </div>
+          <span class="portfolio-inspector__section-label">数据统计</span>
           <div class="portfolio-inspector__metrics" id="portfolioInspectorMetrics"></div>
-          <img class="portfolio-inspector__image" id="portfolioInspectorImage" src="portfolio-pages/page-01.jpg" alt="预览" />
-          <span class="portfolio-inspector__section-label" id="portfolioToolsLabel">Tools</span>
+          <section class="portfolio-inspector__detail">
+            <span class="portfolio-inspector__section-label">节点详情预览</span>
+            <img class="portfolio-inspector__image" id="portfolioInspectorImage" src="portfolio-pages/page-01.jpg" alt="预览" />
+            <h5 id="portfolioInspectorTitle">作品集总览</h5>
+            <p id="portfolioInspectorSummary"></p>
+          </section>
+          <span class="portfolio-inspector__section-label" id="portfolioToolsLabel">核心标签</span>
           <div class="portfolio-inspector__tools" id="portfolioInspectorTools"></div>
-          <span class="portfolio-inspector__section-label" id="portfolioPointsLabel">Highlights</span>
+          <span class="portfolio-inspector__section-label" id="portfolioPointsLabel">项目介绍</span>
           <ul class="portfolio-inspector__list" id="portfolioInspectorList"></ul>
           <div class="portfolio-inspector__actions">
             <a id="portfolioInspectorLink" href="https://canva.link/x22snc2sbb5vpwj" target="_blank" rel="noreferrer">Open source</a>
           </div>
         </aside>
+        <div class="portfolio-stage" id="portfolioStage" data-lenis-prevent>
+          <svg class="portfolio-edges" id="portfolioEdges" aria-hidden="true"></svg>
+          <div class="portfolio-world" id="portfolioWorld"></div>
+        </div>
         <div class="portfolio-focus" id="portfolioFocus" aria-hidden="true">
           <div class="portfolio-focus__scrim" data-close-portfolio-focus></div>
           <div class="portfolio-focus__panel">
@@ -3878,7 +4117,7 @@
          ============================================================ */
       var cursorGlow = document.getElementById('cursorGlow');
       var glassElements = document.querySelectorAll(
-        '.topbar, .toc-item, .hub-card, .entry__body, .footnote__item, .contact-row, .preview-box, .wheel-card, .wheel-hint-item, .btn, .btn-canva, .portfolio-launch, .portfolio-modal__window, .portfolio-modal__bar, .portfolio-modal__actions button, .portfolio-inspector, .portfolio-inspector__metric, .portfolio-inspector__tool, .portfolio-inspector__cluster-chip, .portfolio-inspector__actions a, .portfolio-focus__panel, .portfolio-focus__close, .portfolio-focus__actions a, .portfolio-node, .pullquote__item, .chip, .pathfinder__dot'
+        '.topbar, .toc-item, .hub-card, .entry__body, .footnote__item, .contact-row, .preview-box, .wheel-card, .wheel-hint-item, .btn, .btn-canva, .portfolio-launch, .portfolio-modal__window, .portfolio-modal__bar, .portfolio-modal__actions button, .portfolio-inspector, .portfolio-inspector__metric, .portfolio-inspector__tool, .portfolio-inspector__cluster-chip, .portfolio-inspector__reset, .portfolio-inspector__actions a, .portfolio-focus__panel, .portfolio-focus__close, .portfolio-focus__actions a, .portfolio-node, .portfolio-cluster-label, .pullquote__item, .chip, .pathfinder__dot'
       );
 
       if (cursorGlow && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
@@ -4019,6 +4258,9 @@
       var portfolioFocusPoints = document.getElementById('portfolioFocusPoints');
       var portfolioFocusLink = document.getElementById('portfolioFocusLink');
       var clusterButtons = Array.prototype.slice.call(document.querySelectorAll('[data-focus-cluster]'));
+      var clusterCountEls = Array.prototype.slice.call(document.querySelectorAll('[data-cluster-count]'));
+      var WORLD_WIDTH = 3600;
+      var WORLD_HEIGHT = 2400;
 
       var portfolioNodes = [
         // ═══════════════════════════════════════════
@@ -4208,6 +4450,14 @@
 
       var nodeMap = new Map(portfolioNodes.map(function(n){return[n.id,n]}));
       var clusterNodeIds = ['theme-douyin','theme-xhs','theme-wechat','theme-product','theme-aigc','theme-creative'];
+      var clusterLabels = {
+        'theme-douyin': '抖音平台运营',
+        'theme-xhs': '小红书账号运营',
+        'theme-wechat': '公众号内容矩阵',
+        'theme-product': '产品原型设计',
+        'theme-aigc': 'AIGC 工具落地',
+        'theme-creative': '其他创意作品'
+      };
       var nodeParentTheme = new Map();
       portfolioLinks.forEach(function(pair) {
         if (clusterNodeIds.indexOf(pair[0]) >= 0 && nodeMap.has(pair[1]) && clusterNodeIds.indexOf(pair[1]) === -1) {
@@ -4219,16 +4469,65 @@
       var activePortfolioNode = 'theme-hub';
 
       function clamp(v,min,max){return Math.min(Math.max(v,min),max)}
+      function getNodeTemplate(node) {
+        if (node.template) return node.template;
+        if (node.className && node.className.indexOf('theme') >= 0) return 'large';
+        if (node.image) return 'medium';
+        return 'small';
+      }
+      function getNodeHeight(n) {
+        var template = getNodeTemplate(n);
+        if (template === 'large') return 330;
+        if (template === 'small') return 205;
+        return 270;
+      }
       function getNodeCenter(n){
-        var w=n.width||260, h=n.className&&n.className.indexOf('theme')>=0?320:(n.className&&n.className.indexOf('page')>=0?240:312);
+        var w=n.width||260, h=getNodeHeight(n);
         return {x:n.x+w/2, y:n.y+h/2};
       }
+      function getClusterCounts() {
+        var counts = {};
+        clusterNodeIds.forEach(function(id) { counts[id] = 0; });
+        nodeParentTheme.forEach(function(clusterId) {
+          if (counts[clusterId] !== undefined) counts[clusterId] += 1;
+        });
+        return counts;
+      }
+      function getPageCount() {
+        return portfolioNodes.filter(function(node) {
+          return node.className && node.className.indexOf('portfolio-node--page') >= 0;
+        }).length;
+      }
+      function getClusterBounds(clusterId) {
+        var nodes = portfolioNodes.filter(function(node) {
+          return node.id === clusterId || nodeParentTheme.get(node.id) === clusterId;
+        });
+        if (!nodes.length) return null;
+        var minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+        nodes.forEach(function(node) {
+          var w = node.width || 260;
+          var h = getNodeHeight(node);
+          minX = Math.min(minX, node.x);
+          minY = Math.min(minY, node.y);
+          maxX = Math.max(maxX, node.x + w);
+          maxY = Math.max(maxY, node.y + h);
+        });
+        return { x:minX, y:minY, width:maxX-minX, height:maxY-minY };
+      }
+      function renderClusterLabels() {
+        return clusterNodeIds.map(function(id, index) {
+          var node = nodeMap.get(id);
+          if (!node) return '';
+          return '<div class="portfolio-cluster-label" style="left:'+(node.x - 18)+'px;top:'+(node.y - 98)+'px;">' +
+            '<span>Cluster 0' + (index + 1) + '</span><strong>' + clusterLabels[id] + '</strong></div>';
+        }).join('');
+      }
       function renderPortfolioNodes(){
-        portfolioWorld.innerHTML = portfolioNodes.map(function(node){
-          var cls=['portfolio-node'];
+        portfolioWorld.innerHTML = renderClusterLabels() + portfolioNodes.map(function(node){
+          var cls=['portfolio-node', 'portfolio-node--template-' + getNodeTemplate(node)];
           if(node.className) cls.push(node.className);
           if(node.id===activePortfolioNode) cls.push('is-active');
-          var img = node.image ? '<img class="portfolio-node__thumb" src="'+node.image+'" alt="'+node.title+'"/>' : '';
+          var img = node.image ? '<img class="portfolio-node__thumb" loading="lazy" decoding="async" src="'+node.image+'" alt="'+node.title+'"/>' : '';
           var tag = node.tag ? '<span class="portfolio-node__tag">'+node.tag+'</span>' : '';
           return '<button class="'+cls.join(' ')+'" type="button" data-portfolio-node="'+node.id+'" style="left:'+node.x+'px;top:'+node.y+'px;--node-width:'+(node.width||260)+'px;">'+
             '<span class="portfolio-node__eyebrow">'+node.eyebrow+'</span>'+img+
@@ -4247,12 +4546,41 @@
         portfolioEdges.innerHTML = paths;
       }
       function renderPortfolioView(){
+        clampView();
         var t='translate('+view.x+'px,'+view.y+'px) scale('+view.scale+')';
         portfolioWorld.style.transform=t; portfolioEdges.style.transform=t;
+      }
+      function clampView() {
+        if (!portfolioStage.clientWidth || !portfolioStage.clientHeight) return;
+        var margin = 260;
+        var scaledW = WORLD_WIDTH * view.scale;
+        var scaledH = WORLD_HEIGHT * view.scale;
+        if (scaledW <= portfolioStage.clientWidth) {
+          view.x = (portfolioStage.clientWidth - scaledW) / 2;
+        } else {
+          view.x = clamp(view.x, portfolioStage.clientWidth - scaledW - margin, margin);
+        }
+        if (scaledH <= portfolioStage.clientHeight) {
+          view.y = (portfolioStage.clientHeight - scaledH) / 2;
+        } else {
+          view.y = clamp(view.y, portfolioStage.clientHeight - scaledH - margin, margin);
+        }
       }
       function getClusterId(id) {
         if (clusterNodeIds.indexOf(id) >= 0) return id;
         return nodeParentTheme.get(id) || null;
+      }
+      function updatePortfolioStats() {
+        var counts = getClusterCounts();
+        clusterCountEls.forEach(function(el) {
+          var id = el.getAttribute('data-cluster-count');
+          el.textContent = counts[id] || 0;
+        });
+        var me = document.getElementById('portfolioInspectorMetrics');
+        if (!me) return;
+        me.style.display = '';
+        me.innerHTML = '<div class="portfolio-inspector__metric"><div class="portfolio-inspector__metric-value">' + getPageCount() + '</div><div class="portfolio-inspector__metric-label">总页数</div></div>' +
+          '<div class="portfolio-inspector__metric"><div class="portfolio-inspector__metric-value">' + clusterNodeIds.length + '</div><div class="portfolio-inspector__metric-label">核心板块</div></div>';
       }
       function updateClusterButtons(id) {
         var clusterId = getClusterId(id);
@@ -4285,8 +4613,7 @@
         inspectorSummary.textContent=node.desc;
         inspectorImage.src=node.image||'portfolio-pages/page-02.jpg';
         inspectorImage.alt=node.title;
-        var me=document.getElementById('portfolioInspectorMetrics');
-        if(node.metrics&&node.metrics.length>0){me.style.display='';me.innerHTML=node.metrics.map(function(m){return '<div class="portfolio-inspector__metric"><div class="portfolio-inspector__metric-value">'+m.value+'</div><div class="portfolio-inspector__metric-label">'+m.label+'</div></div>';}).join('');}else{me.style.display='none';}
+        updatePortfolioStats();
         var te=document.getElementById('portfolioInspectorTools'),tl=document.getElementById('portfolioToolsLabel');
         if(node.tools&&node.tools.length>0){te.style.display='';tl.style.display='';te.innerHTML=node.tools.map(function(t){return '<span class="portfolio-inspector__tool">'+t+'</span>';}).join('');}else{te.style.display='none';tl.style.display='none';}
         var pl=document.getElementById('portfolioPointsLabel');
@@ -4301,15 +4628,26 @@
         view.y=portfolioStage.clientHeight*fy-c.y*view.scale;
         renderPortfolioView();
       }
+      function focusPortfolioCluster(id) {
+        var bounds = getClusterBounds(id);
+        if (!bounds) { focusPortfolioNode(id); return; }
+        var pad = 190;
+        var scaleX = portfolioStage.clientWidth / (bounds.width + pad * 2);
+        var scaleY = portfolioStage.clientHeight / (bounds.height + pad * 2);
+        view.scale = clamp(Math.min(scaleX, scaleY, 0.76), 0.2, 1.05);
+        view.x = (portfolioStage.clientWidth - bounds.width * view.scale) / 2 - bounds.x * view.scale;
+        view.y = (portfolioStage.clientHeight - bounds.height * view.scale) / 2 - bounds.y * view.scale;
+        renderPortfolioView();
+      }
       function setActivePortfolioNode(id,focus){
         var n=nodeMap.get(id); if(!n) return;
         activePortfolioNode=id; renderPortfolioNodes(); updateInspector(n);
         if(focus) focusPortfolioNode(id);
       }
       function resetPortfolioView(){
-        view.scale=window.innerWidth<980?0.26:0.38;
-        view.x=window.innerWidth<980?10:60;
-        view.y=window.innerWidth<980?10:30;
+        view.scale=window.innerWidth<980?0.24:0.42;
+        view.x=window.innerWidth<980?24:70;
+        view.y=window.innerWidth<980?24:46;
         renderPortfolioView();
       }
       function openPortfolio(id){
@@ -4319,7 +4657,10 @@
         lenis.stop();
         closePortfolioFocus();
         resetPortfolioView();
-        setActivePortfolioNode(id||activePortfolioNode||'theme-hub',true);
+        var targetId = id || activePortfolioNode || 'theme-hub';
+        setActivePortfolioNode(targetId,false);
+        if (clusterNodeIds.indexOf(targetId) >= 0) focusPortfolioCluster(targetId);
+        else focusPortfolioNode(targetId);
       }
       function closePortfolio(){
         closePortfolioFocus();
@@ -4330,7 +4671,7 @@
         pan.active=false; portfolioStage.classList.remove('is-panning');
       }
       renderPortfolioNodes(); renderPortfolioEdges();
-      updateInspector(nodeMap.get(activePortfolioNode)); renderPortfolioView();
+      updateInspector(nodeMap.get(activePortfolioNode)); updatePortfolioStats(); renderPortfolioView();
 
       document.querySelectorAll('[data-open-portfolio]').forEach(function(b){b.addEventListener('click',function(){openPortfolio('theme-hub')})});
       document.querySelectorAll('[data-open-portfolio-node]').forEach(function(b){b.addEventListener('click',function(){openPortfolio(b.getAttribute('data-open-portfolio-node'))})});
@@ -4340,17 +4681,27 @@
         var clusterButton=e.target.closest('[data-focus-cluster]');
         if(clusterButton){
           closePortfolioFocus();
-          setActivePortfolioNode(clusterButton.getAttribute('data-focus-cluster'),true);
+          var clusterId = clusterButton.getAttribute('data-focus-cluster');
+          setActivePortfolioNode(clusterId,false);
+          focusPortfolioCluster(clusterId);
+          return;
+        }
+        if(e.target.closest('[data-reset-portfolio]')){
+          closePortfolioFocus();
+          setActivePortfolioNode('theme-hub',false);
+          resetPortfolioView();
           return;
         }
         var nb=e.target.closest('[data-portfolio-node]');
         if(nb) {
           var nodeId=nb.getAttribute('data-portfolio-node');
-          var focusWasOpen=portfolioFocus.classList.contains('is-open');
           var sameNode=activePortfolioNode===nodeId;
-          setActivePortfolioNode(nodeId,false);
-          if(focusWasOpen && sameNode) closePortfolioFocus();
-          else openPortfolioFocus(nodeMap.get(nodeId));
+          closePortfolioFocus();
+          if(sameNode && nodeId !== 'theme-hub') {
+            setActivePortfolioNode('theme-hub',false);
+          } else {
+            setActivePortfolioNode(nodeId,false);
+          }
         }
       });
       portfolioStage.addEventListener('pointerdown',function(e){
@@ -4371,6 +4722,7 @@
         if(e.target.closest('[data-portfolio-node]')) return;
         if(pan.moved){ pan.moved=false; return; }
         if(portfolioFocus.classList.contains('is-open')) closePortfolioFocus();
+        if(activePortfolioNode !== 'theme-hub') setActivePortfolioNode('theme-hub', false);
       });
       function endPan(e){
         if(!pan.active) return; pan.active=false;
@@ -4385,7 +4737,7 @@
         var r=portfolioStage.getBoundingClientRect();
         var px=e.clientX-r.left, py=e.clientY-r.top;
         var wx=(px-view.x)/view.scale, wy=(py-view.y)/view.scale;
-        var ns=clamp(view.scale*(e.deltaY>0?0.92:1.08),0.22,1.5);
+        var ns=clamp(view.scale*(e.deltaY>0?0.92:1.08),0.2,3);
         view.x=px-wx*ns; view.y=py-wy*ns; view.scale=ns;
         renderPortfolioView();
       },{passive:false});
